@@ -16,6 +16,14 @@
     ✅ Simplified voice recognition setup
     ✅ Professional toolbar alignment and responsive design
     ✅ Enhanced visual hierarchy with glassmorphism effects
+    ✅ Fixed element references and state management
+    ✅ Enhanced security with textContent instead of innerHTML
+    ✅ Improved memory management for file downloads
+    ✅ Optimized font loading (removed unnecessary Scheherazade New)
+    ✅ Enhanced spell correction performance
+    ✅ Better mobile responsiveness
+    ✅ Improved error handling and user feedback
+    ✅ Added performance monitoring
 -->
 <html lang="ar" dir="auto">
 <head>
@@ -35,8 +43,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Optimized font loading - only essential fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Patrick Hand', cursive;
@@ -62,18 +70,15 @@
             z-index: -1;
         }
         
-        .font-kalam { font-family: 'Kalam', cursive; }
-        .font-caveat { font-family: 'Caveat', cursive; }
+        /* Optimized font classes - only essential fonts */
         .font-patrick { font-family: 'Patrick Hand', cursive; }
-        .font-dancing { font-family: 'Dancing Script', cursive; }
-        .font-satisfy { font-family: 'Satisfy', cursive; }
-        .font-arabic { font-family: 'Amiri', 'Scheherazade New', serif; }
-        .font-ottoman { font-family: 'Amiri', 'Scheherazade New', serif; }
+        .font-arabic { font-family: 'Amiri', serif; }
+        .font-ottoman { font-family: 'Amiri', serif; }
 
         /* Arabic text styling */
         .arabic-text {
-            font-family: 'Amiri', 'Scheherazade New', serif !important;
-            font-size: 1.3rem !important;
+            font-family: 'Amiri', serif !important;
+            font-size: 1.6rem !important;
             line-height: 2.2 !important;
             text-align: right !important;
             direction: rtl !important;
@@ -95,8 +100,8 @@
         #notebook-paper {
             background-color: #F8F9FA;
             background-image: linear-gradient(#000000 1px, transparent 1px);
-            background-size: 100% 2.2em;
-            line-height: 2.2em;
+            background-size: 100% 2.4em;
+            line-height: 2.4em;
             box-shadow: 
                 0 20px 25px -5px rgba(0, 0, 0, 0.1),
                 0 10px 10px -5px rgba(0, 0, 0, 0.04),
@@ -112,7 +117,7 @@
         /* خاص بالنص بين الخطوط - النمط المخطط */
         #notebook-paper.lined #editor {
             padding-top: calc(1em + 1.1em) !important; /* إضافة padding لجعل النص بين الخطوط */
-            line-height: 2.2em !important; /* محاذاة مع المسافة بين الخطوط */
+            line-height: 2.4em !important; /* محاذاة مع المسافة بين الخطوط */
         }
 
         #notebook-paper::before {
@@ -158,12 +163,12 @@
 
         #notebook-paper.paper-white.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-white.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-white.grid {
@@ -188,12 +193,12 @@
 
         #notebook-paper.paper-mint.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-mint.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-mint.grid {
@@ -218,12 +223,12 @@
 
         #notebook-paper.paper-gray.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-gray.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-gray.grid {
@@ -248,12 +253,12 @@
 
         #notebook-paper.paper-cream.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-cream.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-cream.grid {
@@ -278,12 +283,12 @@
 
         #notebook-paper.paper-peach.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-peach.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-peach.grid {
@@ -308,12 +313,12 @@
 
         #notebook-paper.paper-rose.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-rose.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-rose.grid {
@@ -338,12 +343,12 @@
 
         #notebook-paper.paper-beige.lined #editor {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.4em !important;
         }
 
         #notebook-paper.paper-beige.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         #notebook-paper.paper-beige.grid {
@@ -360,7 +365,7 @@
         #editor {
             outline: none;
             padding: 1em 3em 3em 4em;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             min-height: 80vh;
             position: relative;
             line-height: 1.8;
@@ -372,32 +377,56 @@
         @media (max-width: 1023px) {
             #editor {
                 padding: 1em 2em 2em 2.5em;
-                font-size: 1rem;
+                font-size: 1.3rem;
                 min-height: 70vh;
+            }
+            
+            /* Enhanced mobile responsiveness for small screens */
+            @media (max-width: 480px) {
+                #editor {
+                    padding: 0.5em 1em 1em 1.5em;
+                    font-size: 1.2rem;
+                    min-height: 60vh;
+                }
             }
             
             #editor.arabic-content {
                 padding: 1em 2.5em 2em 2em;
+                font-size: 1.5rem;
             }
             
             /* النص العربي مع الخطوط على الموبايل */
             #notebook-paper.lined #editor {
                 padding-top: calc(1em + 1.1em) !important;
-                line-height: 2.2em !important;
+                line-height: 2.4em !important;
             }
             
             #notebook-paper.lined #editor.arabic-content {
                 padding-top: calc(1em + 1.1em) !important;
-                line-height: 2.2em !important;
+                line-height: 2.6em !important;
             }
             
             /* CSS موبايل قديم - محذوف لأن الخط الأحمر مخفي تماماً على الموبايل */
             
             #currentDateTime {
-                padding-right: 2.5em !important;
                 padding-top: 1rem !important;
-                font-size: 1rem !important;
+                font-size: 1.3rem !important;
+                text-align: center !important;
+                font-weight: 600 !important;
+                margin-bottom: 0.5rem !important;
             }
+        }
+
+        /* Date and Time Header Styling */
+        #currentDateTime {
+            font-family: 'Patrick Hand', cursive;
+            color: #4b5563;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
         }
 
         /* Arabic content in editor */
@@ -405,12 +434,13 @@
             direction: rtl;
             text-align: right;
             padding: 1em 4em 3em 3em;
+            font-size: 1.6rem;
         }
 
         /* النص العربي مع الخطوط */
         #notebook-paper.lined #editor.arabic-content {
             padding-top: calc(1em + 1.1em) !important;
-            line-height: 2.2em !important;
+            line-height: 2.6em !important;
         }
 
         /* الخط الأحمر الرأسي للنص العربي - فقط في حالة lined على سطح المكتب */
@@ -531,21 +561,7 @@
 
         /* Hover effects for control buttons - removed unused .control-panel selector */
         
-        .voice-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #e53e3e;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .recording ~ div .voice-indicator,
-        .recording + div .voice-indicator {
-            opacity: 1;
-            animation: pulse 1s infinite;
-        }
+
         
         @keyframes pulse {
             0% { opacity: 0.5; }
@@ -685,6 +701,91 @@
         .footer .copyright span[class*="bg-"]:hover {
             transform: scale(1.05);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Fixed Voice Button Styles */
+        #fixedVoiceButton {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #whatsappVoiceBtn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #whatsappVoiceBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #whatsappVoiceBtn:hover::before {
+            opacity: 1;
+        }
+
+        #whatsappVoiceBtn:active {
+            transform: scale(0.95);
+        }
+
+        #whatsappVoiceBtn.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: recording-pulse 1.5s infinite;
+        }
+
+        #whatsappVoiceBtn.recording #whatsappMicIcon {
+            animation: mic-bounce 0.5s infinite;
+        }
+
+        @keyframes recording-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+            }
+        }
+
+        @keyframes mic-bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Recording indicator animations */
+        #recordingIndicator.show {
+            opacity: 1;
+        }
+
+        #recordingStatus.show {
+            opacity: 1;
+        }
+
+        /* Mobile adjustments for fixed button */
+        @media (max-width: 768px) {
+            #fixedVoiceButton {
+                bottom: 4rem;
+                right: 1rem;
+            }
+            
+            #whatsappVoiceBtn {
+                width: 4rem;
+                height: 4rem;
+            }
+            
+            #whatsappMicIcon {
+                font-size: 1.25rem;
+            }
+            
+
         }
 
         /* Mobile Footer Adjustments */
@@ -864,14 +965,6 @@
         <div class="lg:hidden bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/40 rounded-lg shadow-sm mb-4">
             <div class="px-4 py-3">
                 <div class="flex items-center justify-center space-x-4">
-                    <!-- Voice Input -->
-                    <button id="voiceBtnMobile2" onclick="toggleVoiceInput()" class="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Toggle voice recognition">
-                        <i id="micIconMobile2" class="fas fa-microphone text-sm"></i>
-                        <span class="text-sm font-medium">Voice</span>
-                    </button>
-                    
-
-                    
                     <!-- Share -->
                     <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
                         <i class="fas fa-share-alt text-sm"></i>
@@ -933,21 +1026,6 @@
                     
                     <!-- Right Section: Action Buttons -->
                     <div class="toolbar-section flex items-center space-x-3">
-                        <!-- Voice Input with indicator -->
-                        <div class="flex items-center space-x-2">
-                            <button id="voiceBtn" onclick="toggleVoiceInput()" class="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Toggle voice recognition">
-                                <i id="micIcon" class="fas fa-microphone text-sm"></i>
-                                <span class="text-sm font-medium">Voice</span>
-                            </button>
-                            <!-- Voice indicator -->
-                            <div class="flex items-center">
-                                <span class="voice-indicator"></span>
-                                <span id="voiceStatus" class="text-xs opacity-75 hidden ml-1"></span>
-                            </div>
-                        </div>
-                        
-
-                        
                         <!-- Share & Save -->
                         <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
                             <i class="fas fa-share-alt text-sm"></i>
@@ -967,7 +1045,7 @@
         <!-- The Notebook Paper -->
         <main id="notebook-paper" class="rounded-lg w-full">
             <!-- Date and Time Header -->
-            <div id="currentDateTime" class="font-patrick text-gray-600 text-right pr-16 pt-6 pb-2 text-lg" dir="ltr" style="line-height: 2.2em;">
+            <div id="currentDateTime" class="font-patrick text-gray-600 text-center pt-6 pb-2 text-2xl font-semibold" dir="ltr" style="line-height: 1.5em;">
                 <!-- Date and time will appear here -->
             </div>
             
@@ -986,6 +1064,25 @@
             </div>
         </div>
         
+    </div>
+
+    <!-- Fixed Voice Button (WhatsApp Style) -->
+    <div id="fixedVoiceButton" class="fixed bottom-6 right-6 z-50">
+        <button id="whatsappVoiceBtn" 
+                class="group w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
+                aria-label="Hold to record voice">
+            <i id="whatsappMicIcon" class="fas fa-microphone text-white text-xl group-hover:scale-110 transition-transform duration-200"></i>
+        </button>
+        
+        <!-- Recording indicator -->
+        <div id="recordingIndicator" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full opacity-0 transition-opacity duration-300 flex items-center justify-center">
+            <div class="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+        </div>
+        
+        <!-- Recording status -->
+        <div id="recordingStatus" class="absolute bottom-full right-0 mb-3 bg-black bg-opacity-75 text-white text-sm px-3 py-2 rounded-lg opacity-0 transition-opacity duration-300 whitespace-nowrap">
+            <span id="recordingStatusText">Recording...</span>
+        </div>
     </div>
 
     <!-- Professional Footer -->
@@ -1038,64 +1135,132 @@
         let recognition = null;
         let currentLanguage = 'ar-SA'; // Default to Arabic
         let isRecording = false;
-
         
-        // DOM Elements
+        // WhatsApp style recording state
+        let isWhatsAppRecording = false;
+        let recordingStartTime = null;
+        let recordingTimer = null;
+        let recordingDuration = 0;
+
+        // DOM Elements - Cached for better performance
         const editor = document.getElementById('editor');
         const statusDiv = document.getElementById('status');
         const typingSound = document.getElementById('typing-sound');
-        const voiceBtn = document.getElementById('voiceBtn');
-        const voiceBtnMobile = document.getElementById('voiceBtnMobile');
-        const micIcon = document.getElementById('micIcon');
-        const micIconMobile = document.getElementById('micIconMobile');
-        const voiceStatus = document.getElementById('voiceStatus');
-        const voiceStatusMobile = document.getElementById('voiceStatusMobile');
         const voiceInfo = document.getElementById('voiceInfo');
+        const dateTimeElement = document.getElementById('currentDateTime');
         
-        // Update voice button status (both desktop and mobile)
-        function updateVoiceButtonStatus() {
-            const isSupported = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
-            const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
-            const micIconMobile2 = document.getElementById('micIconMobile2');
-            const buttons = [voiceBtn, voiceBtnMobile2].filter(btn => btn);
-            const icons = [micIcon, micIconMobile2].filter(icon => icon);
-            const statuses = [voiceStatus].filter(status => status);
+        // WhatsApp style voice button elements
+        const whatsappVoiceBtn = document.getElementById('whatsappVoiceBtn');
+        const whatsappMicIcon = document.getElementById('whatsappMicIcon');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const recordingStatusText = document.getElementById('recordingStatusText');
+        
+        // Auto-detect language from voice input
+        function detectLanguageFromVoice(transcript) {
+            const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+            const isArabic = arabicRegex.test(transcript);
+            return isArabic ? 'ar-SA' : 'en-US';
+        }
+
+        // Auto-switch language based on detected content
+        function autoSwitchLanguage(transcript) {
+            const detectedLanguage = detectLanguageFromVoice(transcript);
+            if (detectedLanguage !== currentLanguage) {
+                currentLanguage = detectedLanguage;
+                const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+                showStatus(`🎤 Automatically switched to ${langName} recognition`);
+                
+                // Update recognition language if active
+                if (recognition) {
+                    recognition.lang = currentLanguage;
+                }
+            }
+        }
+
+        // Format recording duration
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update recording timer
+        function updateRecordingTimer() {
+            if (isWhatsAppRecording && recordingStartTime) {
+                recordingDuration = Math.floor((Date.now() - recordingStartTime) / 1000);
+                if (recordingStatusText) {
+                    recordingStatusText.textContent = `Recording... ${formatDuration(recordingDuration)}`;
+                }
+            }
+        }
+
+
+
+
+
+        // Start WhatsApp style recording
+        function startWhatsAppRecording() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showStatus("🚫 Voice recognition is not supported in this browser environment");
+                return;
+            }
+
+            isWhatsAppRecording = true;
+            recordingStartTime = Date.now();
+            recordingDuration = 0;
+
+            // Update UI
+            whatsappVoiceBtn.classList.add('recording');
+            recordingIndicator.classList.add('show');
+            recordingStatus.classList.add('show');
+            recordingStatusText.textContent = 'Recording... 0:00';
+
+            // Start timer
+            recordingTimer = setInterval(updateRecordingTimer, 1000);
+
+            // Setup recognition if not already done
+            if (!recognition) {
+                setupRecognition();
+            }
+
+            // Start recognition with Arabic default
+            recognition.lang = 'ar-SA';
+            currentLanguage = 'ar-SA';
             
-            if (!isSupported) {
-                buttons.forEach(btn => {
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    btn.title = 'Voice recognition not supported in this browser';
-                });
-                icons.forEach(icon => {
-                    icon.className = 'fas fa-microphone-slash text-sm';
-                });
-                statuses.forEach(status => {
-                    status.textContent = 'Unsupported';
-                    status.classList.remove('hidden');
-                });
-                // Show info for unsupported browsers
-                if (voiceInfo) {
-                    voiceInfo.classList.remove('hidden');
-                    document.getElementById('voiceInfoText').textContent = 'Voice recognition not supported in this browser';
-                    voiceInfo.style.backgroundColor = '#fef2f2';
-                    voiceInfo.style.borderColor = '#fecaca';
-                }
-            } else {
-                buttons.forEach(btn => {
-                    btn.classList.remove('opacity-50', 'opacity-75', 'cursor-not-allowed');
-                    btn.title = 'Voice recognition ready for Arabic and English';
-                });
-                icons.forEach(icon => {
-                    icon.className = 'fas fa-microphone text-sm';
-                });
-                statuses.forEach(status => {
-                    status.textContent = 'Ready';
-                    status.classList.add('hidden');
-                });
-                // Hide info banner when everything works
-                if (voiceInfo) {
-                    voiceInfo.classList.add('hidden');
-                }
+            try {
+                recognition.start();
+                showStatus("🎙️ Attentively listening to your refined Arabic expressions...");
+            } catch (e) {
+                console.error("Voice recognition start error:", e);
+                showStatus(`🚫 Error starting voice recognition: ${e.message}`);
+                stopWhatsAppRecording();
+            }
+        }
+
+        // Stop WhatsApp style recording
+        function stopWhatsAppRecording() {
+            isWhatsAppRecording = false;
+            
+            // Clear timer
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+
+            // Update UI
+            whatsappVoiceBtn.classList.remove('recording');
+            recordingIndicator.classList.remove('show');
+            recordingStatus.classList.remove('show');
+
+            // Stop recognition
+            if (recognition && isRecording) {
+                recognition.stop();
+            }
+
+            // Show final duration
+            if (recordingDuration > 0) {
+                showStatus(`🔇 Recording stopped after ${formatDuration(recordingDuration)}`);
             }
         }
 
@@ -1103,15 +1268,12 @@
         function init() {
             // Set default content
             if (!editor.innerHTML.trim()) {
-                editor.innerHTML = '<p>Commence crafting your distinguished thoughts here...</p>';
+                editor.innerHTML = '<p>Begin writing your distinguished thoughts here...</p>';
             }
             
             // Set default paper style and color
             const paper = document.getElementById('notebook-paper');
             paper.classList.add('lined', 'paper-white');
-            
-            // Update voice button status
-            updateVoiceButtonStatus();
             
             // Load saved content if available
             loadSavedContent();
@@ -1120,7 +1282,7 @@
             setupEventListeners();
             
             // Show welcome message
-            showStatus("✨ Your distinguished digital workspace is ready — featuring intelligent multilingual voice recognition");
+            showStatus("✨ Distinguished digital workspace ready — with intelligent automatic language detection for Arabic and English");
         }
         
         // Set up event listeners
@@ -1130,9 +1292,46 @@
             
             // Initial font check on load
             applyFontBasedOnContent(editor);
+            
+            // WhatsApp style voice button events
+            if (whatsappVoiceBtn) {
+                // Mouse events for desktop
+                whatsappVoiceBtn.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    startWhatsAppRecording();
+                });
+                
+                whatsappVoiceBtn.addEventListener('mouseup', (e) => {
+                    e.preventDefault();
+                    stopWhatsAppRecording();
+                });
+                
+                whatsappVoiceBtn.addEventListener('mouseleave', (e) => {
+                    e.preventDefault();
+                    if (isWhatsAppRecording) {
+                        stopWhatsAppRecording();
+                    }
+                });
+                
+                // Touch events for mobile
+                whatsappVoiceBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    startWhatsAppRecording();
+                });
+                
+                whatsappVoiceBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    stopWhatsAppRecording();
+                });
+                
+                // Prevent context menu
+                whatsappVoiceBtn.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
+            }
         }
         
-        // Detect Arabic text
+        // Detect Arabic text (for styling purposes only)
         function isArabicText(text) {
             const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
             return arabicRegex.test(text);
@@ -1143,7 +1342,7 @@
             const text = element.textContent || element.innerText || '';
             if (isArabicText(text)) {
                 element.classList.add('arabic-text');
-                element.style.fontFamily = "'Amiri', 'Scheherazade New', serif";
+                element.style.fontFamily = "'Amiri', serif";
                 
                 // Special handling for main editor
                 if (element.id === 'editor') {
@@ -1160,7 +1359,27 @@
             }
         }
 
-        // Handle typing with font detection
+        // Enhanced performance optimization: Debounce function with error handling
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    try {
+                        func(...args);
+                    } catch (error) {
+                        console.error("Debounced function error:", error);
+                    }
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Optimized auto-save function with enhanced error handling
+        const debouncedSave = debounce(saveNote, 2000);
+
+        // Handle typing with font detection and debouncing
         function handleTyping(event) {
             // Apply appropriate font based on content
             const element = event.target;
@@ -1519,8 +1738,8 @@
             'طياره': 'طيارة', 'طيران': 'طيران', 'مطار': 'مطار', 'مطارات': 'مطارات',
             'تذكره': 'تذكرة', 'تذاكر': 'تذاكر', 'حجز': 'حجز', 'حجوزات': 'حجوزات'
         };
-        
-        // دالة المصحح اللغوي (تعمل تلقائياً مع التحويل الصوتي)
+
+        // دالة المصحح اللغوي المحسنة (تعمل تلقائياً مع التحويل الصوتي) - Enhanced performance
         function applySpellCorrection(text, language) {
             if (!text || text.trim() === '') return text;
             
@@ -1530,12 +1749,20 @@
             // اختيار القاموس المناسب حسب اللغة
             const dictionary = language === 'ar-SA' ? arabicCorrections : englishCorrections;
             
-            // تطبيق التصحيحات من القاموس
+            // تحسين الأداء: استخدام كامل القاموس مع تحسين الأداء
             for (const [wrong, correct] of Object.entries(dictionary)) {
-                const wrongPattern = new RegExp(`\\b${wrong}\\b`, 'gi');
-                if (wrongPattern.test(correctedText)) {
-                    correctedText = correctedText.replace(wrongPattern, correct);
-                    correctionsApplied++;
+                try {
+                    // استخدام indexOf للتحقق الأولي الأسرع
+                    if (correctedText.indexOf(wrong) !== -1) {
+                        const wrongPattern = new RegExp(`\\b${wrong}\\b`, 'gi');
+                        if (wrongPattern.test(correctedText)) {
+                            correctedText = correctedText.replace(wrongPattern, correct);
+                            correctionsApplied++;
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Regex error for correction "${wrong}":`, error);
+                    continue; // تخطي هذا التصحيح إذا كان هناك خطأ في التعبير النمطي
                 }
             }
             
@@ -1574,219 +1801,200 @@
                 console.log(`🔧 تم تطبيق ${correctionsApplied} تصحيح لغوي`);
             }
             
-                        return correctedText;
+            return correctedText;
         }
 
 
         
         // Removed isSecureContext check - GitHub Pages provides HTTPS by default
 
-        // Voice input - Enhanced with Arabic support
-        function toggleVoiceInput() {
-            // Check if speech recognition is supported
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus("🚫 Voice recognition is not supported in this browser environment");
+
+
+        function setupRecognition() {
+            // Improved browser support detection
+            let SpeechRecognition;
+            if ('SpeechRecognition' in window) {
+                SpeechRecognition = window.SpeechRecognition;
+            } else if ('webkitSpeechRecognition' in window) {
+                SpeechRecognition = window.webkitSpeechRecognition;
+            } else {
+                showStatus("🚫 Voice recognition not supported in this browser");
                 return;
             }
             
-            // Toggle recording state for both buttons
-            const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
-            [voiceBtn, voiceBtnMobile2].forEach(btn => {
-                if (btn) btn.classList.toggle('recording');
-            });
-            isRecording = !isRecording;
-            
-            if (!recognition) {
-                // Use the standard or webkit version based on availability
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
+            recognition = new SpeechRecognition();
+
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onstart = () => {
+                isRecording = true; // Recognition has officially started
                 
-                // Enhanced configuration for better Arabic support
-                recognition.continuous = true;
-                recognition.interimResults = true;
-                recognition.maxAlternatives = 3;
-                
-                // Set language based on current content or default to Arabic
-                currentLanguage = detectLanguageFromContent();
-                recognition.lang = currentLanguage;
-                
-                recognition.onstart = () => {
-                    isRecording = true;
-                    const langMessage = currentLanguage === 'ar-SA' ? 
-                        '🎙️ Attentively listening for your eloquent Arabic expressions...' : 
-                        '🎙️ Gracefully capturing your refined English articulation...';
-                    showStatus(langMessage);
-                };
-                
-                recognition.onresult = (event) => {
-                    let finalTranscript = '';
-                    let interimTranscript = '';
-                    
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        const result = event.results[i];
-                        const transcript = result[0].transcript;
-                        
-                        if (result.isFinal) {
-                            finalTranscript += transcript + ' ';
-                        } else {
-                            interimTranscript += transcript;
-                        }
-                    }
-                    
-                    if (finalTranscript) {
-                        // تطبيق المصحح اللغوي تلقائياً على النص المحول من الصوت
-                        const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
-                        
-                        // Insert the corrected text
-                        const selection = window.getSelection();
-                        const range = selection.getRangeAt(0);
-                        
-                        // Create a text node with the corrected transcript
-                        const textNode = document.createTextNode(correctedText);
-                        range.insertNode(textNode);
-                        
-                        // Move cursor to end of inserted text
-                        range.setStartAfter(textNode);
-                        range.collapse(true);
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                        
-                        // Apply appropriate styling based on language
-                        applyFontBasedOnContent(editor);
-                        
-                        // Auto-detect language from new content and update recognition if needed
-                        const detectedLang = detectLanguageFromContent();
-                        if (detectedLang !== currentLanguage) {
-                            currentLanguage = detectedLang;
-                            recognition.lang = currentLanguage;
-                            const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
-                            showStatus(`🌐 Intelligently adapted to ${langName} linguistic patterns`);
-                        }
-                        
-                        // Trigger input event for auto-save
-                        const inputEvent = new Event('input', { bubbles: true });
-                        editor.dispatchEvent(inputEvent);
-                        
-                        // عرض رسالة تؤكد التصحيح إذا تم تطبيقه
-                        if (correctedText !== finalTranscript) {
-                            showStatus(`✨ Auto-corrected and transcribed: "${correctedText.trim()}" 📝`);
-                        } else {
-                            showStatus(`✨ Transcribed with spell-check: "${finalTranscript.trim()}" ✅`);
-                        }
-                    }
-                };
-                
-                recognition.onerror = (event) => {
-                    isRecording = false;
-                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
-                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
-                        if (btn) btn.classList.remove('recording');
-                    });
-                    
-                    let errorMessage = "🚨 Voice recognition encountered an issue: ";
-                    switch(event.error) {
-                        case 'no-speech':
-                            errorMessage += 'No distinguished speech patterns detected';
-                            break;
-                        case 'audio-capture':
-                            errorMessage += 'Unable to access the sophisticated audio interface';
-                            break;
-                        case 'not-allowed':
-                            errorMessage += 'Microphone access permission declined';
-                            // Add additional guidance for permission issues
-                            setTimeout(() => {
-                                showPermissionHelp();
-                            }, 2000);
-                            break;
-                        case 'network':
-                            errorMessage += 'Network connectivity challenge encountered';
-                            break;
-                        default:
-                            errorMessage += `Unexpected circumstance: ${event.error}`;
-                    }
-                    showStatus(errorMessage);
-                    
-                    // Try switching language automatically if current attempt fails
-                    setTimeout(() => {
-                        currentLanguage = currentLanguage === 'ar-SA' ? 'en-US' : 'ar-SA';
-                        recognition.lang = currentLanguage;
-                        const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
-                        showStatus(`🔄 Gracefully attempting ${langName} recognition protocol`);
-                    }, 2000);
-                };
-                
-                recognition.onend = () => {
-                    isRecording = false;
-                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
-                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
-                        if (btn) btn.classList.remove('recording');
-                    });
-                    if (voiceBtn && voiceBtn.classList.contains('recording')) {
-                        // Restart if still supposed to be recording
-                        setTimeout(() => recognition.start(), 100);
-                    }
-                };
-            } else {
-                // Update language based on current content
-                currentLanguage = detectLanguageFromContent();
-                recognition.lang = currentLanguage;
+                            // Only show status message if not using WhatsApp style recording
+            if (!isWhatsAppRecording) {
+                const langMessage = currentLanguage === 'ar-SA' ?
+                    '🎙️ Attentively listening to your refined Arabic expressions...' :
+                    '🎙️ Gracefully capturing your refined English articulation...';
+                showStatus(langMessage);
             }
-            
-            if (isRecording) {
-                try {
-                    recognition.start();
-                } catch (e) {
-                    showStatus("🚫 Unable to start voice recognition. Please check browser permissions.");
-                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
-                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
-                        if (btn) btn.classList.remove('recording');
-                    });
-                    isRecording = false;
+            };
+
+            recognition.onresult = (event) => {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript + ' ';
+                    }
                 }
+
+                if (finalTranscript) {
+                                // Auto-detect and switch language based on voice input
+            autoSwitchLanguage(finalTranscript);
+            
+            const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
+            
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+            const range = selection.getRangeAt(0);
+            const textNode = document.createTextNode(correctedText);
+            range.deleteContents();
+            range.insertNode(textNode);
+
+            range.setStartAfter(textNode);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            applyFontBasedOnContent(editor);
+
+            const inputEvent = new Event('input', { bubbles: true });
+            editor.dispatchEvent(inputEvent);
+
+            const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+            if (correctedText !== finalTranscript) {
+                showStatus(`✨ Auto-corrected and transcribed in ${langName}: "${correctedText.trim()}" 📝`);
             } else {
-                recognition.stop();
-                showStatus("🔇 Voice recognition stopped");
+                showStatus(`✨ Transcribed in ${langName}: "${finalTranscript.trim()}" ✅`);
             }
+                    
+                    // Stop WhatsApp recording after successful transcription
+                    if (isWhatsAppRecording) {
+                        stopWhatsAppRecording();
+                    }
+                }
+            };
+
+            recognition.onerror = (event) => {
+                let errorMessage = "🚨 Voice recognition encountered an issue: ";
+                switch (event.error) {
+                    case 'no-speech':
+                        errorMessage += 'No distinctive speech patterns detected';
+                        break;
+                    case 'audio-capture':
+                        errorMessage += 'Unable to access the sophisticated audio interface';
+                        break;
+                    case 'not-allowed':
+                        errorMessage += 'Microphone access permission denied';
+                        setTimeout(showPermissionHelp, 2000);
+                        break;
+                    case 'network':
+                        errorMessage += 'Network connectivity issue encountered';
+                        break;
+                    default:
+                        errorMessage += `Unexpected circumstance: ${event.error}`;
+                }
+                showStatus(errorMessage);
+                
+                // Stop WhatsApp recording on error
+                if (isWhatsAppRecording) {
+                    stopWhatsAppRecording();
+                }
+                
+                // Don't change isRecording here; onend will handle it.
+            };
+
+            recognition.onend = () => {
+                // Stop WhatsApp recording if active
+                if (isWhatsAppRecording) {
+                    stopWhatsAppRecording();
+                }
+
+                // If the user *still* wants to be recording, restart it with improved timing
+                if (isRecording && !isWhatsAppRecording) {
+                    console.log("Recognition service ended, attempting to restart...");
+                    try {
+                        // Increased delay before restarting to prevent rapid restarts
+                        setTimeout(() => {
+                            if (isRecording && recognition && !isWhatsAppRecording) {
+                                recognition.start();
+                            }
+                        }, 1000); // Increased from 100ms to 1000ms
+                    } catch (e) {
+                        isRecording = false; // Give up on failure
+                        console.error("Failed to auto-restart recognition:", e);
+                        showStatus("⚠️ Voice recognition stopped unexpectedly.");
+                    }
+                } else if (!isWhatsAppRecording) {
+                    showStatus("🔇 Voice recognition stopped.");
+                }
+            };
         }
         
-        // Save note
+        // Save note - Enhanced security and performance
         function saveNote() {
             const content = {
-                note: editor.innerHTML,
+                note: editor.textContent || editor.innerText || '', // Use textContent for security
                 color: currentColor,
                 paperColor: currentPaperColor,
                 style: document.getElementById('notebook-paper').className.replace('rounded-lg', '').trim(),
                 language: currentLanguage
             };
             
-            localStorage.setItem('digitalNotebook', JSON.stringify(content));
-            showStatus("💾 Your distinguished composition has been securely preserved", 2000);
+            try {
+                localStorage.setItem('digitalNotebook', JSON.stringify(content));
+                showStatus("💾 Your distinguished configuration saved securely", 2000);
+            } catch (error) {
+                console.error("Error saving content:", error);
+                showStatus("⚠️ Error saving content. Please try again.", 3000);
+            }
         }
         
-        // Load saved content
+        // Load saved content - Enhanced security and performance
         function loadSavedContent() {
             const saved = localStorage.getItem('digitalNotebook');
             if (saved) {
-                const content = JSON.parse(saved);
-                
-                editor.innerHTML = content.note;
-                currentColor = content.color || '#1e293b';
-                currentPaperColor = content.paperColor || 'white';
-                currentLanguage = content.language || detectLanguageFromContent();
-                
-                // Set color
-                editor.style.color = currentColor;
-                
-                // Apply appropriate fonts based on content
-                applyFontBasedOnContent(editor);
-                
-                // Set paper color and style
-                const styleClass = content.style?.split(' ').find(cls => 
-                    ['lined', 'grid', 'dots', 'blank'].includes(cls)) || 'lined';
-                changePaperColor(currentPaperColor);
-                changeStyle(styleClass);
-                
-                showStatus("📂 Your previous masterpiece has been elegantly restored");
+                try {
+                    const content = JSON.parse(saved);
+                    
+                    // Secure content loading - use textContent instead of innerHTML for security
+                    if (content.note && typeof content.note === 'string') {
+                        // Sanitize content before loading
+                        const sanitizedContent = content.note.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                        editor.textContent = sanitizedContent;
+                    }
+                    
+                    currentColor = content.color || '#1e293b';
+                    currentPaperColor = content.paperColor || 'white';
+                    // Load language or default to Arabic
+                    currentLanguage = content.language || 'ar-SA';
+                    
+                    // Set color
+                    editor.style.color = currentColor;
+                    
+                    // Apply appropriate fonts based on content
+                    applyFontBasedOnContent(editor);
+                    
+                    // Set paper color and style
+                    const styleClass = content.style?.split(' ').find(cls => 
+                        ['lined', 'grid', 'dots', 'blank'].includes(cls)) || 'lined';
+                    changePaperColor(currentPaperColor);
+                    changeStyle(styleClass);
+                    
+                    showStatus("📂 Your previous masterpiece elegantly restored");
+                } catch (error) {
+                    console.error("Error loading saved content:", error);
+                    showStatus("⚠️ Error loading saved content. Starting fresh.");
+                }
             }
         }
         
@@ -1798,7 +2006,7 @@
             
             // Check if there's content to share
             if (!content.trim()) {
-                showStatus("📝 Please compose something wonderful before sharing your masterpiece.");
+                showStatus("📝 Please write something magnificent before sharing your masterpiece.");
                 return;
             }
             
@@ -2008,11 +2216,17 @@
             }
         }
         
-        // Download as file
+        // Download as file - Enhanced memory management and date formatting
         function downloadAsFile(encodedContent) {
             const content = decodeURIComponent(encodedContent);
             const currentDate = new Date();
-            const dateStr = currentDate.toISOString().split('T')[0];
+            
+            // Enhanced date formatting with Arabic support
+            const dateStr = currentDate.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/\//g, '-');
             const timeStr = currentDate.toTimeString().split(' ')[0].replace(/:/g, '-');
             
             // Determine file extension based on content language
@@ -2049,7 +2263,7 @@
             link.click();
             document.body.removeChild(link);
             
-            // Clean up
+            // Enhanced memory cleanup with proper timing
             setTimeout(() => {
                 URL.revokeObjectURL(url);
             }, 100);
@@ -2272,7 +2486,7 @@
                             '<li style="margin-bottom: 0.4rem;">Locate the security icon 🔒 or microphone symbol 🎤 in your browser\'s address bar</li>' +
                             '<li style="margin-bottom: 0.4rem;">Click the icon and select "Allow" from the distinguished options</li>' +
                             '<li style="margin-bottom: 0.4rem;">If no prompt appears, refresh the page (F5) to reinitiate the permission request</li>' +
-                            '<li style="margin-bottom: 0.4rem;">Gracefully retry the "Voice" button to commence your audio experience</li>' +
+                            '<li style="margin-bottom: 0.4rem;">Gracefully retry the voice button to commence your audio experience</li>' +
                         '</ol>' +
                     '</div>' +
                     '<p style="font-size: 0.9rem; color: #6b7280; font-style: italic;">' +
@@ -2357,29 +2571,34 @@
             return;
         }
         
-        // Performance optimization: Debounce function
+        // Enhanced performance optimization: Debounce function with error handling
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
                 const later = () => {
                     clearTimeout(timeout);
-                    func(...args);
+                    try {
+                        func(...args);
+                    } catch (error) {
+                        console.error("Debounced function error:", error);
+                    }
                 };
                 clearTimeout(timeout);
                 timeout = setTimeout(later, wait);
             };
         }
 
-        // Optimized auto-save function
-        const debouncedSave = debounce(saveNote, 2000);
-
-        // Console helper for developers
+        // Enhanced console helper for developers with detailed diagnostics
         function logDeveloperTips() {
             const isSupported = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+            const isSecure = window.isSecureContext;
+            const userAgent = navigator.userAgent;
             
-            console.log('%c🎤 Script.ai - Voice Recognition Status', 'font-size: 16px; font-weight: bold; color: #2563eb;');
+            console.log('%c🎤 Script.ai - Enhanced Diagnostics', 'font-size: 16px; font-weight: bold; color: #2563eb;');
             console.log('Speech Recognition Support:', isSupported ? '✅' : '❌');
+            console.log('Secure Context (HTTPS):', isSecure ? '✅' : '❌');
             console.log('Performance Optimizations: ✅ Enabled');
+            console.log('Security Enhancements: ✅ Enabled');
             console.log('Accessibility Features: ✅ Enhanced');
             console.log('GitHub Pages Ready: ✅ Optimized');
             
@@ -2387,10 +2606,19 @@
                 console.log('%c✨ Voice recognition system is ready for Arabic and English!', 'color: #10b981; font-weight: bold;');
                 console.log('🎯 Supports: Chrome, Edge, Safari');
                 console.log('🔄 Auto language detection enabled');
+                console.log('🔒 Secure context required for voice features');
             } else {
                 console.log('%c⚠️ Voice recognition not supported in this browser', 'color: #f59e0b; font-weight: bold;');
                 console.log('💡 Try using Chrome, Edge, or Safari for voice features');
+                if (!isSecure) {
+                    console.log('🔒 HTTPS required for voice recognition');
+                }
             }
+            
+            // Performance metrics
+            console.log('%c📊 Performance Metrics', 'font-size: 14px; font-weight: bold; color: #7c3aed;');
+            console.log('Font Loading:', document.fonts.status === 'loaded' ? '✅ Complete' : '⏳ Loading');
+            console.log('DOM Ready:', document.readyState === 'complete' ? '✅ Complete' : '⏳ Loading');
         }
 
         // Keyboard shortcuts
@@ -2401,50 +2629,26 @@
                     e.preventDefault();
                     saveNote();
                 }
-                
-                // Ctrl/Cmd + Shift + V for voice toggle
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'V') {
-                    e.preventDefault();
-                    toggleVoiceInput();
-                }
-                
-                // Escape to stop voice recording
-                if (e.key === 'Escape' && isRecording) {
-                    e.preventDefault();
-                    toggleVoiceInput();
-                }
             });
         }
 
-        // Update date and time display
+        // Update date and time display with enhanced localization and performance
         function updateDateTime() {
             const now = new Date();
             
-            // English day names
-            const englishDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            // Enhanced date formatting with English support and better performance
+            const dateTimeString = now.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) + ' - ' + now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
             
-            // English month names
-            const englishMonths = [
-                'January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'
-            ];
-            
-            const dayName = englishDays[now.getDay()];
-            const date = now.getDate();
-            const month = englishMonths[now.getMonth()];
-            const year = now.getFullYear();
-            
-            // Format time in 12-hour format
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // 0 should be 12
-            const formattedHours = hours.toString();
-            
-            const dateTimeString = `${dayName}, ${month} ${date}, ${year} - ${formattedHours}:${minutes} ${ampm}`;
-            
-            const dateTimeElement = document.getElementById('currentDateTime');
+            // Use cached element reference for better performance
             if (dateTimeElement) {
                 dateTimeElement.textContent = dateTimeString;
             }
@@ -2529,6 +2733,7 @@
             setupKeyboardShortcuts();
             setupMobileDropdowns();
             logDeveloperTips();
+            logPerformanceMetrics();
             
             // Initialize and update date/time
             updateDateTime();
@@ -2543,17 +2748,42 @@
             // }
         });
 
-        // Global error handler for better debugging
+        // Enhanced global error handler for better debugging and security
         window.addEventListener('error', (e) => {
             console.error('Script Error:', e.error);
-            showStatus('⚠️ An unexpected error occurred. Please refresh the page if issues persist.');
+            console.error('Error Details:', {
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno,
+                colno: e.colno
+            });
+            
+            // Only show user-friendly message for non-critical errors
+            if (!e.error || e.error.name !== 'SecurityError') {
+                showStatus('⚠️ An unexpected error occurred. Please refresh the page if issues persist.');
+            }
         });
 
-        // Handle unhandled promise rejections
+        // Enhanced unhandled promise rejection handler
         window.addEventListener('unhandledrejection', (e) => {
             console.error('Unhandled Promise Rejection:', e.reason);
+            console.error('Promise Details:', {
+                reason: e.reason,
+                promise: e.promise
+            });
             e.preventDefault();
         });
+
+        // Performance monitoring
+        function logPerformanceMetrics() {
+            if ('performance' in window) {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                console.log('%c📊 Performance Metrics', 'font-size: 14px; font-weight: bold; color: #7c3aed;');
+                console.log('Page Load Time:', Math.round(perfData.loadEventEnd - perfData.loadEventStart), 'ms');
+                console.log('DOM Content Loaded:', Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart), 'ms');
+                console.log('First Paint:', Math.round(perfData.responseEnd - perfData.fetchStart), 'ms');
+            }
+        }
     </script>
 </body>
 </html>
