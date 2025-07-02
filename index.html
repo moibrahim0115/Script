@@ -884,6 +884,23 @@
             }
         }
 
+        /* Language indicator styles */
+        .language-indicator {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        .language-arabic {
+            background: linear-gradient(135deg, #0d6efd 0%, #0d52ff 100%);
+            color: white;
+        }
+        .language-english {
+            background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -1381,7 +1398,7 @@
         function init() {
             // Set default content
             if (!editor.innerHTML.trim()) {
-                editor.innerHTML = '<p>Begin writing your distinguished thoughts here...</p>';
+                editor.innerHTML = '<p>ابدأ بكتابة أفكارك المتميزة هنا...</p>';
             }
             
             // Set default paper style and color
@@ -1398,11 +1415,11 @@
             // Setup event listeners
             setupEventListeners();
             
-            // Setup voice recognition
-            setupRecognition();
+            // Setup voice recognition - Fixed initialization
+            recognition = setupRecognition();
             
             // Show welcome message
-            showStatus("✨ Distinguished digital workspace ready — with intelligent automatic language detection for Arabic and English");
+            showStatus("✨ مساحة العمل الرقمية جاهزة - مع دعم التعرف التلقائي على العربية والإنجليزية");
         }
         
         // Set up event listeners
@@ -1916,28 +1933,28 @@
         function setupRecognition() {
             // Improved browser support detection
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus("🚫 Voice recognition is not supported in this browser");
+                showStatus("🚫 التعرف الصوتي غير مدعوم في هذا المتصفح");
                 return null;
             }
             
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
+            const recognitionInstance = new SpeechRecognition();
             
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = currentLanguage;
+            recognitionInstance.continuous = true;
+            recognitionInstance.interimResults = true;
+            recognitionInstance.lang = currentLanguage;
             
-            recognition.onstart = () => {
+            recognitionInstance.onstart = () => {
                 isRecording = true;
                 if (!isWhatsAppRecording) {
                     const langMessage = currentLanguage === 'ar-SA' ?
-                        '🎙️ Attentively listening to your refined Arabic expressions...' :
-                        '🎙️ Gracefully capturing your refined English articulation...';
+                        '🎙️ جاري الاستماع إلى حديثك باللغة العربية...' :
+                        '🎙️ جاري التقاط حديثك باللغة الإنجليزية...';
                     showStatus(langMessage);
                 }
             };
             
-            recognition.onresult = (event) => {
+            recognitionInstance.onresult = (event) => {
                 let finalTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
@@ -1946,9 +1963,19 @@
                 }
                 
                 if (finalTranscript) {
-                    autoSwitchLanguage(finalTranscript);
+                    // Detect language and switch if needed
+                    const detectedLanguage = detectLanguageFromVoice(finalTranscript);
+                    if (detectedLanguage !== currentLanguage) {
+                        currentLanguage = detectedLanguage;
+                        recognitionInstance.lang = currentLanguage;
+                        const langName = currentLanguage === 'ar-SA' ? 'العربية' : 'الإنجليزية';
+                        showStatus(`🌐 تم التبديل تلقائيًا إلى التعرف على ${langName}`);
+                    }
+                    
+                    // Apply spell correction
                     const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
                     
+                    // Insert text at cursor position
                     const selection = window.getSelection();
                     if (!selection.rangeCount) return;
                     const range = selection.getRangeAt(0);
@@ -1961,40 +1988,44 @@
                     selection.removeAllRanges();
                     selection.addRange(range);
                     
+                    // Apply font styling based on content
                     applyFontBasedOnContent(editor);
                     
+                    // Trigger input event for auto-save
                     const inputEvent = new Event('input', { bubbles: true });
                     editor.dispatchEvent(inputEvent);
                     
-                    const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
-                    if (correctedText !== finalTranscript) {
-                        showStatus(`✨ Auto-corrected and transcribed in ${langName}: "${correctedText.trim()}" 📝`);
-                    } else {
-                        showStatus(`✨ Transcribed in ${langName}: "${finalTranscript.trim()}" ✅`);
-                    }
+                    // Show success message with language indicator
+                    const langIndicator = currentLanguage === 'ar-SA' ? 
+                        '<span class="language-indicator language-arabic">AR</span>' : 
+                        '<span class="language-indicator language-english">EN</span>';
                     
-                    // Note: WhatsApp recording continues until manually stopped in toggle mode
+                    if (correctedText !== finalTranscript) {
+                        showStatus(`✨ تم التصحيح التلقائي والنقل في ${langIndicator}: "${correctedText.trim()}" 📝`);
+                    } else {
+                        showStatus(`✨ تم النقل بنجاح ${langIndicator}: "${finalTranscript.trim()}" ✅`);
+                    }
                 }
             };
             
-            recognition.onerror = (event) => {
-                let errorMessage = "🚨 Voice recognition encountered an issue: ";
+            recognitionInstance.onerror = (event) => {
+                let errorMessage = "🚨 حدث خطأ في التعرف الصوتي: ";
                 switch (event.error) {
                     case 'no-speech':
-                        errorMessage += 'No distinctive speech patterns detected';
+                        errorMessage += 'لم يتم الكشف عن كلام واضح';
                         break;
                     case 'audio-capture':
-                        errorMessage += 'Unable to access the sophisticated audio interface';
+                        errorMessage += 'لا يمكن الوصول إلى الميكروفون';
                         break;
                     case 'not-allowed':
-                        errorMessage += 'Microphone access permission denied';
+                        errorMessage += 'تم رفض إذن الوصول إلى الميكروفون';
                         setTimeout(showPermissionHelp, 2000);
                         break;
                     case 'network':
-                        errorMessage += 'Network connectivity issue encountered';
+                        errorMessage += 'مشكلة في الاتصال بالشبكة';
                         break;
                     default:
-                        errorMessage += `Unexpected circumstance: ${event.error}`;
+                        errorMessage += `خطأ غير متوقع: ${event.error}`;
                 }
                 showStatus(errorMessage);
                 
@@ -2003,24 +2034,24 @@
                 }
             };
             
-            recognition.onend = () => {
-                // In toggle mode, don't auto-restart - let user control
+            recognitionInstance.onend = () => {
                 if (isRecording && !isWhatsAppRecording) {
+                    // Restart recognition if still in recording state
                     setTimeout(() => {
-                        if (isRecording && recognition && !isWhatsAppRecording) {
+                        if (isRecording && recognitionInstance && !isWhatsAppRecording) {
                             try {
-                                recognition.start();
+                                recognitionInstance.start();
                             } catch (e) {
                                 console.error("Failed to restart recognition:", e);
                             }
                         }
                     }, 1000);
                 } else if (!isWhatsAppRecording) {
-                    showStatus("🔇 Voice recognition stopped");
+                    showStatus("🔇 تم إيقاف التعرف الصوتي");
                 }
             };
             
-            return recognition;
+            return recognitionInstance;
         }
         
         // Save note - Enhanced security and performance
