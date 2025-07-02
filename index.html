@@ -703,7 +703,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Fixed Voice Button Styles */
+        /* Fixed Voice Button Styles - Enhanced */
         #fixedVoiceButton {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -756,38 +756,100 @@
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.1);
+                transform: scale(1.2);
             }
         }
 
-        /* Recording indicator animations */
+        /* Recording indicator animations - Enhanced */
+        #recordingIndicator {
+            animation: live-pulse 1.5s infinite;
+        }
+        
         #recordingIndicator.show {
             opacity: 1;
         }
 
+        #recordingStatus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-5px);
+            opacity: 0;
+        }
+        
         #recordingStatus.show {
             opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes live-pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
         }
 
-        /* Mobile adjustments for fixed button */
+        /* Mobile adjustments for fixed button - Enhanced */
         @media (max-width: 768px) {
             #fixedVoiceButton {
-                bottom: 4rem;
-                right: 1rem;
+                bottom: 5rem;
+                right: 1.5rem;
             }
             
             #whatsappVoiceBtn {
-                width: 4rem;
-                height: 4rem;
+                width: 5rem;
+                height: 5rem;
             }
             
             #whatsappMicIcon {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
             
-
+            #recordingIndicator {
+                top: -0.5rem;
+                right: -0.5rem;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
         }
 
+        /* Voice Tutorial Styles */
+        .voice-tutorial {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(30, 64, 175, 0.3);
+        }
+        
+        .voice-tutorial h3 {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .voice-tutorial li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .voice-tutorial .icon {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        
         /* Mobile Footer Adjustments */
         @media (max-width: 1023px) {
             .footer {
@@ -802,6 +864,19 @@
             .footer .copyright span.font-mono {
                 font-size: 0.7rem;
                 padding: 0.25rem 0.5rem;
+            }
+            
+            .voice-tutorial {
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+            
+            .voice-tutorial h3 {
+                font-size: 1.1rem;
+            }
+            
+            .voice-tutorial li {
+                font-size: 0.9rem;
             }
         }
 
@@ -825,7 +900,7 @@
                             <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-800 to-blue-900 font-caveat tracking-wide">
                                 Script.ai
                             </h1>
-                            <p class="text-xs text-slate-600 font-patrick hidden sm:block">Voice-powered intelligent writing companion</p>
+                            <p class="text-xs text-slate-600 font-patrick hidden sm:block">Distinguished voice-powered intelligent writing companion</p>
                         </div>
                     </div>
                     
@@ -1112,8 +1187,29 @@
                             <span class="font-mono text-xs bg-emerald-100 px-2 py-1 rounded border text-emerald-700">END_OF_LINE</span>
                         </span>
                     </p>
-                    
-                   
+                     
+                    <!-- Voice Tutorial Section -->
+                    <div class="voice-tutorial mt-6 text-left">
+                        <h3><i class="fas fa-microphone-alt mr-2"></i> Voice Recording Usage Guide</h3>
+                        <ul>
+                            <li>
+                                <div class="icon"><i class="fas fa-mouse-pointer text-xs"></i></div>
+                                <div>Hold the microphone button to record (Desktop)</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-hand-pointer text-xs"></i></div>
+                                <div>Press and hold the button to record (Mobile & Tablets)</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-language text-xs"></i></div>
+                                <div>System automatically switches between Arabic and English</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-spell-check text-xs"></i></div>
+                                <div>Intelligent spell checker corrects errors during writing</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1201,29 +1297,24 @@
 
         // Start WhatsApp style recording
         function startWhatsAppRecording() {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus("🚫 Voice recognition is not supported in this browser environment");
-                return;
+            if (!recognition) {
+                recognition = setupRecognition();
+                if (!recognition) return;
             }
-
+            
             isWhatsAppRecording = true;
             recordingStartTime = Date.now();
             recordingDuration = 0;
-
+            
             // Update UI
             whatsappVoiceBtn.classList.add('recording');
             recordingIndicator.classList.add('show');
             recordingStatus.classList.add('show');
             recordingStatusText.textContent = 'Recording... 0:00';
-
+            
             // Start timer
             recordingTimer = setInterval(updateRecordingTimer, 1000);
-
-            // Setup recognition if not already done
-            if (!recognition) {
-                setupRecognition();
-            }
-
+            
             // Start recognition with Arabic default
             recognition.lang = 'ar-SA';
             currentLanguage = 'ar-SA';
@@ -1247,17 +1338,21 @@
                 clearInterval(recordingTimer);
                 recordingTimer = null;
             }
-
+            
             // Update UI
             whatsappVoiceBtn.classList.remove('recording');
             recordingIndicator.classList.remove('show');
             recordingStatus.classList.remove('show');
-
+            
             // Stop recognition
             if (recognition && isRecording) {
-                recognition.stop();
+                try {
+                    recognition.stop();
+                } catch (e) {
+                    console.error("Error stopping recognition:", e);
+                }
             }
-
+            
             // Show final duration
             if (recordingDuration > 0) {
                 showStatus(`🔇 Recording stopped after ${formatDuration(recordingDuration)}`);
@@ -1280,6 +1375,9 @@
             
             // Setup event listeners
             setupEventListeners();
+            
+            // Setup voice recognition
+            setupRecognition();
             
             // Show welcome message
             showStatus("✨ Distinguished digital workspace ready — with intelligent automatic language detection for Arabic and English");
@@ -1322,6 +1420,14 @@
                 whatsappVoiceBtn.addEventListener('touchend', (e) => {
                     e.preventDefault();
                     stopWhatsAppRecording();
+                });
+                
+                // Touch cancel event for mobile
+                whatsappVoiceBtn.addEventListener('touchcancel', (e) => {
+                    e.preventDefault();
+                    if (isWhatsAppRecording) {
+                        stopWhatsAppRecording();
+                    }
                 });
                 
                 // Prevent context menu
@@ -1798,7 +1904,7 @@
             
             // إضافة مؤشر بصري للتصحيحات
             if (correctionsApplied > 0) {
-                console.log(`🔧 تم تطبيق ${correctionsApplied} تصحيح لغوي`);
+                console.log(`🔧 Applied ${correctionsApplied} linguistic corrections`);
             }
             
             return correctedText;
@@ -1812,33 +1918,28 @@
 
         function setupRecognition() {
             // Improved browser support detection
-            let SpeechRecognition;
-            if ('SpeechRecognition' in window) {
-                SpeechRecognition = window.SpeechRecognition;
-            } else if ('webkitSpeechRecognition' in window) {
-                SpeechRecognition = window.webkitSpeechRecognition;
-            } else {
-                showStatus("🚫 Voice recognition not supported in this browser");
-                return;
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showStatus("🚫 Voice recognition is not supported in this browser");
+                return null;
             }
             
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-
+            
             recognition.continuous = true;
             recognition.interimResults = true;
-
+            recognition.lang = currentLanguage;
+            
             recognition.onstart = () => {
-                isRecording = true; // Recognition has officially started
-                
-                            // Only show status message if not using WhatsApp style recording
-            if (!isWhatsAppRecording) {
-                const langMessage = currentLanguage === 'ar-SA' ?
-                    '🎙️ Attentively listening to your refined Arabic expressions...' :
-                    '🎙️ Gracefully capturing your refined English articulation...';
-                showStatus(langMessage);
-            }
+                isRecording = true;
+                if (!isWhatsAppRecording) {
+                    const langMessage = currentLanguage === 'ar-SA' ?
+                        '🎙️ Attentively listening to your refined Arabic expressions...' :
+                        '🎙️ Gracefully capturing your refined English articulation...';
+                    showStatus(langMessage);
+                }
             };
-
+            
             recognition.onresult = (event) => {
                 let finalTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -1846,36 +1947,34 @@
                         finalTranscript += event.results[i][0].transcript + ' ';
                     }
                 }
-
+                
                 if (finalTranscript) {
-                                // Auto-detect and switch language based on voice input
-            autoSwitchLanguage(finalTranscript);
-            
-            const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
-            
-            const selection = window.getSelection();
-            if (!selection.rangeCount) return;
-            const range = selection.getRangeAt(0);
-            const textNode = document.createTextNode(correctedText);
-            range.deleteContents();
-            range.insertNode(textNode);
-
-            range.setStartAfter(textNode);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            applyFontBasedOnContent(editor);
-
-            const inputEvent = new Event('input', { bubbles: true });
-            editor.dispatchEvent(inputEvent);
-
-            const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
-            if (correctedText !== finalTranscript) {
-                showStatus(`✨ Auto-corrected and transcribed in ${langName}: "${correctedText.trim()}" 📝`);
-            } else {
-                showStatus(`✨ Transcribed in ${langName}: "${finalTranscript.trim()}" ✅`);
-            }
+                    autoSwitchLanguage(finalTranscript);
+                    const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
+                    
+                    const selection = window.getSelection();
+                    if (!selection.rangeCount) return;
+                    const range = selection.getRangeAt(0);
+                    const textNode = document.createTextNode(correctedText);
+                    range.deleteContents();
+                    range.insertNode(textNode);
+                    
+                    range.setStartAfter(textNode);
+                    range.collapse(true);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    applyFontBasedOnContent(editor);
+                    
+                    const inputEvent = new Event('input', { bubbles: true });
+                    editor.dispatchEvent(inputEvent);
+                    
+                    const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+                    if (correctedText !== finalTranscript) {
+                        showStatus(`✨ Auto-corrected and transcribed in ${langName}: "${correctedText.trim()}" 📝`);
+                    } else {
+                        showStatus(`✨ Transcribed in ${langName}: "${finalTranscript.trim()}" ✅`);
+                    }
                     
                     // Stop WhatsApp recording after successful transcription
                     if (isWhatsAppRecording) {
@@ -1883,7 +1982,7 @@
                     }
                 }
             };
-
+            
             recognition.onerror = (event) => {
                 let errorMessage = "🚨 Voice recognition encountered an issue: ";
                 switch (event.error) {
@@ -1905,39 +2004,32 @@
                 }
                 showStatus(errorMessage);
                 
-                // Stop WhatsApp recording on error
+                if (isWhatsAppRecording) {
+                    stopWhatsAppRecording();
+                }
+            };
+            
+            recognition.onend = () => {
                 if (isWhatsAppRecording) {
                     stopWhatsAppRecording();
                 }
                 
-                // Don't change isRecording here; onend will handle it.
-            };
-
-            recognition.onend = () => {
-                // Stop WhatsApp recording if active
-                if (isWhatsAppRecording) {
-                    stopWhatsAppRecording();
-                }
-
-                // If the user *still* wants to be recording, restart it with improved timing
                 if (isRecording && !isWhatsAppRecording) {
-                    console.log("Recognition service ended, attempting to restart...");
-                    try {
-                        // Increased delay before restarting to prevent rapid restarts
-                        setTimeout(() => {
-                            if (isRecording && recognition && !isWhatsAppRecording) {
+                    setTimeout(() => {
+                        if (isRecording && recognition && !isWhatsAppRecording) {
+                            try {
                                 recognition.start();
+                            } catch (e) {
+                                console.error("Failed to restart recognition:", e);
                             }
-                        }, 1000); // Increased from 100ms to 1000ms
-                    } catch (e) {
-                        isRecording = false; // Give up on failure
-                        console.error("Failed to auto-restart recognition:", e);
-                        showStatus("⚠️ Voice recognition stopped unexpectedly.");
-                    }
+                        }
+                    }, 1000);
                 } else if (!isWhatsAppRecording) {
-                    showStatus("🔇 Voice recognition stopped.");
+                    showStatus("🔇 Voice recognition stopped");
                 }
             };
+            
+            return recognition;
         }
         
         // Save note - Enhanced security and performance
@@ -2045,8 +2137,8 @@
                                 '<i class="fas fa-share-alt text-white text-lg"></i>' +
                             '</div>' +
                                                          '<div>' +
-                                 '<h2 class="text-xl font-bold text-white">Share Your Masterpiece</h2>' +
-                                 '<p class="text-blue-100 text-sm">Choose your preferred sharing method</p>' +
+                                 '<h2 class="text-xl font-bold text-white">Share Your Distinguished Masterpiece</h2>' +
+                                 '<p class="text-blue-100 text-sm">Select your preferred elegant sharing method</p>' +
                              '</div>' +
                         '</div>' +
                         '<button onclick="closeShareModal()" class="text-white hover:text-blue-200 transition-colors p-2">' +
@@ -2060,11 +2152,11 @@
                     '<div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">' +
                                                  '<h3 class="text-sm font-semibold text-gray-600 mb-2 flex items-center">' +
                              '<i class="fas fa-eye text-blue-500 mr-2"></i>' +
-                             'Content Preview' +
+                             'Distinguished Content Preview' +
                          '</h3>' +
                         '<p class="text-gray-800 text-sm leading-relaxed" dir="auto">' + preview + '</p>' +
                                                  '<div class="mt-2 text-xs text-gray-500">' +
-                             'Word count: ' + wordCount + ' words' +
+                             'Distinguished word count: ' + wordCount + ' words' +
                          '</div>' +
                     '</div>' +
                     
@@ -2075,13 +2167,13 @@
                                                          '<button onclick="copyToClipboard(\'' + encodedContent + '\')" ' +
                                      'class="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-md">' +
                                  '<i class="fas fa-copy text-sm"></i>' +
-                                 '<span class="font-medium text-sm">Copy to Clipboard</span>' +
+                                 '<span class="font-medium text-sm">Elegantly Copy to Clipboard</span>' +
                              '</button>' +
                              
                              '<button onclick="downloadAsFile(\'' + encodedContent + '\')" ' +
                                      'class="flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-md">' +
                                  '<i class="fas fa-download text-sm"></i>' +
-                                 '<span class="font-medium text-sm">Download as File</span>' +
+                                 '<span class="font-medium text-sm">Download as Distinguished File</span>' +
                              '</button>' +
                         '</div>' +
                         
@@ -2089,14 +2181,14 @@
                                                  '<button id="nativeShareBtn" onclick="nativeShare(\'' + encodedContent + '\')" ' +
                                  'class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md hidden">' +
                              '<i class="fas fa-mobile-alt text-sm"></i>' +
-                             '<span class="font-medium">Native Share</span>' +
+                             '<span class="font-medium">Native Elegant Share</span>' +
                          '</button>' +
                         
                         '<!-- Social Media Options -->' +
                         '<div class="border-t pt-4">' +
                                                          '<h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">' +
                                  '<i class="fas fa-hashtag text-blue-500 mr-2"></i>' +
-                                 'Share on Social Media' +
+                                 'Share on Distinguished Social Media' +
                              '</h4>' +
                             
                             '<div class="grid grid-cols-2 gap-3">' +
@@ -2130,20 +2222,20 @@
                         '<div class="border-t pt-4">' +
                                                          '<h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">' +
                                  '<i class="fas fa-cog text-blue-500 mr-2"></i>' +
-                                 'Advanced Options' +
+                                 'Distinguished Advanced Options' +
                              '</h4>' +
                             
                             '<div class="space-y-2">' +
                                                                  '<button onclick="generateQRCode(\'' + encodedContent + '\')" ' +
                                          'class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300">' +
                                      '<i class="fas fa-qrcode text-sm"></i>' +
-                                     '<span class="text-sm font-medium">Generate QR Code</span>' +
+                                     '<span class="text-sm font-medium">Generate Distinguished QR Code</span>' +
                                  '</button>' +
                                  
                                  '<button onclick="copyAsHTML(\'' + encodedContent + '\')" ' +
                                          'class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300">' +
                                      '<i class="fas fa-code text-sm"></i>' +
-                                     '<span class="text-sm font-medium">Copy as HTML</span>' +
+                                     '<span class="text-sm font-medium">Copy as Distinguished HTML</span>' +
                                  '</button>' +
                             '</div>' +
                         '</div>' +
@@ -2242,12 +2334,12 @@
             const timeEn = currentDate.toLocaleTimeString('en-US');
             
             const fileContent = 'Script.ai - Distinguished Digital Workspace Note\n' +
-                'Date Created: ' + dateEn + ' at ' + timeEn + '\n' +
+                'Elegantly Created: ' + dateEn + ' at ' + timeEn + '\n' +
                 '═══════════════════════════════════════════════════════════════\n\n' +
                 content + '\n\n' +
                 '═══════════════════════════════════════════════════════════════\n' +
-                'Elegantly crafted with Script.ai - Intelligent Writing Companion\n' +
-                'Experience the future of writing at:\n' +
+                'Distinguishedly crafted with Script.ai - Intelligent Writing Companion\n' +
+                'Experience the distinguished future of writing at:\n' +
                 'https://moibrahim0115.github.io/Script/';
             
             // Create and trigger download
@@ -2300,7 +2392,7 @@
         function shareToWhatsApp(encodedContent) {
             const content = decodeURIComponent(encodedContent);
             const currentUrl = window.location.href;
-            const message = '📝 Shared from Script.ai:\n\n' + content + '\n\n✨ Created using: ' + currentUrl;
+            const message = '📝 Distinguished content shared from Script.ai:\n\n' + content + '\n\n✨ Distinguishedly created using: ' + currentUrl;
             const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
             
             window.open(whatsappUrl, '_blank');
@@ -2313,7 +2405,7 @@
             const content = decodeURIComponent(encodedContent);
             const tweet = content.length > 200 ? content.substring(0, 200) + '...' : content;
             const currentUrl = window.location.href;
-            const twitterUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(currentUrl) + '&hashtags=ScriptAI,DigitalWriting';
+            const twitterUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(currentUrl) + '&hashtags=ScriptAI,DistinguishedWriting';
             
             window.open(twitterUrl, '_blank');
             showShareStatus('🐦 Opening Twitter for sharing', 'info');
@@ -2324,7 +2416,7 @@
         function shareToTelegram(encodedContent) {
             const content = decodeURIComponent(encodedContent);
             const currentUrl = window.location.href;
-            const message = '📝 Shared from Script.ai:\n\n' + content + '\n\n✨ Link: ' + currentUrl;
+            const message = '📝 Distinguished content shared from Script.ai:\n\n' + content + '\n\n✨ Distinguishedly shared via: ' + currentUrl;
             const telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(currentUrl) + '&text=' + encodeURIComponent(message);
             
             window.open(telegramUrl, '_blank');
@@ -2335,14 +2427,14 @@
         // Share to Email
         function shareToEmail(encodedContent) {
             const content = decodeURIComponent(encodedContent);
-            const subject = 'Note Shared from Script.ai';
+            const subject = 'Distinguished Note Shared from Script.ai';
             const currentUrl = window.location.href;
             
             const body = 'Hello,\n\n' +
-                'I would like to share this note with you:\n\n' +
+                'I would like to share this distinguished note with you:\n\n' +
                 content + '\n\n' +
                 '═══════════════════════════════════════\n' +
-                'Created using Script.ai - Intelligent Writing Tool\n' +
+                'Elegantly created using Script.ai - Intelligent Writing Tool\n' +
                 currentUrl + '\n\n' +
                 'Best regards';
             
@@ -2365,11 +2457,11 @@
             qrModal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
             qrModal.innerHTML = 
                 '<div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center">' +
-                    '<h3 class="text-lg font-bold mb-4 text-gray-800">QR Code for Content</h3>' +
+                    '<h3 class="text-lg font-bold mb-4 text-gray-800">Distinguished QR Code for Your Content</h3>' +
                     '<div class="bg-gray-100 p-4 rounded-lg mb-4">' +
                         '<img src="' + qrUrl + '" alt="QR Code" class="mx-auto" style="max-width: 250px;">' +
                     '</div>' +
-                    '<p class="text-sm text-gray-600 mb-4">Scan the code to view content</p>' +
+                    '<p class="text-sm text-gray-600 mb-4">Gracefully scan the code to view your distinguished content</p>' +
                     '<button onclick="this.parentElement.parentElement.remove()" ' +
                             'class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">' +
                         'Close' +
@@ -2430,12 +2522,12 @@
                 '</head>\n' +
                 '<body>\n' +
                 '    <div class="header">\n' +
-                '        <h1>📝 Note from Script.ai</h1>\n' +
-                '        <p>Created on: ' + dateStr + ' - ' + timeStr + '</p>\n' +
+                '        <h1>📝 Distinguished Note from Script.ai</h1>\n' +
+                '        <p>Elegantly created on: ' + dateStr + ' - ' + timeStr + '</p>\n' +
                 '    </div>\n' +
                 '    <div class="content">' + content + '</div>\n' +
                 '    <footer style="text-align: center; margin-top: 2rem; color: #6b7280; font-size: 0.9rem;">\n' +
-                '        ✨ Crafted with <a href="' + currentUrl + '" style="color: #3b82f6;">Script.ai</a>\n' +
+                '        ✨ Distinguishedly crafted with <a href="' + currentUrl + '" style="color: #3b82f6;">Script.ai</a>\n' +
                 '    </footer>\n' +
                 '</body>\n' +
                 '</html>';
@@ -2515,18 +2607,18 @@
             const infoHTML = 
                 '<div style="text-align: center; direction: ltr; line-height: 1.8;">' +
                     '<h4 style="color: #dc2626; margin-bottom: 1rem; font-weight: 600;">🎤 Voice Recognition Support</h4>' +
-                    '<p style="margin-bottom: 1rem; color: #374151;">Voice recognition is not supported in this browser.</p>' +
+                    '<p style="margin-bottom: 1rem; color: #374151;">Voice recognition is not supported in this distinguished browser.</p>' +
                     '<div style="background: #f3f4f6; padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem;">' +
                         '<h5 style="margin-bottom: 0.8rem; color: #065f46; font-weight: 600;">💡 Supported Browsers:</h5>' +
                         '<ul style="margin: 0; color: #374151; text-align: left;">' +
                             '<li>✅ Google Chrome</li>' +
                             '<li>✅ Microsoft Edge</li>' +
                             '<li>✅ Safari (iOS/macOS)</li>' +
-                            '<li>❌ Firefox (limited support)</li>' +
+                            '<li>❌ Firefox (Limited Support)</li>' +
                         '</ul>' +
                     '</div>' +
                     '<p style="font-size: 0.9rem; color: #6b7280; font-style: italic;">' +
-                        'You can still use the text editor normally - only voice input is affected' +
+                        'You can use the text editor naturally — only voice input is affected' +
                     '</p>' +
                 '</div>';
             
@@ -2556,6 +2648,8 @@
             statusDiv.style.maxWidth = '500px';
             statusDiv.style.margin = '1rem auto';
             statusDiv.style.padding = '1rem';
+            statusDiv.style.textAlign = 'center';
+            statusDiv.style.direction = 'auto';
             
             if (duration) {
                 setTimeout(() => {
@@ -2601,12 +2695,14 @@
             console.log('Security Enhancements: ✅ Enabled');
             console.log('Accessibility Features: ✅ Enhanced');
             console.log('GitHub Pages Ready: ✅ Optimized');
+            console.log('Voice Recording System: ✅ Enhanced');
             
             if (isSupported) {
-                console.log('%c✨ Voice recognition system is ready for Arabic and English!', 'color: #10b981; font-weight: bold;');
+                console.log('%c✨ Voice recognition system ready for Arabic and English!', 'color: #10b981; font-weight: bold;');
                 console.log('🎯 Supports: Chrome, Edge, Safari');
-                console.log('🔄 Auto language detection enabled');
+                console.log('🔄 Automatic language detection enabled');
                 console.log('🔒 Secure context required for voice features');
+                console.log('📱 Mobile optimizations enabled');
             } else {
                 console.log('%c⚠️ Voice recognition not supported in this browser', 'color: #f59e0b; font-weight: bold;');
                 console.log('💡 Try using Chrome, Edge, or Safari for voice features');
@@ -2618,7 +2714,7 @@
             // Performance metrics
             console.log('%c📊 Performance Metrics', 'font-size: 14px; font-weight: bold; color: #7c3aed;');
             console.log('Font Loading:', document.fonts.status === 'loaded' ? '✅ Complete' : '⏳ Loading');
-            console.log('DOM Ready:', document.readyState === 'complete' ? '✅ Complete' : '⏳ Loading');
+            console.log('DOM Readiness:', document.readyState === 'complete' ? '✅ Complete' : '⏳ Loading');
         }
 
         // Keyboard shortcuts
@@ -2760,7 +2856,7 @@
             
             // Only show user-friendly message for non-critical errors
             if (!e.error || e.error.name !== 'SecurityError') {
-                showStatus('⚠️ An unexpected error occurred. Please refresh the page if issues persist.');
+                showStatus('⚠️ An unexpected circumstance occurred. Please refresh the page if the issue persists.');
             }
         });
 
@@ -2778,10 +2874,10 @@
         function logPerformanceMetrics() {
             if ('performance' in window) {
                 const perfData = performance.getEntriesByType('navigation')[0];
-                console.log('%c📊 Performance Metrics', 'font-size: 14px; font-weight: bold; color: #7c3aed;');
-                console.log('Page Load Time:', Math.round(perfData.loadEventEnd - perfData.loadEventStart), 'ms');
-                console.log('DOM Content Loaded:', Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart), 'ms');
-                console.log('First Paint:', Math.round(perfData.responseEnd - perfData.fetchStart), 'ms');
+                            console.log('%c📊 Performance Metrics', 'font-size: 14px; font-weight: bold; color: #7c3aed;');
+            console.log('Page Load Time:', Math.round(perfData.loadEventEnd - perfData.loadEventStart), 'milliseconds');
+            console.log('DOM Content Load:', Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart), 'milliseconds');
+            console.log('First Paint:', Math.round(perfData.responseEnd - perfData.fetchStart), 'milliseconds');
             }
         }
     </script>
