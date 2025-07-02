@@ -1,0 +1,2559 @@
+<!DOCTYPE html>
+<!-- 
+    Script.ai - Professional Digital Workspace
+    Fixed Issues & Improvements:
+    ✅ Removed duplicate CSS scrollbar definitions
+    ✅ Fixed Font Awesome to use official CDN
+    ✅ Removed unreliable external audio source
+    ✅ Replaced inline styles with CSS classes
+    ✅ Added comprehensive accessibility features (aria-labels, roles, keyboard navigation)
+    ✅ Enhanced focus management and keyboard shortcuts
+    ✅ Improved performance with debouncing and optimization
+    ✅ Added proper error handling and debugging
+    ✅ Enhanced meta tags for better SEO and security
+    ✅ Optimized for GitHub Pages deployment
+    ✅ Removed HTTPS warnings (GitHub Pages provides HTTPS)
+    ✅ Simplified voice recognition setup
+    ✅ Professional toolbar alignment and responsive design
+    ✅ Enhanced visual hierarchy with glassmorphism effects
+-->
+<html lang="ar" dir="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#dbeafe">
+    <meta name="color-scheme" content="light">
+    <title>Script - Professional Digital Workspace</title>
+    <meta name="description" content="Distinguished digital workspace featuring intelligent voice recognition for Arabic and English. Professional note-taking with elegant paper styles and sophisticated voice-to-text capabilities.">
+    <meta name="keywords" content="voice recognition, digital workspace, note taking, Arabic, English, voice to text, professional editor">
+    <meta name="author" content="Distinguished Developer">
+    <meta property="og:title" content="Script - Professional Digital Workspace">
+    <meta property="og:description" content="Sophisticated voice-enabled workspace with intelligent language detection">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Patrick Hand', cursive;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+            width: 100%;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(51, 65, 85, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(30, 58, 138, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 40% 60%, rgba(217, 119, 6, 0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .font-kalam { font-family: 'Kalam', cursive; }
+        .font-caveat { font-family: 'Caveat', cursive; }
+        .font-patrick { font-family: 'Patrick Hand', cursive; }
+        .font-dancing { font-family: 'Dancing Script', cursive; }
+        .font-satisfy { font-family: 'Satisfy', cursive; }
+        .font-arabic { font-family: 'Amiri', 'Scheherazade New', serif; }
+        .font-ottoman { font-family: 'Amiri', 'Scheherazade New', serif; }
+
+        /* Arabic text styling */
+        .arabic-text {
+            font-family: 'Amiri', 'Scheherazade New', serif !important;
+            font-size: 1.3rem !important;
+            line-height: 2.2 !important;
+            text-align: right !important;
+            direction: rtl !important;
+            font-weight: 500;
+        }
+
+        /* Mixed content handling */
+        .mixed-content {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .mixed-content .arabic-text {
+            direction: rtl;
+            text-align: right;
+            display: inline-block;
+        }
+
+        #notebook-paper {
+            background-color: #F8F9FA;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+            background-size: 100% 2.2em;
+            line-height: 2.2em;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: none;
+        }
+
+        /* خاص بالنص بين الخطوط - النمط المخطط */
+        #notebook-paper.lined #editor {
+            padding-top: calc(1em + 1.1em) !important; /* إضافة padding لجعل النص بين الخطوط */
+            line-height: 2.2em !important; /* محاذاة مع المسافة بين الخطوط */
+        }
+
+        #notebook-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        #notebook-paper.grid {
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #d1d5db 1px, transparent 1px);
+            background-size: 2em 2em;
+            line-height: 2em;
+        }
+        
+        #notebook-paper.dots {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+        
+        #notebook-paper.blank {
+            background-image: none;
+        }
+        
+        #notebook-paper.brainstorm {
+            background-image: radial-gradient(circle at center, #f0f4ff 0%, #ffffff 100%);
+        }
+
+        /* Paper Color Variations - Professional Paper Colors */
+        #notebook-paper.paper-white {
+            background-color: #F8F9FA;
+        }
+
+        #notebook-paper.paper-white.lined {
+            background-color: #F8F9FA;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-white.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-white.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-white.grid {
+            background-color: #F8F9FA;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #d1d5db 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-white.dots {
+            background-color: #F8F9FA;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-mint {
+            background-color: #E8F5E8;
+        }
+
+        #notebook-paper.paper-mint.lined {
+            background-color: #E8F5E8;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-mint.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-mint.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-mint.grid {
+            background-color: #E8F5E8;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #c7d2cc 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-mint.dots {
+            background-color: #E8F5E8;
+            background-image: radial-gradient(#a7b8a8 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-gray {
+            background-color: #F3F4F6;
+        }
+
+        #notebook-paper.paper-gray.lined {
+            background-color: #F3F4F6;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-gray.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-gray.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-gray.grid {
+            background-color: #F3F4F6;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #d1d5db 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-gray.dots {
+            background-color: #F3F4F6;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-cream {
+            background-color: #FDF6E3;
+        }
+
+        #notebook-paper.paper-cream.lined {
+            background-color: #FDF6E3;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-cream.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-cream.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-cream.grid {
+            background-color: #FDF6E3;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #e5d3a9 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-cream.dots {
+            background-color: #FDF6E3;
+            background-image: radial-gradient(#d4c5a0 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-peach {
+            background-color: #FEF2F2;
+        }
+
+        #notebook-paper.paper-peach.lined {
+            background-color: #FEF2F2;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-peach.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-peach.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-peach.grid {
+            background-color: #FEF2F2;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #f3c6a7 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-peach.dots {
+            background-color: #FEF2F2;
+            background-image: radial-gradient(#e5b8a2 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-rose {
+            background-color: #FDF2F8;
+        }
+
+        #notebook-paper.paper-rose.lined {
+            background-color: #FDF2F8;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-rose.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-rose.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-rose.grid {
+            background-color: #FDF2F8;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #f2c2c5 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-rose.dots {
+            background-color: #FDF2F8;
+            background-image: radial-gradient(#e4b4b7 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-beige {
+            background-color: #FFFBEB;
+        }
+
+        #notebook-paper.paper-beige.lined {
+            background-color: #FFFBEB;
+            background-image: linear-gradient(#000000 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-beige.lined #editor {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-beige.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        #notebook-paper.paper-beige.grid {
+            background-color: #FFFBEB;
+            background-image: linear-gradient(#000000 1px, transparent 1px),
+                              linear-gradient(90deg, #f0d4b8 1px, transparent 1px);
+        }
+
+        #notebook-paper.paper-beige.dots {
+            background-color: #FFFBEB;
+            background-image: radial-gradient(#e2c4ad 1px, transparent 1px);
+        }
+
+        #editor {
+            outline: none;
+            padding: 1em 3em 3em 4em;
+            font-size: 1.1rem;
+            min-height: 80vh;
+            position: relative;
+            line-height: 1.8;
+            color: #1e293b;
+            unicode-bidi: bidi-override;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 1023px) {
+            #editor {
+                padding: 1em 2em 2em 2.5em;
+                font-size: 1rem;
+                min-height: 70vh;
+            }
+            
+            #editor.arabic-content {
+                padding: 1em 2.5em 2em 2em;
+            }
+            
+            /* النص العربي مع الخطوط على الموبايل */
+            #notebook-paper.lined #editor {
+                padding-top: calc(1em + 1.1em) !important;
+                line-height: 2.2em !important;
+            }
+            
+            #notebook-paper.lined #editor.arabic-content {
+                padding-top: calc(1em + 1.1em) !important;
+                line-height: 2.2em !important;
+            }
+            
+            /* CSS موبايل قديم - محذوف لأن الخط الأحمر مخفي تماماً على الموبايل */
+            
+            #currentDateTime {
+                padding-right: 2.5em !important;
+                padding-top: 1rem !important;
+                font-size: 1rem !important;
+            }
+        }
+
+        /* Arabic content in editor */
+        #editor.arabic-content {
+            direction: rtl;
+            text-align: right;
+            padding: 1em 4em 3em 3em;
+        }
+
+        /* النص العربي مع الخطوط */
+        #notebook-paper.lined #editor.arabic-content {
+            padding-top: calc(1em + 1.1em) !important;
+            line-height: 2.2em !important;
+        }
+
+        /* الخط الأحمر الرأسي للنص العربي - فقط في حالة lined على سطح المكتب */
+        #notebook-paper.lined #editor.arabic-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: auto;
+            right: 3em;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(239, 68, 68, 0.6);
+        }
+        
+        /* الخط الأحمر الرأسي - يظهر فقط في حالة lined على سطح المكتب */
+        #notebook-paper.lined #editor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 3em;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(239, 68, 68, 0.6);
+        }
+
+        /* إخفاء الخط الأحمر الرأسي في جميع الحالات على الهواتف */
+        @media (max-width: 1023px) {
+            #notebook-paper #editor::before,
+            #notebook-paper #editor.arabic-content::before {
+                display: none !important;
+            }
+        }
+        
+        /* Professional Button Styles */
+        .control-btn.active {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            box-shadow: 
+                inset 0 1px 2px rgba(0,0,0,0.1),
+                0 4px 8px -2px rgba(30, 64, 175, 0.3);
+        }
+
+        /* Format Button Styles */
+        #btn-lined.active, #btn-grid.active, #btn-dots.active, #btn-blank.active,
+        #btn-lined-mobile.active, #btn-grid-mobile.active, #btn-dots-mobile.active, #btn-blank-mobile.active {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: white;
+            box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);
+        }
+
+        /* Toolbar responsive improvements */
+        @media (max-width: 1023px) {
+            .toolbar-section {
+                padding: 0.5rem 0.75rem;
+                margin: 0.25rem 0;
+            }
+            
+            .btn-group {
+                padding: 3px;
+                gap: 3px;
+            }
+            
+            .btn-group button {
+                flex: 1;
+                min-width: 0;
+                justify-content: center;
+            }
+            
+            .control-label {
+                font-size: 0.8rem;
+                min-width: auto;
+            }
+        }
+
+        /* Enhanced toolbar styling */
+        .toolbar-section {
+            background: rgba(255, 255, 255, 0.6);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.3), transparent);
+        }
+
+        /* Button group styling */
+        .btn-group {
+            display: flex;
+            background: rgba(241, 245, 249, 0.8);
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        /* Format buttons equal width */
+        .btn-group button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        /* Label consistency */
+        .control-label {
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        /* Hover effects for control buttons - removed unused .control-panel selector */
+        
+        .voice-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #e53e3e;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .recording ~ div .voice-indicator,
+        .recording + div .voice-indicator {
+            opacity: 1;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        @keyframes tilt {
+            0%, 50%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); }
+            75% { transform: rotate(-0.5deg); }
+        }
+
+        .animate-tilt {
+            animation: tilt 10s infinite linear;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* .gradient-border class removed - was unused */
+
+        /* Professional scrollbar */
+        ::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        
+        ::-webkit-scrollbar-track { 
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb { 
+            background: #64748b;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover { 
+            background: #475569;
+        }
+
+        /* Paper color button styles */
+        .paper-color-white { background-color: #F8F9FA; }
+        .paper-color-mint { background-color: #E8F5E8; }
+        .paper-color-gray { background-color: #F3F4F6; }
+        .paper-color-cream { background-color: #FDF6E3; }
+        .paper-color-peach { background-color: #FEF2F2; }
+        .paper-color-rose { background-color: #FDF2F8; }
+        .paper-color-beige { background-color: #FFFBEB; }
+
+        /* Hover and focus effects for buttons */
+        button:hover, button:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* Remove default focus outline */
+        button:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* Navbar enhancements */
+        .navbar-brand-icon {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .navbar-brand-icon:hover {
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.5);
+        }
+        
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .nav-item:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Live indicator animation */
+        @keyframes live-pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+        
+        .live-indicator {
+            animation: live-pulse 2s infinite;
+        }
+
+        /* Footer Enhancements */
+        .footer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 197, 253, 0.05) 50%, rgba(59, 130, 246, 0.03) 100%);
+            pointer-events: none;
+        }
+        
+        .footer .copyright a {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .footer .copyright a:hover {
+            transform: translateY(-1px);
+            text-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .footer .copyright span[class*="bg-"] {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .footer .copyright span[class*="bg-"]:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Footer Adjustments */
+        @media (max-width: 1023px) {
+            .footer {
+                margin-top: 2rem;
+            }
+            
+            .footer .copyright p {
+                font-size: 0.8rem;
+                line-height: 1.6;
+            }
+            
+            .footer .copyright span.font-mono {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <!-- Paper-Style Header -->
+    <div class="sticky top-0 z-50 bg-gradient-to-b from-blue-50 via-white to-slate-50 border-b-2 border-blue-200/30 shadow-xl shadow-slate-900/5">
+        <!-- Main Navigation -->
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14">
+                <!-- Brand Section -->
+                <div class="flex items-center justify-between w-full lg:w-auto">
+                    <div class="flex items-center">
+                        <!-- Elegant Quill Icon -->
+                        <div class="navbar-brand-icon w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30 cursor-pointer" role="img" aria-label="Script.ai logo">
+                            <i class="fas fa-feather-alt text-white text-base"></i>
+                        </div>
+                        <!-- Brand & Description -->
+                        <div class="ml-3">
+                            <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-800 to-blue-900 font-caveat tracking-wide">
+                                Script.ai
+                            </h1>
+                            <p class="text-xs text-slate-600 font-patrick hidden sm:block">Voice-powered intelligent writing companion</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Controls -->
+                    <div class="lg:hidden flex items-center">
+                        <!-- Compact Tools Button -->
+                        <div class="relative">
+                            <button id="mobileToolsBtn" class="group w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30 transition-all duration-300 transform hover:scale-105" aria-label="Open tools menu">
+                                <i class="fas fa-tools text-white text-sm group-hover:scale-110 transition-all duration-300"></i>
+                            </button>
+                            
+                            <!-- Compact Tools Dropdown -->
+                            <div id="mobileToolsDropdown" class="absolute top-12 right-0 bg-white/98 backdrop-blur-xl border border-slate-200/50 rounded-2xl shadow-xl hidden z-50 w-72 overflow-hidden">
+                                <!-- Compact Header -->
+                                <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 relative overflow-hidden">
+                                    <div class="relative flex items-center justify-center space-x-2">
+                                        <i class="fas fa-tools text-blue-100 text-sm"></i>
+                                        <h2 class="text-sm font-bold text-white">Tools</h2>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 space-y-4">
+                                    <!-- Ink Colors Section -->
+                                    <div class="group/section">
+                                        <div class="flex items-center space-x-2 mb-3">
+                                            <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-pen text-white text-xs"></i>
+                                            </div>
+                                            <h3 class="text-sm font-semibold text-slate-800">Ink Colors</h3>
+                                        </div>
+                                        
+                                        <div class="flex justify-center space-x-3">
+                                            <button onclick="changeColor('#1e40af')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Blue Ink">
+                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                            </button>
+                                            
+                                            <button onclick="changeColor('#1e293b')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Black Ink">
+                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                            </button>
+                                            
+                                            <button onclick="changeColor('#b91c1c')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-red-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Red Ink">
+                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
+                                    <!-- Paper Format Section -->
+                                    <div class="group/section">
+                                        <div class="flex items-center space-x-2 mb-3">
+                                            <div class="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-file text-white text-xs"></i>
+                                            </div>
+                                            <h3 class="text-sm font-semibold text-slate-800">Paper Format</h3>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button onclick="changeStyle('lined')" class="group px-3 py-2 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Lined paper">
+                                                <div class="flex flex-col items-center space-y-1">
+                                                    <i class="fas fa-grip-lines text-sm"></i>
+                                                    <span class="text-xs font-medium">LINED</span>
+                                                </div>
+                                            </button>
+                                            
+                                            <button onclick="changeStyle('grid')" class="group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Grid paper">
+                                                <div class="flex flex-col items-center space-y-1">
+                                                    <i class="fas fa-th text-sm"></i>
+                                                    <span class="text-xs font-medium">GRID</span>
+                                                </div>
+                                            </button>
+                                            
+                                            <button onclick="changeStyle('dots')" class="group px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Dotted paper">
+                                                <div class="flex flex-col items-center space-y-1">
+                                                    <i class="fas fa-braille text-sm"></i>
+                                                    <span class="text-xs font-medium">DOTS</span>
+                                                </div>
+                                            </button>
+                                            
+                                            <button onclick="changeStyle('blank')" class="group px-3 py-2 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Blank paper">
+                                                <div class="flex flex-col items-center space-y-1">
+                                                    <i class="fas fa-square text-sm"></i>
+                                                    <span class="text-xs font-medium">BLANK</span>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
+                                    <!-- Paper Colors Section -->
+                                    <div class="group/section">
+                                        <div class="flex items-center space-x-2 mb-3">
+                                            <div class="w-6 h-6 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-palette text-white text-xs"></i>
+                                            </div>
+                                            <h3 class="text-sm font-semibold text-slate-800">Paper Colors</h3>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-4 gap-2">
+                                            <button onclick="changePaperColor('white')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-slate-300 paper-color-white" aria-label="White paper"></button>
+                                            
+                                            <button onclick="changePaperColor('mint')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-emerald-300 paper-color-mint" aria-label="Mint paper"></button>
+                                            
+                                            <button onclick="changePaperColor('gray')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-slate-400 paper-color-gray" aria-label="Gray paper"></button>
+                                            
+                                            <button onclick="changePaperColor('cream')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-yellow-400 paper-color-cream" aria-label="Cream paper"></button>
+                                            
+                                            <button onclick="changePaperColor('peach')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-orange-400 paper-color-peach" aria-label="Peach paper"></button>
+                                            
+                                            <button onclick="changePaperColor('rose')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-pink-400 paper-color-rose" aria-label="Rose paper"></button>
+                                            
+                                            <button onclick="changePaperColor('beige')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-amber-400 paper-color-beige" aria-label="Beige paper"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </nav>
+        
+        <!-- Paper Edge Effect -->
+        <div class="h-1 bg-gradient-to-r from-transparent via-blue-100 to-transparent opacity-60"></div>
+    </div>
+
+    <!-- Paper Workspace Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Mobile Action Buttons (Only for small screens) -->
+        <div class="lg:hidden bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/40 rounded-lg shadow-sm mb-4">
+            <div class="px-4 py-3">
+                <div class="flex items-center justify-center space-x-4">
+                    <!-- Voice Input -->
+                    <button id="voiceBtnMobile2" onclick="toggleVoiceInput()" class="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Toggle voice recognition">
+                        <i id="micIconMobile2" class="fas fa-microphone text-sm"></i>
+                        <span class="text-sm font-medium">Voice</span>
+                    </button>
+                    
+
+                    
+                    <!-- Share -->
+                    <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
+                        <i class="fas fa-share-alt text-sm"></i>
+                        <span class="text-sm font-medium">Share</span>
+                    </button>
+                    
+                    <!-- Save -->
+                    <button onclick="saveNote()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Save note">
+                        <i class="fas fa-save text-sm"></i>
+                        <span class="text-sm font-medium">Save</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paper-Style Toolbar - Integrated with Header (Desktop Only) -->
+        <div class="hidden lg:block bg-gradient-to-b from-blue-50/80 to-white/90 border-x border-blue-200/40 shadow-lg shadow-slate-900/5 rounded-b-lg sticky top-14 z-20 transition-all duration-300">
+            <!-- Main Toolbar -->
+            <div class="px-6 py-4">
+                <!-- Desktop Layout -->
+                <div class="flex items-center justify-between">
+                    <!-- Left Section: Writing Tools -->
+                    <div class="flex items-center space-x-6">
+                        <!-- Ink Colors -->
+                        <div class="toolbar-section flex items-center space-x-3">
+                            <label class="control-label">Ink</label>
+                            <div class="flex space-x-2">
+                                <button onclick="changeColor('#1e40af')" title="Professional Blue" class="w-6 h-6 rounded-full bg-blue-700 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select blue ink"></button>
+                                <button onclick="changeColor('#1e293b')" title="Corporate Black" class="w-6 h-6 rounded-full bg-slate-800 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select black ink"></button>
+                                <button onclick="changeColor('#b91c1c')" title="Executive Red" class="w-6 h-6 rounded-full bg-red-700 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select red ink"></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Paper Styles -->
+                        <div class="toolbar-section flex items-center space-x-3">
+                            <label class="control-label">Format</label>
+                            <div class="btn-group">
+                                <button id="btn-lined" onclick="changeStyle('lined')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors active" aria-label="Select lined paper style">Lined</button>
+                                <button id="btn-grid" onclick="changeStyle('grid')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select grid paper style">Grid</button>
+                                <button id="btn-dots" onclick="changeStyle('dots')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select dotted paper style">Dots</button>
+                                <button id="btn-blank" onclick="changeStyle('blank')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select blank paper style">Blank</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Paper Colors -->
+                        <div class="toolbar-section flex items-center space-x-3">
+                            <label class="control-label">Paper</label>
+                            <div class="flex space-x-2">
+                                <button onclick="changePaperColor('white')" title="Pure Snow White Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-white" aria-label="Select white paper"></button>
+                                <button onclick="changePaperColor('mint')" title="Soft Mint Breeze Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-mint" aria-label="Select mint paper"></button>
+                                <button onclick="changePaperColor('gray')" title="Light Cloud Gray Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-gray" aria-label="Select gray paper"></button>
+                                <button onclick="changePaperColor('cream')" title="Gentle Cream Glow Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-cream" aria-label="Select cream paper"></button>
+                                <button onclick="changePaperColor('peach')" title="Delicate Peach Bloom Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-peach" aria-label="Select peach paper"></button>
+                                <button onclick="changePaperColor('rose')" title="Soft Rose Petal Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-rose" aria-label="Select rose paper"></button>
+                                <button onclick="changePaperColor('beige')" title="Warm Ivory Harmony Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-beige" aria-label="Select beige paper"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Section: Action Buttons -->
+                    <div class="toolbar-section flex items-center space-x-3">
+                        <!-- Voice Input with indicator -->
+                        <div class="flex items-center space-x-2">
+                            <button id="voiceBtn" onclick="toggleVoiceInput()" class="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Toggle voice recognition">
+                                <i id="micIcon" class="fas fa-microphone text-sm"></i>
+                                <span class="text-sm font-medium">Voice</span>
+                            </button>
+                            <!-- Voice indicator -->
+                            <div class="flex items-center">
+                                <span class="voice-indicator"></span>
+                                <span id="voiceStatus" class="text-xs opacity-75 hidden ml-1"></span>
+                            </div>
+                        </div>
+                        
+
+                        
+                        <!-- Share & Save -->
+                        <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
+                            <i class="fas fa-share-alt text-sm"></i>
+                            <span class="text-sm font-medium">Share</span>
+                        </button>
+                        
+                        <button onclick="saveNote()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Save note">
+                            <i class="fas fa-save text-sm"></i>
+                            <span class="text-sm font-medium">Save</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+         </div>
+
+        <!-- The Notebook Paper -->
+        <main id="notebook-paper" class="rounded-lg w-full">
+            <!-- Date and Time Header -->
+            <div id="currentDateTime" class="font-patrick text-gray-600 text-right pr-16 pt-6 pb-2 text-lg" dir="ltr" style="line-height: 2.2em;">
+                <!-- Date and time will appear here -->
+            </div>
+            
+            <!-- Writing Area -->
+            <div id="editor" contenteditable="true" class="font-patrick text-gray-800" role="textbox" aria-label="Text editor for writing notes" aria-multiline="true" tabindex="0"></div>
+        </main>
+        
+        <!-- Status Message -->
+        <div id="status" class="text-center mt-4 p-2 text-sm text-slate-600 font-medium bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 shadow-md transition-all duration-300 opacity-0"></div>
+        
+        <!-- Voice Status Info -->
+        <div id="voiceInfo" class="text-center mt-2 p-3 text-xs text-slate-500 bg-slate-50 rounded-lg border border-slate-100 shadow-sm hidden">
+            <div class="flex items-center justify-center space-x-2" dir="ltr">
+                <i class="fas fa-info-circle text-blue-500"></i>
+                <span id="voiceInfoText">Voice recognition is ready for use</span>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="footer mt-12 bg-gradient-to-br from-blue-50 via-indigo-50 to-slate-50 border-t border-blue-200/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30">
+                        <i class="fas fa-feather-alt text-white text-sm"></i>
+                    </div>
+                    <span class="ml-3 text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-800 to-blue-900 font-caveat">Script.ai</span>
+                </div>
+                
+                <div class="copyright">
+                    <p class="text-sm text-slate-600 font-patrick leading-relaxed">
+                        <span class="inline-flex items-center space-x-1">
+                            <i class="fas fa-terminal text-blue-500 text-xs"></i>
+                            <span class="font-mono text-xs bg-slate-100 px-2 py-1 rounded border">SYS_MSG:</span>
+                        </span>
+                        All rights reserved ©  <span id="year" class="font-semibold text-blue-700"> 2025  </span> 
+                        <a href="https://moibrahim0115.github.io/cv/?" target="_blank" rel="noopener noreferrer" 
+                           class="text-blue-600 hover:text-blue-800 font-medium underline decoration-2 underline-offset-2 hover:decoration-blue-600 transition-colors">
+                              Mohamed Ibrahim 
+                        </a> 
+                        <span class="inline-flex items-center space-x-1 ml-1">
+                            <span class="text-slate-400">//</span>
+                            <span class="font-mono text-xs bg-emerald-100 px-2 py-1 rounded border text-emerald-700">END_OF_LINE</span>
+                        </span>
+                    </p>
+                    
+                   
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Wave Effect -->
+        <div class="h-1 bg-gradient-to-r from-blue-200 via-indigo-300 to-blue-200 opacity-50"></div>
+    </footer>
+
+    <!-- Typing Sound - Local/Safe Audio -->
+    <!-- <audio id="typing-sound" src="./sounds/typing.mp3" preload="auto"></audio> -->
+    
+    <!-- Font Awesome Icons - Official CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script>
+        // State management
+        let currentColor = '#1e293b';
+        let currentPaperColor = 'white';
+        let recognition = null;
+        let currentLanguage = 'ar-SA'; // Default to Arabic
+        let isRecording = false;
+
+        
+        // DOM Elements
+        const editor = document.getElementById('editor');
+        const statusDiv = document.getElementById('status');
+        const typingSound = document.getElementById('typing-sound');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const voiceBtnMobile = document.getElementById('voiceBtnMobile');
+        const micIcon = document.getElementById('micIcon');
+        const micIconMobile = document.getElementById('micIconMobile');
+        const voiceStatus = document.getElementById('voiceStatus');
+        const voiceStatusMobile = document.getElementById('voiceStatusMobile');
+        const voiceInfo = document.getElementById('voiceInfo');
+        
+        // Update voice button status (both desktop and mobile)
+        function updateVoiceButtonStatus() {
+            const isSupported = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+            const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
+            const micIconMobile2 = document.getElementById('micIconMobile2');
+            const buttons = [voiceBtn, voiceBtnMobile2].filter(btn => btn);
+            const icons = [micIcon, micIconMobile2].filter(icon => icon);
+            const statuses = [voiceStatus].filter(status => status);
+            
+            if (!isSupported) {
+                buttons.forEach(btn => {
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    btn.title = 'Voice recognition not supported in this browser';
+                });
+                icons.forEach(icon => {
+                    icon.className = 'fas fa-microphone-slash text-sm';
+                });
+                statuses.forEach(status => {
+                    status.textContent = 'Unsupported';
+                    status.classList.remove('hidden');
+                });
+                // Show info for unsupported browsers
+                if (voiceInfo) {
+                    voiceInfo.classList.remove('hidden');
+                    document.getElementById('voiceInfoText').textContent = 'Voice recognition not supported in this browser';
+                    voiceInfo.style.backgroundColor = '#fef2f2';
+                    voiceInfo.style.borderColor = '#fecaca';
+                }
+            } else {
+                buttons.forEach(btn => {
+                    btn.classList.remove('opacity-50', 'opacity-75', 'cursor-not-allowed');
+                    btn.title = 'Voice recognition ready for Arabic and English';
+                });
+                icons.forEach(icon => {
+                    icon.className = 'fas fa-microphone text-sm';
+                });
+                statuses.forEach(status => {
+                    status.textContent = 'Ready';
+                    status.classList.add('hidden');
+                });
+                // Hide info banner when everything works
+                if (voiceInfo) {
+                    voiceInfo.classList.add('hidden');
+                }
+            }
+        }
+
+        // Initialize the app
+        function init() {
+            // Set default content
+            if (!editor.innerHTML.trim()) {
+                editor.innerHTML = '<p>Commence crafting your distinguished thoughts here...</p>';
+            }
+            
+            // Set default paper style and color
+            const paper = document.getElementById('notebook-paper');
+            paper.classList.add('lined', 'paper-white');
+            
+            // Update voice button status
+            updateVoiceButtonStatus();
+            
+            // Load saved content if available
+            loadSavedContent();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Show welcome message
+            showStatus("✨ Your distinguished digital workspace is ready — featuring intelligent multilingual voice recognition");
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Typing events with font detection
+            editor.addEventListener('input', handleTyping);
+            
+            // Initial font check on load
+            applyFontBasedOnContent(editor);
+        }
+        
+        // Detect Arabic text
+        function isArabicText(text) {
+            const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+            return arabicRegex.test(text);
+        }
+
+        // Apply appropriate font based on content
+        function applyFontBasedOnContent(element) {
+            const text = element.textContent || element.innerText || '';
+            if (isArabicText(text)) {
+                element.classList.add('arabic-text');
+                element.style.fontFamily = "'Amiri', 'Scheherazade New', serif";
+                
+                // Special handling for main editor
+                if (element.id === 'editor') {
+                    element.classList.add('arabic-content');
+                }
+            } else {
+                element.classList.remove('arabic-text');
+                element.style.fontFamily = "'Patrick Hand', cursive";
+                
+                // Remove Arabic content class from main editor
+                if (element.id === 'editor') {
+                    element.classList.remove('arabic-content');
+                }
+            }
+        }
+
+        // Handle typing with font detection
+        function handleTyping(event) {
+            // Apply appropriate font based on content
+            const element = event.target;
+            applyFontBasedOnContent(element);
+            
+            // Auto-save with optimized debouncing
+            debouncedSave();
+        }
+        
+        // Change ink color
+        function changeColor(color) {
+            currentColor = color;
+            editor.style.color = color;
+            
+            // Update status
+            const colorNames = {
+                '#1e40af': 'Prestigious Sapphire Blue',
+                '#1e293b': 'Distinguished Obsidian Black',
+                '#b91c1c': 'Executive Crimson Red'
+            };
+            showStatus(`✍️ Ink elegantly transformed to ${colorNames[color] || 'bespoke hue'}`);
+        }
+        
+        // Change page style
+        function changeStyle(style) {
+            const paper = document.getElementById('notebook-paper');
+            paper.className = 'rounded-lg';
+            paper.classList.add(style);
+            paper.classList.add(`paper-${currentPaperColor}`);
+            
+            // Update active button (desktop)
+            document.querySelectorAll('[id^="btn-"]').forEach(btn => {
+                if (btn.id.includes('lined') || btn.id.includes('grid') || 
+                    btn.id.includes('dots') || btn.id.includes('blank')) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Set active state for desktop button
+            const desktopBtn = document.getElementById(`btn-${style}`);
+            if (desktopBtn) desktopBtn.classList.add('active');
+            
+            // Update mobile dropdown buttons
+            const toolsDropdown = document.getElementById('mobileToolsDropdown');
+            if (toolsDropdown) {
+                const mobileFormatButtons = toolsDropdown.querySelectorAll('[onclick^="changeStyle"]');
+                mobileFormatButtons.forEach(btn => {
+                    // Reset all buttons to their original gradient colors
+                    btn.classList.remove('bg-gradient-to-br', 'from-blue-600', 'to-blue-700');
+                    
+                    // Set default styling based on button type
+                    if (btn.getAttribute('onclick').includes("'lined'")) {
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                    } else if (btn.getAttribute('onclick').includes("'grid'")) {
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                    } else if (btn.getAttribute('onclick').includes("'dots'")) {
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                    } else if (btn.getAttribute('onclick').includes("'blank'")) {
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                    }
+                    
+                    // Activate the matching button with blue gradient
+                    if (btn.getAttribute('onclick').includes(`'${style}'`)) {
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                    }
+                });
+            }
+            
+            // Update status
+            const styleNames = {
+                'lined': 'Classic Ruled Elegance',
+                'grid': 'Precision Grid Symphony',
+                'dots': 'Sophisticated Dotted Matrix',
+                'blank': 'Pure Minimalist Canvas'
+            };
+            showStatus(`📝 Paper artfully configured to ${styleNames[style] || 'distinctive format'}`);
+        }
+
+        // Change paper color
+        function changePaperColor(color) {
+            currentPaperColor = color;
+            const paper = document.getElementById('notebook-paper');
+            const currentStyle = paper.classList.contains('lined') ? 'lined' :
+                               paper.classList.contains('grid') ? 'grid' :
+                               paper.classList.contains('dots') ? 'dots' : 'blank';
+            
+            // Reset classes and reapply with new color
+            paper.className = 'rounded-lg';
+            paper.classList.add(currentStyle);
+            paper.classList.add(`paper-${color}`);
+            
+            // Update status
+            const colorNames = {
+                'white': 'Pure Snow White Elegance',
+                'mint': 'Soft Mint Breeze',
+                'gray': 'Light Cloud Gray',
+                'cream': 'Gentle Cream Glow',
+                'peach': 'Delicate Peach Bloom',
+                'rose': 'Soft Rose Petal',
+                'beige': 'Warm Ivory Harmony'
+            };
+            showStatus(`🎨 Paper canvas transformed to ${colorNames[color] || 'exclusive palette'}`);
+        }
+
+        // Detect the language of the current content to set appropriate voice recognition
+        function detectLanguageFromContent() {
+            const editorText = editor.textContent || editor.innerText || '';
+            if (isArabicText(editorText)) {
+                return 'ar-SA';
+            } else {
+                return 'en-US';
+            }
+        }
+        
+        // ==================== المصحح اللغوي الذكي (تلقائي مع التحويل الصوتي) ====================
+        
+        // قاموس التصحيحات الشامل للغة الإنجليزية - محدث 2025
+        const englishCorrections = {
+            // الأخطاء الإملائية الشائعة
+            'teh': 'the', 'hte': 'the', 'tehm': 'them', 'taht': 'that', 'waht': 'what',
+            'adn': 'and', 'nad': 'and', 'anbd': 'and', 'wih': 'with', 'wiht': 'with',
+            'thier': 'their', 'there': 'their', 'theyre': "they're", 'theres': "there's",
+            'youre': "you're", 'your': "you're", 'yoour': "your", 'yuor': "your",
+            'its': "it's", 'recieve': 'receive', 'seperate': 'separate', 'lose': 'loose',
+            'definately': 'definitely', 'defiantly': 'definitely', 'definetly': 'definitely',
+            'occured': 'occurred', 'ocurred': 'occurred', 'occurence': 'occurrence',
+            'begining': 'beginning', 'beggining': 'beginning', 'beginng': 'beginning',
+            'sucess': 'success', 'sucessful': 'successful', 'succesful': 'successful',
+            'necesary': 'necessary', 'neccessary': 'necessary', 'necessery': 'necessary',
+            'accomodate': 'accommodate', 'acommodate': 'accommodate', 'acomodate': 'accommodate',
+            'existance': 'existence', 'existense': 'existence', 'exsistence': 'existence',
+            'independant': 'independent', 'independet': 'independent', 'independant': 'independent',
+            'proffesional': 'professional', 'profesional': 'professional', 'proffessional': 'professional',
+            'beleive': 'believe', 'belive': 'believe', 'beleave': 'believe',
+            'wierd': 'weird', 'weired': 'weird', 'wired': 'weird',
+            'freind': 'friend', 'frend': 'friend', 'freind': 'friend',
+            'buisness': 'business', 'bussiness': 'business', 'busines': 'business',
+            'tommorrow': 'tomorrow', 'tommorow': 'tomorrow', 'tomarow': 'tomorrow',
+            'untill': 'until', 'truely': 'truly', 'truley': 'truly', 'realy': 'really',
+            'fourty': 'forty', 'nineth': 'ninth', 'twelth': 'twelfth',
+            
+            // التقنية والبرمجة
+            'programing': 'programming', 'programer': 'programmer', 'progamming': 'programming',
+            'developement': 'development', 'devlopment': 'development', 'developmet': 'development',
+            'enviroment': 'environment', 'enviornment': 'environment', 'envrionment': 'environment',
+            'managment': 'management', 'managament': 'management', 'mangement': 'management',
+            'arguement': 'argument', 'arguemnt': 'argument', 'argement': 'argument',
+            'maintainance': 'maintenance', 'maintanance': 'maintenance', 'maintainence': 'maintenance',
+            'algorithm': 'algorithm', 'algoritm': 'algorithm', 'algorythm': 'algorithm',
+            'database': 'database', 'databse': 'database', 'databas': 'database',
+            'javascript': 'JavaScript', 'Java script': 'JavaScript', 'java script': 'JavaScript',
+            'artifical': 'artificial', 'artficial': 'artificial', 'artificail': 'artificial',
+            
+            // مصطلحات حديثة (AI & Tech)
+            'machinelearning': 'machine learning', 'deeplearning': 'deep learning',
+            'artificialintelligence': 'artificial intelligence', 'chatgpt': 'ChatGPT',
+            'openai': 'OpenAI', 'claude': 'Claude', 'blockchain': 'blockchain',
+            'cryptocurrency': 'cryptocurrency', 'bitcoin': 'Bitcoin', 'ethereum': 'Ethereum',
+            'smartphone': 'smartphone', 'iphone': 'iPhone', 'android': 'Android',
+            'facebook': 'Facebook', 'instagram': 'Instagram', 'twitter': 'Twitter',
+            'youtube': 'YouTube', 'linkedin': 'LinkedIn', 'tiktok': 'TikTok',
+            'netflix': 'Netflix', 'amazon': 'Amazon', 'google': 'Google',
+            'microsoft': 'Microsoft', 'apple': 'Apple', 'tesla': 'Tesla',
+            
+            // اختصارات شائعة
+            'dont': "don't", 'cant': "can't", 'wont': "won't", 'isnt': "isn't",
+            'shouldnt': "shouldn't", 'wouldnt': "wouldn't", 'couldnt': "couldn't",
+            'havent': "haven't", 'hasnt': "hasn't", 'hadnt': "hadn't",
+            'arent': "aren't", 'wasnt': "wasn't", 'werent': "weren't",
+            'doesnt': "doesn't", 'didnt': "didn't", 'mustnt': "mustn't",
+            
+            // أخطاء شائعة أخرى
+            'alot': 'a lot', 'allot': 'a lot', 'everytime': 'every time',
+            'sometime': 'sometimes', 'alright': 'all right', 'altogether': 'all together',
+            'alway': 'always', 'befor': 'before', 'wich': 'which', 'witch': 'which',
+            'becuase': 'because', 'basicly': 'basically', 'finaly': 'finally',
+            'probaly': 'probably', 'diferent': 'different', 'diference': 'difference',
+            'similiar': 'similar', 'completly': 'completely', 'absolutly': 'absolutely',
+            'imediately': 'immediately', 'convinient': 'convenient', 'embarasing': 'embarrassing',
+            'disapointed': 'disappointed', 'recomend': 'recommend', 'responsable': 'responsible',
+            'goverment': 'government', 'explaination': 'explanation', 'grammer': 'grammar',
+            
+            // كلمات إضافية متقدمة
+            'مكاتبه': 'مكاتبة', 'مراسله': 'مراسلة', 'محادثه': 'محادثة', 'مناقشه': 'مناقشة',
+            'مشاهده': 'مشاهدة', 'متابعه': 'متابعة', 'مراجعه': 'مراجعة', 'مطالعه': 'مطالعة',
+            'قراءه': 'قراءة', 'كتابه': 'كتابة', 'طباعه': 'طباعة', 'مشاركه': 'مشاركة',
+            
+            // أسماء الدول والمدن
+            'امريكا': 'أمريكا', 'اوروبا': 'أوروبا', 'افريقيا': 'أفريقيا', 'اسيا': 'آسيا',
+            'استراليا': 'أستراليا', 'انجلترا': 'إنجلترا', 'ايطاليا': 'إيطاليا', 'اسبانيا': 'إسبانيا',
+            'المانيا': 'ألمانيا', 'فرنسا': 'فرنسا', 'اليابان': 'اليابان', 'الصين': 'الصين',
+            'روسيا': 'روسيا', 'البرازيل': 'البرازيل', 'كندا': 'كندا', 'المكسيك': 'المكسيك',
+            
+            // مصطلحات طبية حديثة
+            'كورونا': 'كورونا', 'كوفيد': 'كوفيد', 'لقاح': 'لقاح', 'تطعيم': 'تطعيم',
+            'فيروس': 'فيروس', 'بكتيريا': 'بكتيريا', 'مضاد حيوي': 'مضاد حيوي',
+            'صحه': 'صحة', 'مريض': 'مريض', 'مرضى': 'مرضى', 'دواء': 'دواء',
+            'ادويه': 'أدوية', 'علاج': 'علاج', 'دكتور': 'دكتور', 'طبيب': 'طبيب',
+            
+            // مصطلحات اقتصادية ومالية
+            'اقتصاد': 'اقتصاد', 'اسهم': 'أسهم', 'اسواق': 'أسواق', 'استثمار': 'استثمار',
+            'عمله': 'عملة', 'عملات': 'عملات', 'دولار': 'دولار', 'يورو': 'يورو',
+            'جنيه': 'جنيه', 'ريال': 'ريال', 'درهم': 'درهم', 'دينار': 'دينار',
+            'تداول': 'تداول', 'بورصه': 'بورصة', 'بنك': 'بنك', 'بنوك': 'بنوك',
+            
+            // مصطلحات رياضية
+            'كوره': 'كرة', 'رياضه': 'رياضة', 'فريق': 'فريق', 'مباراه': 'مباراة',
+            'مباريات': 'مباريات', 'لاعب': 'لاعب', 'لاعبين': 'لاعبين', 'هدف': 'هدف',
+            'اهداف': 'أهداف', 'نتيجه': 'نتيجة', 'بطوله': 'بطولة', 'كاس': 'كأس',
+            'ميداليه': 'ميدالية', 'ذهبيه': 'ذهبية', 'فضيه': 'فضية', 'برونزيه': 'برونزية',
+            
+            // كلمات الطعام والشراب
+            'اكل': 'أكل', 'طعام': 'طعام', 'شراب': 'شراب', 'مشروب': 'مشروب',
+            'مشروبات': 'مشروبات', 'قهوه': 'قهوة', 'شاي': 'شاي', 'عصير': 'عصير',
+            'فطار': 'فطار', 'غداء': 'غداء', 'عشاء': 'عشاء', 'وجبه': 'وجبة',
+            'وجبات': 'وجبات', 'مطعم': 'مطعم', 'مطاعم': 'مطاعم', 'كافيه': 'كافيه',
+            
+            // كلمات متعلقة بالعمل والوظائف
+            'وظيفه': 'وظيفة', 'وظائف': 'وظائف', 'شغل': 'شغل', 'عمل': 'عمل',
+            'موظف': 'موظف', 'موظفين': 'موظفين', 'شركه': 'شركة', 'شركات': 'شركات',
+            'مؤسسه': 'مؤسسة', 'مؤسسات': 'مؤسسات', 'مكتب': 'مكتب', 'مكاتب': 'مكاتب',
+            'رئيس': 'رئيس', 'مدير': 'مدير', 'مديرين': 'مديرين', 'مهندس': 'مهندس',
+            
+            // كلمات السفر والسياحة
+            'سفر': 'سفر', 'سياحه': 'سياحة', 'رحله': 'رحلة', 'رحلات': 'رحلات',
+            'سائح': 'سائح', 'سياح': 'سياح', 'فندق': 'فندق', 'فنادق': 'فنادق',
+            'طياره': 'طيارة', 'طيران': 'طيران', 'مطار': 'مطار', 'مطارات': 'مطارات',
+            'تذكره': 'تذكرة', 'تذاكر': 'تذاكر', 'حجز': 'حجز', 'حجوزات': 'حجوزات'
+        };
+
+        // قاموس التصحيحات الشامل للغة العربية - محدث 2025
+        const arabicCorrections = {
+            // الأخطاء الإملائية الأساسية
+            'هذة': 'هذه', 'هاذه': 'هذه', 'هاذا': 'هذا', 'هاؤلاء': 'هؤلاء',
+            'ذالك': 'ذلك', 'اولئك': 'أولئك', 'التى': 'التي', 'اللذي': 'الذي',
+            'اللتي': 'التي', 'اللواتي': 'اللاتي', 'اللائي': 'اللائي',
+            
+            // التحيات والعبارات الإسلامية
+            'ان شاء الله': 'إن شاء الله', 'انشاء الله': 'إن شاء الله', 'ان شالله': 'إن شاء الله',
+            'الحمدلله': 'الحمد لله', 'لا اله الا الله': 'لا إله إلا الله',
+            'استغفر الله': 'أستغفر الله', 'السلام عليكم': 'السلام عليكم',
+            'مع السلامه': 'مع السلامة', 'السلام عليكم ورحمه الله': 'السلام عليكم ورحمة الله',
+            'بارك الله فيك': 'بارك الله فيك', 'جزاك الله خيرا': 'جزاك الله خيراً',
+            
+            // التحيات العامة وكلمات الأدب
+            'اهلا وسهلا': 'أهلاً وسهلاً', 'اهلا': 'أهلاً', 'مرحبا': 'مرحباً',
+            'شكرا': 'شكراً', 'عفوا': 'عفواً', 'اسف': 'آسف', 'متاسف': 'متأسف',
+            'من فضلك': 'من فضلك', 'لو سمحت': 'لو سمحت', 'بعد اذنك': 'بعد إذنك',
+            'اذن': 'إذن', 'اذا': 'إذا', 'الا': 'إلا', 'امام': 'أمام',
+            
+            // أدوات الاستفهام والظروف
+            'ايضا': 'أيضاً', 'ايش': 'أيش', 'ايه': 'أيه', 'اين': 'أين',
+            'ايمتى': 'أيمتى', 'امتى': 'متى', 'ليه': 'ليه', 'ازاي': 'إزاي',
+            'كده': 'كده', 'علشان': 'علشان', 'عشان': 'عشان', 'ايه': 'إيه',
+            
+            // أرقام وكلمات الزمن
+            'احد': 'أحد', 'اول': 'أول', 'اخر': 'آخر', 'اخير': 'أخير',
+            'امس': 'أمس', 'غدا': 'غداً', 'بكرا': 'بكرة', 'دلوقتي': 'دلوقتي',
+            'دلوقت': 'دلوقتي', 'حاليا': 'حالياً', 'فورا': 'فوراً',
+            
+            // الصفات والمقارنات
+            'افضل': 'أفضل', 'اكثر': 'أكثر', 'اقل': 'أقل', 'اكبر': 'أكبر',
+            'اصغر': 'أصغر', 'اجمل': 'أجمل', 'احسن': 'أحسن', 'اعلى': 'أعلى',
+            'ادنى': 'أدنى', 'اهم': 'أهم', 'اسهل': 'أسهل', 'اصعب': 'أصعب',
+            'اوسع': 'أوسع', 'اضيق': 'أضيق', 'اطول': 'أطول', 'اقصر': 'أقصر',
+            
+            // التقنية والتكنولوجيا
+            'برمجه': 'برمجة', 'تطوير': 'تطوير', 'تصميم': 'تصميم', 'صفحه': 'صفحة',
+            'موقع': 'موقع', 'تطبيق': 'تطبيق', 'برنامج': 'برنامج', 'انترنت': 'إنترنت',
+            'الانترنت': 'الإنترنت', 'ايميل': 'إيميل', 'البريد الالكتروني': 'البريد الإلكتروني',
+            'كمبيوتر': 'كمبيوتر', 'لابتوب': 'لابتوب', 'موبايل': 'موبايل', 'هاتف': 'هاتف',
+            
+            // مصطلحات حديثة وذكاء اصطناعي
+            'ذكاء اصطناعي': 'ذكاء اصطناعي', 'ذكاء صناعي': 'ذكاء اصطناعي',
+            'تعلم الالة': 'تعلم الآلة', 'تعلم عميق': 'تعلم عميق', 'بيانات ضخمة': 'بيانات ضخمة',
+            'التعلم الالي': 'التعلم الآلي', 'خوارزمية': 'خوارزمية', 'خوارزميات': 'خوارزميات',
+            'روبوت': 'روبوت', 'اتمتة': 'أتمتة', 'منصة': 'منصة', 'رقمي': 'رقمي',
+            'رقمنة': 'رقمنة', 'تقني': 'تقني', 'تكنولوجيا': 'تكنولوجيا', 'تكنولوجيه': 'تكنولوجيا',
+            
+            // اللغات والجنسيات
+            'انجليزي': 'إنجليزي', 'الانجليزية': 'الإنجليزية', 'عربي': 'عربي',
+            'اسلامي': 'إسلامي', 'مسيحي': 'مسيحي', 'امريكي': 'أمريكي',
+            'اوروبي': 'أوروبي', 'افريقي': 'أفريقي', 'اسيوي': 'آسيوي',
+            
+            // كلمات عامة وشائعة
+            'انسان': 'إنسان', 'انسانة': 'إنسانة', 'اطفال': 'أطفال',
+            'استاذ': 'أستاذ', 'استاذة': 'أستاذة', 'مدرس': 'مدرس',
+            'طالب': 'طالب', 'طالبة': 'طالبة', 'جامعة': 'جامعة',
+            'مدرسة': 'مدرسة', 'اسئلة': 'أسئلة', 'سؤال': 'سؤال',
+            'اجابة': 'إجابة', 'اجابات': 'إجابات', 'معلومات': 'معلومات',
+            'اخبار': 'أخبار', 'جديد': 'جديد', 'قديم': 'قديم', 'حديث': 'حديث',
+            
+            // أسماء المواقع والشركات التقنية
+            'فيسبوك': 'فيسبوك', 'انستغرام': 'إنستغرام', 'واتساب': 'واتساب',
+            'تويتر': 'تويتر', 'يوتيوب': 'يوتيوب', 'تيك توك': 'تيك توك',
+            'جوجل': 'جوجل', 'مايكروسوفت': 'مايكروسوفت', 'ابل': 'آبل',
+            'سامسونغ': 'سامسونغ', 'هواوي': 'هواوي', 'نوكيا': 'نوكيا',
+            
+            // مجالات متخصصة
+            'الكترونية': 'إلكترونية', 'الكتروني': 'إلكتروني', 'اقتصاد': 'اقتصاد',
+            'اقتصادي': 'اقتصادي', 'سياسة': 'سياسة', 'سياسي': 'سياسي',
+            'اجتماعي': 'اجتماعي', 'ثقافي': 'ثقافي', 'ثقافة': 'ثقافة',
+            'تعليم': 'تعليم', 'تعليمي': 'تعليمي', 'طبي': 'طبي',
+            'طبية': 'طبية', 'صحي': 'صحي', 'صحة': 'صحة', 'علمي': 'علمي',
+            
+            // كلمات حديثة من السوشيال ميديا
+            'لايك': 'لايك', 'شير': 'شير', 'فولو': 'فولو', 'كومنت': 'كومنت',
+            'ريتويت': 'ريتويت', 'هاشتاغ': 'هاشتاغ', 'تاغ': 'تاغ',
+            'ستوري': 'ستوري', 'بوست': 'بوست', 'لايف': 'لايف',
+            'سترتش': 'ستريتش', 'تريند': 'تريند', 'ترندنغ': 'ترندنغ',
+            
+            // كلمات إضافية متقدمة
+            'مكاتبه': 'مكاتبة', 'مراسله': 'مراسلة', 'محادثه': 'محادثة', 'مناقشه': 'مناقشة',
+            'مشاهده': 'مشاهدة', 'متابعه': 'متابعة', 'مراجعه': 'مراجعة', 'مطالعه': 'مطالعة',
+            'قراءه': 'قراءة', 'كتابه': 'كتابة', 'طباعه': 'طباعة', 'مشاركه': 'مشاركة',
+            
+            // أسماء الدول والمدن
+            'امريكا': 'أمريكا', 'اوروبا': 'أوروبا', 'افريقيا': 'أفريقيا', 'اسيا': 'آسيا',
+            'استراليا': 'أستراليا', 'انجلترا': 'إنجلترا', 'ايطاليا': 'إيطاليا', 'اسبانيا': 'إسبانيا',
+            'المانيا': 'ألمانيا', 'فرنسا': 'فرنسا', 'اليابان': 'اليابان', 'الصين': 'الصين',
+            'روسيا': 'روسيا', 'البرازيل': 'البرازيل', 'كندا': 'كندا', 'المكسيك': 'المكسيك',
+            
+            // مصطلحات طبية حديثة
+            'كورونا': 'كورونا', 'كوفيد': 'كوفيد', 'لقاح': 'لقاح', 'تطعيم': 'تطعيم',
+            'فيروس': 'فيروس', 'بكتيريا': 'بكتيريا', 'مضاد حيوي': 'مضاد حيوي',
+            'صحه': 'صحة', 'مريض': 'مريض', 'مرضى': 'مرضى', 'دواء': 'دواء',
+            'ادويه': 'أدوية', 'علاج': 'علاج', 'دكتور': 'دكتور', 'طبيب': 'طبيب',
+            
+            // مصطلحات اقتصادية ومالية
+            'اقتصاد': 'اقتصاد', 'اسهم': 'أسهم', 'اسواق': 'أسواق', 'استثمار': 'استثمار',
+            'عمله': 'عملة', 'عملات': 'عملات', 'دولار': 'دولار', 'يورو': 'يورو',
+            'جنيه': 'جنيه', 'ريال': 'ريال', 'درهم': 'درهم', 'دينار': 'دينار',
+            'تداول': 'تداول', 'بورصه': 'بورصة', 'بنك': 'بنك', 'بنوك': 'بنوك',
+            
+            // مصطلحات رياضية
+            'كوره': 'كرة', 'رياضه': 'رياضة', 'فريق': 'فريق', 'مباراه': 'مباراة',
+            'مباريات': 'مباريات', 'لاعب': 'لاعب', 'لاعبين': 'لاعبين', 'هدف': 'هدف',
+            'اهداف': 'أهداف', 'نتيجه': 'نتيجة', 'بطوله': 'بطولة', 'كاس': 'كأس',
+            'ميداليه': 'ميدالية', 'ذهبيه': 'ذهبية', 'فضيه': 'فضية', 'برونزيه': 'برونزية',
+            
+            // كلمات الطعام والشراب
+            'اكل': 'أكل', 'طعام': 'طعام', 'شراب': 'شراب', 'مشروب': 'مشروب',
+            'مشروبات': 'مشروبات', 'قهوه': 'قهوة', 'شاي': 'شاي', 'عصير': 'عصير',
+            'فطار': 'فطار', 'غداء': 'غداء', 'عشاء': 'عشاء', 'وجبه': 'وجبة',
+            'وجبات': 'وجبات', 'مطعم': 'مطعم', 'مطاعم': 'مطاعم', 'كافيه': 'كافيه',
+            
+            // كلمات متعلقة بالعمل والوظائف
+            'وظيفه': 'وظيفة', 'وظائف': 'وظائف', 'شغل': 'شغل', 'عمل': 'عمل',
+            'موظف': 'موظف', 'موظفين': 'موظفين', 'شركه': 'شركة', 'شركات': 'شركات',
+            'مؤسسه': 'مؤسسة', 'مؤسسات': 'مؤسسات', 'مكتب': 'مكتب', 'مكاتب': 'مكاتب',
+            'رئيس': 'رئيس', 'مدير': 'مدير', 'مديرين': 'مديرين', 'مهندس': 'مهندس',
+            
+            // كلمات السفر والسياحة
+            'سفر': 'سفر', 'سياحه': 'سياحة', 'رحله': 'رحلة', 'رحلات': 'رحلات',
+            'سائح': 'سائح', 'سياح': 'سياح', 'فندق': 'فندق', 'فنادق': 'فنادق',
+            'طياره': 'طيارة', 'طيران': 'طيران', 'مطار': 'مطار', 'مطارات': 'مطارات',
+            'تذكره': 'تذكرة', 'تذاكر': 'تذاكر', 'حجز': 'حجز', 'حجوزات': 'حجوزات'
+        };
+        
+        // دالة المصحح اللغوي (تعمل تلقائياً مع التحويل الصوتي)
+        function applySpellCorrection(text, language) {
+            if (!text || text.trim() === '') return text;
+            
+            let correctedText = text;
+            let correctionsApplied = 0;
+            
+            // اختيار القاموس المناسب حسب اللغة
+            const dictionary = language === 'ar-SA' ? arabicCorrections : englishCorrections;
+            
+            // تطبيق التصحيحات من القاموس
+            for (const [wrong, correct] of Object.entries(dictionary)) {
+                const wrongPattern = new RegExp(`\\b${wrong}\\b`, 'gi');
+                if (wrongPattern.test(correctedText)) {
+                    correctedText = correctedText.replace(wrongPattern, correct);
+                    correctionsApplied++;
+                }
+            }
+            
+            // تصحيحات إضافية خاصة بالعربية
+            if (language === 'ar-SA') {
+                // تصحيح الهمزات في بداية الكلمات
+                const beforeHamza = correctedText;
+                correctedText = correctedText.replace(/\bا([لبتثجحخدذرزسشصضطظعغفقكلمنهوي])/g, 'أ$1');
+                if (correctedText !== beforeHamza) correctionsApplied++;
+                
+                // تصحيح الألف المقصورة
+                const beforeAlif = correctedText;
+                correctedText = correctedText.replace(/ي\s/g, 'ى ');
+                correctedText = correctedText.replace(/ي\./g, 'ى.');
+                correctedText = correctedText.replace(/ي\,/g, 'ى,');
+                if (correctedText !== beforeAlif) correctionsApplied++;
+            }
+            
+            // تصحيحات إضافية خاصة بالإنجليزية
+            if (language === 'en-US') {
+                // تصحيح الأحرف الكبيرة في بداية الجمل
+                const beforeCapital = correctedText;
+                correctedText = correctedText.replace(/(^|\.\s+)([a-z])/g, (match, p1, p2) => {
+                    return p1 + p2.toUpperCase();
+                });
+                
+                // تصحيح I إلى I دائماً
+                correctedText = correctedText.replace(/\bi\s/g, 'I ');
+                correctedText = correctedText.replace(/\bi\./g, 'I.');
+                correctedText = correctedText.replace(/\bi\,/g, 'I,');
+                if (correctedText !== beforeCapital) correctionsApplied++;
+            }
+            
+            // إضافة مؤشر بصري للتصحيحات
+            if (correctionsApplied > 0) {
+                console.log(`🔧 تم تطبيق ${correctionsApplied} تصحيح لغوي`);
+            }
+            
+                        return correctedText;
+        }
+
+
+        
+        // Removed isSecureContext check - GitHub Pages provides HTTPS by default
+
+        // Voice input - Enhanced with Arabic support
+        function toggleVoiceInput() {
+            // Check if speech recognition is supported
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showStatus("🚫 Voice recognition is not supported in this browser environment");
+                return;
+            }
+            
+            // Toggle recording state for both buttons
+            const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
+            [voiceBtn, voiceBtnMobile2].forEach(btn => {
+                if (btn) btn.classList.toggle('recording');
+            });
+            isRecording = !isRecording;
+            
+            if (!recognition) {
+                // Use the standard or webkit version based on availability
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                // Enhanced configuration for better Arabic support
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.maxAlternatives = 3;
+                
+                // Set language based on current content or default to Arabic
+                currentLanguage = detectLanguageFromContent();
+                recognition.lang = currentLanguage;
+                
+                recognition.onstart = () => {
+                    isRecording = true;
+                    const langMessage = currentLanguage === 'ar-SA' ? 
+                        '🎙️ Attentively listening for your eloquent Arabic expressions...' : 
+                        '🎙️ Gracefully capturing your refined English articulation...';
+                    showStatus(langMessage);
+                };
+                
+                recognition.onresult = (event) => {
+                    let finalTranscript = '';
+                    let interimTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const result = event.results[i];
+                        const transcript = result[0].transcript;
+                        
+                        if (result.isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    if (finalTranscript) {
+                        // تطبيق المصحح اللغوي تلقائياً على النص المحول من الصوت
+                        const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
+                        
+                        // Insert the corrected text
+                        const selection = window.getSelection();
+                        const range = selection.getRangeAt(0);
+                        
+                        // Create a text node with the corrected transcript
+                        const textNode = document.createTextNode(correctedText);
+                        range.insertNode(textNode);
+                        
+                        // Move cursor to end of inserted text
+                        range.setStartAfter(textNode);
+                        range.collapse(true);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                        
+                        // Apply appropriate styling based on language
+                        applyFontBasedOnContent(editor);
+                        
+                        // Auto-detect language from new content and update recognition if needed
+                        const detectedLang = detectLanguageFromContent();
+                        if (detectedLang !== currentLanguage) {
+                            currentLanguage = detectedLang;
+                            recognition.lang = currentLanguage;
+                            const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+                            showStatus(`🌐 Intelligently adapted to ${langName} linguistic patterns`);
+                        }
+                        
+                        // Trigger input event for auto-save
+                        const inputEvent = new Event('input', { bubbles: true });
+                        editor.dispatchEvent(inputEvent);
+                        
+                        // عرض رسالة تؤكد التصحيح إذا تم تطبيقه
+                        if (correctedText !== finalTranscript) {
+                            showStatus(`✨ Auto-corrected and transcribed: "${correctedText.trim()}" 📝`);
+                        } else {
+                            showStatus(`✨ Transcribed with spell-check: "${finalTranscript.trim()}" ✅`);
+                        }
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    isRecording = false;
+                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
+                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
+                        if (btn) btn.classList.remove('recording');
+                    });
+                    
+                    let errorMessage = "🚨 Voice recognition encountered an issue: ";
+                    switch(event.error) {
+                        case 'no-speech':
+                            errorMessage += 'No distinguished speech patterns detected';
+                            break;
+                        case 'audio-capture':
+                            errorMessage += 'Unable to access the sophisticated audio interface';
+                            break;
+                        case 'not-allowed':
+                            errorMessage += 'Microphone access permission declined';
+                            // Add additional guidance for permission issues
+                            setTimeout(() => {
+                                showPermissionHelp();
+                            }, 2000);
+                            break;
+                        case 'network':
+                            errorMessage += 'Network connectivity challenge encountered';
+                            break;
+                        default:
+                            errorMessage += `Unexpected circumstance: ${event.error}`;
+                    }
+                    showStatus(errorMessage);
+                    
+                    // Try switching language automatically if current attempt fails
+                    setTimeout(() => {
+                        currentLanguage = currentLanguage === 'ar-SA' ? 'en-US' : 'ar-SA';
+                        recognition.lang = currentLanguage;
+                        const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+                        showStatus(`🔄 Gracefully attempting ${langName} recognition protocol`);
+                    }, 2000);
+                };
+                
+                recognition.onend = () => {
+                    isRecording = false;
+                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
+                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
+                        if (btn) btn.classList.remove('recording');
+                    });
+                    if (voiceBtn && voiceBtn.classList.contains('recording')) {
+                        // Restart if still supposed to be recording
+                        setTimeout(() => recognition.start(), 100);
+                    }
+                };
+            } else {
+                // Update language based on current content
+                currentLanguage = detectLanguageFromContent();
+                recognition.lang = currentLanguage;
+            }
+            
+            if (isRecording) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    showStatus("🚫 Unable to start voice recognition. Please check browser permissions.");
+                    const voiceBtnMobile2 = document.getElementById('voiceBtnMobile2');
+                    [voiceBtn, voiceBtnMobile2].forEach(btn => {
+                        if (btn) btn.classList.remove('recording');
+                    });
+                    isRecording = false;
+                }
+            } else {
+                recognition.stop();
+                showStatus("🔇 Voice recognition stopped");
+            }
+        }
+        
+        // Save note
+        function saveNote() {
+            const content = {
+                note: editor.innerHTML,
+                color: currentColor,
+                paperColor: currentPaperColor,
+                style: document.getElementById('notebook-paper').className.replace('rounded-lg', '').trim(),
+                language: currentLanguage
+            };
+            
+            localStorage.setItem('digitalNotebook', JSON.stringify(content));
+            showStatus("💾 Your distinguished composition has been securely preserved", 2000);
+        }
+        
+        // Load saved content
+        function loadSavedContent() {
+            const saved = localStorage.getItem('digitalNotebook');
+            if (saved) {
+                const content = JSON.parse(saved);
+                
+                editor.innerHTML = content.note;
+                currentColor = content.color || '#1e293b';
+                currentPaperColor = content.paperColor || 'white';
+                currentLanguage = content.language || detectLanguageFromContent();
+                
+                // Set color
+                editor.style.color = currentColor;
+                
+                // Apply appropriate fonts based on content
+                applyFontBasedOnContent(editor);
+                
+                // Set paper color and style
+                const styleClass = content.style?.split(' ').find(cls => 
+                    ['lined', 'grid', 'dots', 'blank'].includes(cls)) || 'lined';
+                changePaperColor(currentPaperColor);
+                changeStyle(styleClass);
+                
+                showStatus("📂 Your previous masterpiece has been elegantly restored");
+            }
+        }
+        
+        // ==================== نظام المشاركة الاحترافي ====================
+        
+        // Share note - Enhanced professional sharing system
+        function shareNote() {
+            const content = editor.textContent || editor.innerText || '';
+            
+            // Check if there's content to share
+            if (!content.trim()) {
+                showStatus("📝 Please compose something wonderful before sharing your masterpiece.");
+                return;
+            }
+            
+            // Create share modal
+            createShareModal(content);
+        }
+        
+        // Create professional share modal
+        function createShareModal(content) {
+            // Remove existing modal if any
+            const existingModal = document.getElementById('shareModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Create modal overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.id = 'shareModal';
+            modalOverlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            
+            // Create modal content
+            const modalContent = document.createElement('div');
+            modalContent.className = 'bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto';
+            
+            // Get preview of content (first 100 characters)
+            const preview = content.length > 100 ? content.substring(0, 100) + '...' : content;
+            
+            const encodedContent = encodeURIComponent(content);
+            const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
+            
+            modalContent.innerHTML = 
+                '<div class="bg-gradient-to-r from-blue-600 to-blue-700 p-6 rounded-t-2xl">' +
+                    '<div class="flex items-center justify-between">' +
+                        '<div class="flex items-center space-x-3">' +
+                            '<div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">' +
+                                '<i class="fas fa-share-alt text-white text-lg"></i>' +
+                            '</div>' +
+                                                         '<div>' +
+                                 '<h2 class="text-xl font-bold text-white">Share Your Masterpiece</h2>' +
+                                 '<p class="text-blue-100 text-sm">Choose your preferred sharing method</p>' +
+                             '</div>' +
+                        '</div>' +
+                        '<button onclick="closeShareModal()" class="text-white hover:text-blue-200 transition-colors p-2">' +
+                            '<i class="fas fa-times text-xl"></i>' +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+                
+                '<div class="p-6">' +
+                    '<!-- Content Preview -->' +
+                    '<div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">' +
+                                                 '<h3 class="text-sm font-semibold text-gray-600 mb-2 flex items-center">' +
+                             '<i class="fas fa-eye text-blue-500 mr-2"></i>' +
+                             'Content Preview' +
+                         '</h3>' +
+                        '<p class="text-gray-800 text-sm leading-relaxed" dir="auto">' + preview + '</p>' +
+                                                 '<div class="mt-2 text-xs text-gray-500">' +
+                             'Word count: ' + wordCount + ' words' +
+                         '</div>' +
+                    '</div>' +
+                    
+                    '<!-- Share Options -->' +
+                    '<div class="space-y-4">' +
+                        '<!-- Quick Actions -->' +
+                        '<div class="grid grid-cols-2 gap-3">' +
+                                                         '<button onclick="copyToClipboard(\'' + encodedContent + '\')" ' +
+                                     'class="flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-md">' +
+                                 '<i class="fas fa-copy text-sm"></i>' +
+                                 '<span class="font-medium text-sm">Copy to Clipboard</span>' +
+                             '</button>' +
+                             
+                             '<button onclick="downloadAsFile(\'' + encodedContent + '\')" ' +
+                                     'class="flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-md">' +
+                                 '<i class="fas fa-download text-sm"></i>' +
+                                 '<span class="font-medium text-sm">Download as File</span>' +
+                             '</button>' +
+                        '</div>' +
+                        
+                        '<!-- Native Share API -->' +
+                                                 '<button id="nativeShareBtn" onclick="nativeShare(\'' + encodedContent + '\')" ' +
+                                 'class="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-md hidden">' +
+                             '<i class="fas fa-mobile-alt text-sm"></i>' +
+                             '<span class="font-medium">Native Share</span>' +
+                         '</button>' +
+                        
+                        '<!-- Social Media Options -->' +
+                        '<div class="border-t pt-4">' +
+                                                         '<h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">' +
+                                 '<i class="fas fa-hashtag text-blue-500 mr-2"></i>' +
+                                 'Share on Social Media' +
+                             '</h4>' +
+                            
+                            '<div class="grid grid-cols-2 gap-3">' +
+                                                                 '<button onclick="shareToWhatsApp(\'' + encodedContent + '\')" ' +
+                                         'class="flex items-center justify-center space-x-2 bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition-colors">' +
+                                     '<i class="fab fa-whatsapp text-lg"></i>' +
+                                     '<span class="text-sm font-medium">WhatsApp</span>' +
+                                 '</button>' +
+                                 
+                                 '<button onclick="shareToTwitter(\'' + encodedContent + '\')" ' +
+                                         'class="flex items-center justify-center space-x-2 bg-blue-400 text-white px-3 py-2 rounded-lg hover:bg-blue-500 transition-colors">' +
+                                     '<i class="fab fa-twitter text-lg"></i>' +
+                                     '<span class="text-sm font-medium">Twitter</span>' +
+                                 '</button>' +
+                                 
+                                 '<button onclick="shareToTelegram(\'' + encodedContent + '\')" ' +
+                                         'class="flex items-center justify-center space-x-2 bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition-colors">' +
+                                     '<i class="fab fa-telegram text-lg"></i>' +
+                                     '<span class="text-sm font-medium">Telegram</span>' +
+                                 '</button>' +
+                                 
+                                 '<button onclick="shareToEmail(\'' + encodedContent + '\')" ' +
+                                         'class="flex items-center justify-center space-x-2 bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors">' +
+                                     '<i class="fas fa-envelope text-lg"></i>' +
+                                     '<span class="text-sm font-medium">Email</span>' +
+                                 '</button>' +
+                            '</div>' +
+                        '</div>' +
+                        
+                        '<!-- Advanced Options -->' +
+                        '<div class="border-t pt-4">' +
+                                                         '<h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">' +
+                                 '<i class="fas fa-cog text-blue-500 mr-2"></i>' +
+                                 'Advanced Options' +
+                             '</h4>' +
+                            
+                            '<div class="space-y-2">' +
+                                                                 '<button onclick="generateQRCode(\'' + encodedContent + '\')" ' +
+                                         'class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300">' +
+                                     '<i class="fas fa-qrcode text-sm"></i>' +
+                                     '<span class="text-sm font-medium">Generate QR Code</span>' +
+                                 '</button>' +
+                                 
+                                 '<button onclick="copyAsHTML(\'' + encodedContent + '\')" ' +
+                                         'class="w-full flex items-center justify-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300">' +
+                                     '<i class="fas fa-code text-sm"></i>' +
+                                     '<span class="text-sm font-medium">Copy as HTML</span>' +
+                                 '</button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+            
+            // Check if native share is available
+            if (navigator.share) {
+                document.getElementById('nativeShareBtn').classList.remove('hidden');
+            }
+            
+            // Close modal when clicking overlay
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    closeShareModal();
+                }
+            });
+            
+            // Show modal with animation
+            setTimeout(() => {
+                modalOverlay.style.opacity = '0';
+                modalOverlay.style.transform = 'scale(0.95)';
+                modalOverlay.style.transition = 'all 0.3s ease-out';
+                modalOverlay.style.opacity = '1';
+                modalOverlay.style.transform = 'scale(1)';
+            }, 10);
+        }
+        
+        // Close share modal
+        function closeShareModal() {
+            const modal = document.getElementById('shareModal');
+            if (modal) {
+                modal.style.opacity = '0';
+                modal.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        }
+        
+        // Copy to clipboard
+        async function copyToClipboard(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            
+            try {
+                await navigator.clipboard.writeText(content);
+                showShareStatus('✅ Content gracefully copied to your clipboard', 'success');
+                closeShareModal();
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = content;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showShareStatus('✅ Content gracefully copied to your clipboard', 'success');
+                    closeShareModal();
+                } catch (fallbackErr) {
+                    showShareStatus('❌ Unable to copy content. Please select and copy manually', 'error');
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+        
+        // Download as file
+        function downloadAsFile(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const currentDate = new Date();
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const timeStr = currentDate.toTimeString().split(' ')[0].replace(/:/g, '-');
+            
+            // Determine file extension based on content language
+            const isArabic = isArabicText(content);
+            const fileName = isArabic ? 
+                `مذكرة-${dateStr}-${timeStr}.txt` : 
+                `note-${dateStr}-${timeStr}.txt`;
+            
+            // Create file content with metadata
+            const dateAr = currentDate.toLocaleDateString('ar-SA');
+            const timeAr = currentDate.toLocaleTimeString('ar-SA');
+            const dateEn = currentDate.toLocaleDateString('en-US');
+            const timeEn = currentDate.toLocaleTimeString('en-US');
+            
+            const fileContent = 'Script.ai - Distinguished Digital Workspace Note\n' +
+                'Date Created: ' + dateEn + ' at ' + timeEn + '\n' +
+                '═══════════════════════════════════════════════════════════════\n\n' +
+                content + '\n\n' +
+                '═══════════════════════════════════════════════════════════════\n' +
+                'Elegantly crafted with Script.ai - Intelligent Writing Companion\n' +
+                'Experience the future of writing at:\n' +
+                'https://moibrahim0115.github.io/Script/';
+            
+            // Create and trigger download
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showShareStatus('📁 File downloaded successfully to your device', 'success');
+            closeShareModal();
+        }
+        
+        // Native share API
+        async function nativeShare(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Shared from Script.ai',
+                        text: content,
+                        url: window.location.href
+                    });
+                    
+                    showShareStatus('✅ Content shared successfully', 'success');
+                    closeShareModal();
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        showShareStatus('❌ Sharing failed', 'error');
+                    }
+                }
+            } else {
+                showShareStatus('❌ Native sharing not available in this browser', 'error');
+            }
+        }
+        
+        // Share to WhatsApp
+        function shareToWhatsApp(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const currentUrl = window.location.href;
+            const message = '📝 Shared from Script.ai:\n\n' + content + '\n\n✨ Created using: ' + currentUrl;
+            const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
+            
+            window.open(whatsappUrl, '_blank');
+            showShareStatus('📱 Opening WhatsApp for sharing', 'info');
+            closeShareModal();
+        }
+        
+        // Share to Twitter
+        function shareToTwitter(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const tweet = content.length > 200 ? content.substring(0, 200) + '...' : content;
+            const currentUrl = window.location.href;
+            const twitterUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet) + '&url=' + encodeURIComponent(currentUrl) + '&hashtags=ScriptAI,DigitalWriting';
+            
+            window.open(twitterUrl, '_blank');
+            showShareStatus('🐦 Opening Twitter for sharing', 'info');
+            closeShareModal();
+        }
+        
+        // Share to Telegram
+        function shareToTelegram(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const currentUrl = window.location.href;
+            const message = '📝 Shared from Script.ai:\n\n' + content + '\n\n✨ Link: ' + currentUrl;
+            const telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(currentUrl) + '&text=' + encodeURIComponent(message);
+            
+            window.open(telegramUrl, '_blank');
+            showShareStatus('✈️ Opening Telegram for sharing', 'info');
+            closeShareModal();
+        }
+        
+        // Share to Email
+        function shareToEmail(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const subject = 'Note Shared from Script.ai';
+            const currentUrl = window.location.href;
+            
+            const body = 'Hello,\n\n' +
+                'I would like to share this note with you:\n\n' +
+                content + '\n\n' +
+                '═══════════════════════════════════════\n' +
+                'Created using Script.ai - Intelligent Writing Tool\n' +
+                currentUrl + '\n\n' +
+                'Best regards';
+            
+            const emailUrl = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            window.location.href = emailUrl;
+            
+            showShareStatus('📧 Opening email client for sharing', 'info');
+            closeShareModal();
+        }
+        
+        // Generate QR Code
+        function generateQRCode(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            // Using QR Server API for QR code generation
+            const qrData = encodeURIComponent(content);
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qrData}`;
+            
+            // Create QR modal
+            const qrModal = document.createElement('div');
+            qrModal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            qrModal.innerHTML = 
+                '<div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center">' +
+                    '<h3 class="text-lg font-bold mb-4 text-gray-800">QR Code for Content</h3>' +
+                    '<div class="bg-gray-100 p-4 rounded-lg mb-4">' +
+                        '<img src="' + qrUrl + '" alt="QR Code" class="mx-auto" style="max-width: 250px;">' +
+                    '</div>' +
+                    '<p class="text-sm text-gray-600 mb-4">Scan the code to view content</p>' +
+                    '<button onclick="this.parentElement.parentElement.remove()" ' +
+                            'class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">' +
+                        'Close' +
+                    '</button>' +
+                '</div>';
+            
+            document.body.appendChild(qrModal);
+            
+            // Close QR modal when clicking overlay
+            qrModal.addEventListener('click', (e) => {
+                if (e.target === qrModal) {
+                    qrModal.remove();
+                }
+            });
+            
+            showShareStatus('📱 QR code generated successfully', 'success');
+        }
+        
+        // Copy as HTML
+        async function copyAsHTML(encodedContent) {
+            const content = decodeURIComponent(encodedContent);
+            const currentDate = new Date();
+            const dateStr = currentDate.toLocaleDateString('en-US');
+            const timeStr = currentDate.toLocaleTimeString('en-US');
+            const currentUrl = window.location.href;
+            
+            const htmlContent = 
+                '<!DOCTYPE html>\n' +
+                '<html lang="en" dir="auto">\n' +
+                '<head>\n' +
+                '    <meta charset="UTF-8">\n' +
+                '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+                '    <title>Note from Script.ai</title>\n' +
+                '    <style>\n' +
+                '        body { \n' +
+                '            font-family: \'Amiri\', \'Scheherazade New\', \'Patrick Hand\', serif; \n' +
+                '            line-height: 1.8; \n' +
+                '            max-width: 800px; \n' +
+                '            margin: 0 auto; \n' +
+                '            padding: 2rem; \n' +
+                '            background: #f8f9fa;\n' +
+                '        }\n' +
+                '        .content { \n' +
+                '            background: white; \n' +
+                '            padding: 2rem; \n' +
+                '            border-radius: 12px; \n' +
+                '            box-shadow: 0 4px 6px rgba(0,0,0,0.1); \n' +
+                '            white-space: pre-wrap;\n' +
+                '        }\n' +
+                '        .header { \n' +
+                '            text-align: center; \n' +
+                '            margin-bottom: 2rem; \n' +
+                '            color: #1e40af; \n' +
+                '            border-bottom: 2px solid #e5e7eb; \n' +
+                '            padding-bottom: 1rem; \n' +
+                '        }\n' +
+                '    </style>\n' +
+                '</head>\n' +
+                '<body>\n' +
+                '    <div class="header">\n' +
+                '        <h1>📝 Note from Script.ai</h1>\n' +
+                '        <p>Created on: ' + dateStr + ' - ' + timeStr + '</p>\n' +
+                '    </div>\n' +
+                '    <div class="content">' + content + '</div>\n' +
+                '    <footer style="text-align: center; margin-top: 2rem; color: #6b7280; font-size: 0.9rem;">\n' +
+                '        ✨ Crafted with <a href="' + currentUrl + '" style="color: #3b82f6;">Script.ai</a>\n' +
+                '    </footer>\n' +
+                '</body>\n' +
+                '</html>';
+            
+            try {
+                await navigator.clipboard.writeText(htmlContent);
+                showShareStatus('✅ HTML code elegantly copied to clipboard', 'success');
+                closeShareModal();
+            } catch (err) {
+                showShareStatus('❌ Failed to copy HTML code', 'error');
+            }
+        }
+        
+        // Show share status message
+        function showShareStatus(message, type = 'info') {
+            const colors = {
+                success: { bg: '#ecfdf5', border: '#10b981', text: '#065f46' },
+                error: { bg: '#fef2f2', border: '#ef4444', text: '#991b1b' },
+                info: { bg: '#eff6ff', border: '#3b82f6', text: '#1e40af' }
+            };
+            
+            const color = colors[type] || colors.info;
+            
+            statusDiv.innerHTML = message;
+            statusDiv.style.opacity = 1;
+            statusDiv.style.transform = 'translateY(0)';
+            statusDiv.style.backgroundColor = color.bg;
+            statusDiv.style.border = `1px solid ${color.border}`;
+            statusDiv.style.color = color.text;
+            statusDiv.style.maxWidth = '500px';
+            statusDiv.style.margin = '1rem auto';
+            statusDiv.style.padding = '1rem';
+            
+            setTimeout(() => {
+                statusDiv.style.opacity = 0;
+                statusDiv.style.transform = 'translateY(20px)';
+            }, 3000);
+        }
+        
+        // Show permission help
+        function showPermissionHelp() {
+            const helpHTML = 
+                '<div style="text-align: left; direction: ltr; line-height: 1.8;">' +
+                    '<h4 style="color: #dc2626; margin-bottom: 1rem; font-weight: 600;">🎤 Microphone Access Permission Guidance</h4>' +
+                    '<div style="background: #f9fafb; padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #3b82f6;">' +
+                        '<h5 style="margin-bottom: 0.8rem; color: #1f2937; font-weight: 500;">Elegant Steps to Grant Permission:</h5>' +
+                        '<ol style="margin-left: 1.5rem; margin-bottom: 0; color: #374151;">' +
+                            '<li style="margin-bottom: 0.4rem;">Locate the security icon 🔒 or microphone symbol 🎤 in your browser\'s address bar</li>' +
+                            '<li style="margin-bottom: 0.4rem;">Click the icon and select "Allow" from the distinguished options</li>' +
+                            '<li style="margin-bottom: 0.4rem;">If no prompt appears, refresh the page (F5) to reinitiate the permission request</li>' +
+                            '<li style="margin-bottom: 0.4rem;">Gracefully retry the "Voice" button to commence your audio experience</li>' +
+                        '</ol>' +
+                    '</div>' +
+                    '<p style="font-size: 0.9rem; color: #6b7280; font-style: italic;">' +
+                        '💡 Alternatively, navigate to your browser\'s settings to manually configure site permissions for this distinguished workspace' +
+                    '</p>' +
+                '</div>';
+            
+            statusDiv.innerHTML = helpHTML;
+            statusDiv.style.opacity = 1;
+            statusDiv.style.transform = 'translateY(0)';
+            statusDiv.style.backgroundColor = '#fef3c7';
+            statusDiv.style.border = '1px solid #f59e0b';
+            statusDiv.style.maxWidth = '600px';
+            statusDiv.style.margin = '1rem auto';
+            statusDiv.style.padding = '1.5rem';
+            
+            // Auto-hide after 8 seconds
+            setTimeout(() => {
+                statusDiv.style.opacity = 0;
+                statusDiv.style.transform = 'translateY(20px)';
+            }, 8000);
+        }
+
+        // Show browser compatibility info
+        function showBrowserInfo() {
+            const infoHTML = 
+                '<div style="text-align: center; direction: ltr; line-height: 1.8;">' +
+                    '<h4 style="color: #dc2626; margin-bottom: 1rem; font-weight: 600;">🎤 Voice Recognition Support</h4>' +
+                    '<p style="margin-bottom: 1rem; color: #374151;">Voice recognition is not supported in this browser.</p>' +
+                    '<div style="background: #f3f4f6; padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem;">' +
+                        '<h5 style="margin-bottom: 0.8rem; color: #065f46; font-weight: 600;">💡 Supported Browsers:</h5>' +
+                        '<ul style="margin: 0; color: #374151; text-align: left;">' +
+                            '<li>✅ Google Chrome</li>' +
+                            '<li>✅ Microsoft Edge</li>' +
+                            '<li>✅ Safari (iOS/macOS)</li>' +
+                            '<li>❌ Firefox (limited support)</li>' +
+                        '</ul>' +
+                    '</div>' +
+                    '<p style="font-size: 0.9rem; color: #6b7280; font-style: italic;">' +
+                        'You can still use the text editor normally - only voice input is affected' +
+                    '</p>' +
+                '</div>';
+            
+            statusDiv.innerHTML = infoHTML;
+            statusDiv.style.opacity = 1;
+            statusDiv.style.transform = 'translateY(0)';
+            statusDiv.style.backgroundColor = '#fef2f2';
+            statusDiv.style.border = '1px solid #fecaca';
+            statusDiv.style.maxWidth = '500px';
+            statusDiv.style.margin = '1rem auto';
+            statusDiv.style.padding = '1.5rem';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                statusDiv.style.opacity = 0;
+                statusDiv.style.transform = 'translateY(20px)';
+            }, 5000);
+        }
+
+        // Show status message
+        function showStatus(message, duration = 3000) {
+            statusDiv.innerHTML = message; // Changed to innerHTML to support HTML content
+            statusDiv.style.opacity = 1;
+            statusDiv.style.transform = 'translateY(0)';
+            statusDiv.style.backgroundColor = '#f0f9ff';
+            statusDiv.style.border = '1px solid #e0e7ff';
+            statusDiv.style.maxWidth = '500px';
+            statusDiv.style.margin = '1rem auto';
+            statusDiv.style.padding = '1rem';
+            
+            if (duration) {
+                setTimeout(() => {
+                    statusDiv.style.opacity = 0;
+                    statusDiv.style.transform = 'translateY(20px)';
+                }, duration);
+            }
+        }
+
+        // Typing sound disabled as requested
+        function playTypingSound() {
+            // Sound disabled - no audio feedback
+            return;
+        }
+        
+        // Performance optimization: Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Optimized auto-save function
+        const debouncedSave = debounce(saveNote, 2000);
+
+        // Console helper for developers
+        function logDeveloperTips() {
+            const isSupported = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+            
+            console.log('%c🎤 Script.ai - Voice Recognition Status', 'font-size: 16px; font-weight: bold; color: #2563eb;');
+            console.log('Speech Recognition Support:', isSupported ? '✅' : '❌');
+            console.log('Performance Optimizations: ✅ Enabled');
+            console.log('Accessibility Features: ✅ Enhanced');
+            console.log('GitHub Pages Ready: ✅ Optimized');
+            
+            if (isSupported) {
+                console.log('%c✨ Voice recognition system is ready for Arabic and English!', 'color: #10b981; font-weight: bold;');
+                console.log('🎯 Supports: Chrome, Edge, Safari');
+                console.log('🔄 Auto language detection enabled');
+            } else {
+                console.log('%c⚠️ Voice recognition not supported in this browser', 'color: #f59e0b; font-weight: bold;');
+                console.log('💡 Try using Chrome, Edge, or Safari for voice features');
+            }
+        }
+
+        // Keyboard shortcuts
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + S to save
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveNote();
+                }
+                
+                // Ctrl/Cmd + Shift + V for voice toggle
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'V') {
+                    e.preventDefault();
+                    toggleVoiceInput();
+                }
+                
+                // Escape to stop voice recording
+                if (e.key === 'Escape' && isRecording) {
+                    e.preventDefault();
+                    toggleVoiceInput();
+                }
+            });
+        }
+
+        // Update date and time display
+        function updateDateTime() {
+            const now = new Date();
+            
+            // English day names
+            const englishDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            
+            // English month names
+            const englishMonths = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            
+            const dayName = englishDays[now.getDay()];
+            const date = now.getDate();
+            const month = englishMonths[now.getMonth()];
+            const year = now.getFullYear();
+            
+            // Format time in 12-hour format
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 should be 12
+            const formattedHours = hours.toString();
+            
+            const dateTimeString = `${dayName}, ${month} ${date}, ${year} - ${formattedHours}:${minutes} ${ampm}`;
+            
+            const dateTimeElement = document.getElementById('currentDateTime');
+            if (dateTimeElement) {
+                dateTimeElement.textContent = dateTimeString;
+            }
+        }
+
+        // Update footer year
+        function updateFooterYear() {
+            const currentYear = new Date().getFullYear();
+            const yearElement = document.getElementById('year');
+            if (yearElement) {
+                yearElement.textContent = currentYear;
+            }
+        }
+
+        // Mobile dropdown functionality
+        function setupMobileDropdowns() {
+            // Tools dropdown
+            const toolsBtn = document.getElementById('mobileToolsBtn');
+            const toolsDropdown = document.getElementById('mobileToolsDropdown');
+            
+            // Close dropdown
+            function closeDropdown() {
+                if (toolsDropdown) toolsDropdown.classList.add('hidden');
+            }
+            
+            // Tools button click
+            if (toolsBtn && toolsDropdown) {
+                toolsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toolsDropdown.classList.toggle('hidden');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!toolsBtn?.contains(e.target) && !toolsDropdown?.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+            
+            // Update format buttons active state within the dropdown
+            updateMobileFormatButtons();
+        }
+
+        // Update mobile format buttons active state
+        function updateMobileFormatButtons() {
+            const toolsDropdown = document.getElementById('mobileToolsDropdown');
+            const formatButtons = toolsDropdown?.querySelectorAll('[onclick^="changeStyle"]');
+            
+            if (formatButtons) {
+                formatButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Reset all format buttons to their original colors
+                        formatButtons.forEach(b => {
+                            if (b.getAttribute('onclick').includes("'lined'")) {
+                                b.className = 'group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                            } else if (b.getAttribute('onclick').includes("'grid'")) {
+                                b.className = 'group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                            } else if (b.getAttribute('onclick').includes("'dots'")) {
+                                b.className = 'group px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                            } else if (b.getAttribute('onclick').includes("'blank'")) {
+                                b.className = 'group px-3 py-2 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                            }
+                        });
+                        
+                        // Activate clicked button with blue gradient
+                        btn.className = 'group px-3 py-2 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105';
+                        
+                        // Close dropdown after selection
+                        setTimeout(() => {
+                            const toolsDropdown = document.getElementById('mobileToolsDropdown');
+                            if (toolsDropdown) toolsDropdown.classList.add('hidden');
+                        }, 300);
+                    });
+                });
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+            setupKeyboardShortcuts();
+            setupMobileDropdowns();
+            logDeveloperTips();
+            
+            // Initialize and update date/time
+            updateDateTime();
+            setInterval(updateDateTime, 1000); // Update every second
+            
+            // Update footer year
+            updateFooterYear();
+            
+            // Future PWA enhancement: Register service worker
+            // if ('serviceWorker' in navigator) {
+            //     navigator.serviceWorker.register('/sw.js');
+            // }
+        });
+
+        // Global error handler for better debugging
+        window.addEventListener('error', (e) => {
+            console.error('Script Error:', e.error);
+            showStatus('⚠️ An unexpected error occurred. Please refresh the page if issues persist.');
+        });
+
+        // Handle unhandled promise rejections
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled Promise Rejection:', e.reason);
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
