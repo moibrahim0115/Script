@@ -371,42 +371,46 @@
             line-height: 1.8;
             color: #1e293b;
             unicode-bidi: bidi-override;
+            text-align: left;
+            direction: ltr;
         }
 
         /* Mobile adjustments */
         @media (max-width: 1023px) {
             #editor {
-                padding: 1em 2em 2em 2.5em;
+                padding: 0.5em 1em 1em 1em;
                 font-size: 1.3rem;
                 min-height: 70vh;
+                text-align: left;
+                direction: ltr;
             }
             
             /* Enhanced mobile responsiveness for small screens */
             @media (max-width: 480px) {
                 #editor {
-                    padding: 0.5em 1em 1em 1.5em;
+                    padding: 0.3em 0.8em 0.8em 0.8em;
                     font-size: 1.2rem;
                     min-height: 60vh;
                 }
             }
             
             #editor.arabic-content {
-                padding: 1em 2.5em 2em 2em;
+                padding: 0.5em 1em 1em 1em;
                 font-size: 1.5rem;
+                text-align: right;
+                direction: rtl;
             }
             
             /* النص العربي مع الخطوط على الموبايل */
             #notebook-paper.lined #editor {
-                padding-top: calc(1em + 1.1em) !important;
+                padding-top: calc(0.5em + 1.1em) !important;
                 line-height: 2.4em !important;
             }
             
             #notebook-paper.lined #editor.arabic-content {
-                padding-top: calc(1em + 1.1em) !important;
+                padding-top: calc(0.5em + 1.1em) !important;
                 line-height: 2.6em !important;
             }
-            
-            /* CSS موبايل قديم - محذوف لأن الخط الأحمر مخفي تماماً على الموبايل */
             
             #currentDateTime {
                 padding-top: 1rem !important;
@@ -429,7 +433,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Arabic content in editor */
+        /* Arabic content in editor - Desktop */
         #editor.arabic-content {
             direction: rtl;
             text-align: right;
@@ -1145,7 +1149,7 @@
     <div id="fixedVoiceButton" class="fixed bottom-6 right-6 z-50">
         <button id="whatsappVoiceBtn" 
                 class="group w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
-                aria-label="Hold to record voice">
+                aria-label="Click to start/stop voice recording">
             <i id="whatsappMicIcon" class="fas fa-microphone text-white text-xl group-hover:scale-110 transition-transform duration-200"></i>
         </button>
         
@@ -1194,11 +1198,11 @@
                         <ul>
                             <li>
                                 <div class="icon"><i class="fas fa-mouse-pointer text-xs"></i></div>
-                                <div>Hold the microphone button to record (Desktop)</div>
+                                <div>Click the microphone button once to start recording</div>
                             </li>
                             <li>
                                 <div class="icon"><i class="fas fa-hand-pointer text-xs"></i></div>
-                                <div>Press and hold the button to record (Mobile & Tablets)</div>
+                                <div>Click the button again to stop recording (All devices)</div>
                             </li>
                             <li>
                                 <div class="icon"><i class="fas fa-language text-xs"></i></div>
@@ -1207,6 +1211,10 @@
                             <li>
                                 <div class="icon"><i class="fas fa-spell-check text-xs"></i></div>
                                 <div>Intelligent spell checker corrects errors during writing</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-clock text-xs"></i></div>
+                                <div>Recording timer shows duration while recording</div>
                             </li>
                         </ul>
                     </div>
@@ -1237,6 +1245,7 @@
         let recordingStartTime = null;
         let recordingTimer = null;
         let recordingDuration = 0;
+        let isToggleMode = true; // New toggle mode flag
 
         // DOM Elements - Cached for better performance
         const editor = document.getElementById('editor');
@@ -1294,6 +1303,15 @@
 
 
 
+
+        // Toggle WhatsApp style recording
+        function toggleWhatsAppRecording() {
+            if (isWhatsAppRecording) {
+                stopWhatsAppRecording();
+            } else {
+                startWhatsAppRecording();
+            }
+        }
 
         // Start WhatsApp style recording
         function startWhatsAppRecording() {
@@ -1370,6 +1388,10 @@
             const paper = document.getElementById('notebook-paper');
             paper.classList.add('lined', 'paper-white');
             
+            // Set default direction and alignment
+            editor.style.direction = 'ltr';
+            editor.style.textAlign = 'left';
+            
             // Load saved content if available
             loadSavedContent();
             
@@ -1391,43 +1413,12 @@
             // Initial font check on load
             applyFontBasedOnContent(editor);
             
-            // WhatsApp style voice button events
+            // WhatsApp style voice button events - Toggle mode
             if (whatsappVoiceBtn) {
-                // Mouse events for desktop
-                whatsappVoiceBtn.addEventListener('mousedown', (e) => {
+                // Click events for toggle mode
+                whatsappVoiceBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    startWhatsAppRecording();
-                });
-                
-                whatsappVoiceBtn.addEventListener('mouseup', (e) => {
-                    e.preventDefault();
-                    stopWhatsAppRecording();
-                });
-                
-                whatsappVoiceBtn.addEventListener('mouseleave', (e) => {
-                    e.preventDefault();
-                    if (isWhatsAppRecording) {
-                        stopWhatsAppRecording();
-                    }
-                });
-                
-                // Touch events for mobile
-                whatsappVoiceBtn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    startWhatsAppRecording();
-                });
-                
-                whatsappVoiceBtn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    stopWhatsAppRecording();
-                });
-                
-                // Touch cancel event for mobile
-                whatsappVoiceBtn.addEventListener('touchcancel', (e) => {
-                    e.preventDefault();
-                    if (isWhatsAppRecording) {
-                        stopWhatsAppRecording();
-                    }
+                    toggleWhatsAppRecording();
                 });
                 
                 // Prevent context menu
@@ -1453,6 +1444,9 @@
                 // Special handling for main editor
                 if (element.id === 'editor') {
                     element.classList.add('arabic-content');
+                    // Set RTL direction for Arabic
+                    element.style.direction = 'rtl';
+                    element.style.textAlign = 'right';
                 }
             } else {
                 element.classList.remove('arabic-text');
@@ -1461,6 +1455,9 @@
                 // Remove Arabic content class from main editor
                 if (element.id === 'editor') {
                     element.classList.remove('arabic-content');
+                    // Set LTR direction for English
+                    element.style.direction = 'ltr';
+                    element.style.textAlign = 'left';
                 }
             }
         }
@@ -1976,10 +1973,7 @@
                         showStatus(`✨ Transcribed in ${langName}: "${finalTranscript.trim()}" ✅`);
                     }
                     
-                    // Stop WhatsApp recording after successful transcription
-                    if (isWhatsAppRecording) {
-                        stopWhatsAppRecording();
-                    }
+                    // Note: WhatsApp recording continues until manually stopped in toggle mode
                 }
             };
             
@@ -2010,10 +2004,7 @@
             };
             
             recognition.onend = () => {
-                if (isWhatsAppRecording) {
-                    stopWhatsAppRecording();
-                }
-                
+                // In toggle mode, don't auto-restart - let user control
                 if (isRecording && !isWhatsAppRecording) {
                     setTimeout(() => {
                         if (isRecording && recognition && !isWhatsAppRecording) {
@@ -2880,6 +2871,29 @@
             console.log('First Paint:', Math.round(perfData.responseEnd - perfData.fetchStart), 'milliseconds');
             }
         }
+
+        window.addEventListener('DOMContentLoaded', function() {
+          var bg = document.getElementById('bg-animated-dots-lines');
+          if (bg) {
+            bg.innerHTML = `
+            <svg width="100vw" height="100vh" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Lines -->
+              <line x1="100" y1="120" x2="1340" y2="120" class="animated-line" />
+              <line x1="200" y1="300" x2="1240" y2="400" class="animated-line2" />
+              <line x1="300" y1="700" x2="1100" y2="200" class="animated-line" />
+              <line x1="400" y1="500" x2="900" y2="800" class="animated-line2" />
+              <line x1="100" y1="800" x2="1340" y2="850" class="animated-line" />
+              <!-- Dots -->
+              <circle cx="200" cy="150" r="10" class="animated-dot" />
+              <circle cx="600" cy="300" r="7" class="animated-dot2" />
+              <circle cx="1200" cy="200" r="8" class="animated-dot" />
+              <circle cx="900" cy="700" r="12" class="animated-dot2" />
+              <circle cx="400" cy="800" r="9" class="animated-dot" />
+              <circle cx="1100" cy="500" r="6" class="animated-dot2" />
+            </svg>
+            `;
+          }
+        });
     </script>
 </body>
 </html>
