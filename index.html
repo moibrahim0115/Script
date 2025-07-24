@@ -24,6 +24,17 @@
     ✅ Better mobile responsiveness
     ✅ Improved error handling and user feedback
     ✅ Added performance monitoring
+    ✅ Added dynamic font size control with keyboard shortcuts
+    ✅ Professional dropdown-based toolbar with elegant animations
+    ✅ Integrated header with professional toolbar and action buttons
+    ✅ Enhanced UI design with refined glass-morphism effects and modern styling
+    ✅ Complete dropdown redesign with detailed content and professional layout
+    ✅ Modern voice recording with professional glassmorphism design and advanced features
+    ✅ Smart recording with blank page mode, automatic alignment, timestamps and session summaries
+    ✅ Advanced text merge system for combining transcriptions from different sessions
+    ✅ Organized recording layout with top-to-bottom transcription flow starting right below session header
+    ✅ Dedicated blank paper recording mode - recordings only saved and displayed in blank paper with automatic switching
+    ✅ Smart clear functionality - separate clearing for recordings in blank mode vs regular content in other papers
 -->
 <html lang="ar" dir="auto">
 <head>
@@ -375,6 +386,16 @@
             direction: ltr;
         }
 
+        /* Font size dynamic adjustments */
+        #editor {
+            transition: font-size 0.3s ease-in-out;
+        }
+
+        /* Arabic content font size adjustments */
+        #editor.arabic-content {
+            font-size: calc(var(--current-font-size, 1.4rem) + 0.2rem) !important;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 1023px) {
             #editor {
@@ -563,6 +584,570 @@
             white-space: nowrap;
         }
 
+        /* Professional Dropdown Styles */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-trigger {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            padding: 0.6rem 0.9rem;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+            min-width: 90px;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-trigger::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .dropdown-trigger:hover::before {
+            left: 100%;
+        }
+
+        .dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: #1e40af;
+        }
+
+        .dropdown-trigger:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .dropdown-trigger.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .dropdown-trigger.active::before {
+            display: none;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px) scale(0.95);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            box-shadow: 
+                0 32px 64px -12px rgba(0, 0, 0, 0.12),
+                0 16px 32px -8px rgba(59, 130, 246, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            min-width: 280px;
+            max-width: 360px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        .dropdown-header {
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.08) 0%, 
+                rgba(147, 197, 253, 0.12) 50%,
+                rgba(59, 130, 246, 0.06) 100%);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dropdown-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(59, 130, 246, 0.4) 20%, 
+                rgba(147, 197, 253, 0.6) 50%,
+                rgba(59, 130, 246, 0.4) 80%, 
+                transparent);
+        }
+
+        .dropdown-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .dropdown-header h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: 0.025em;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .dropdown-header h3 i {
+            font-size: 0.9rem;
+            padding: 0.4rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .dropdown-content {
+            padding: 1.5rem;
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                transparent 100%);
+        }
+
+        .dropdown-section {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .dropdown-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+            position: relative;
+        }
+
+        .dropdown-section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 12px;
+            background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+            border-radius: 2px;
+        }
+
+        .dropdown-grid {
+            display: grid;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(248, 250, 252, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .dropdown-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .dropdown-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .dropdown-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(59, 130, 246, 0.15) 30%, 
+                rgba(147, 197, 253, 0.2) 50%,
+                rgba(59, 130, 246, 0.15) 70%, 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .dropdown-item:hover::before {
+            left: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateX(3px) translateY(-1px);
+            color: #1e40af;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .dropdown-item.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 
+                0 4px 12px rgba(59, 130, 246, 0.3),
+                0 2px 6px rgba(59, 130, 246, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: #2563eb;
+            transform: translateX(2px) translateY(-1px);
+        }
+
+        .dropdown-item.active::before {
+            display: none;
+        }
+
+        .dropdown-item.active:hover {
+            transform: translateX(3px) translateY(-2px);
+            box-shadow: 
+                0 6px 16px rgba(59, 130, 246, 0.4),
+                0 3px 8px rgba(59, 130, 246, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.15), 
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .color-swatch::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: scale(0.8);
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.2);
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.2), 
+                0 3px 8px rgba(0, 0, 0, 0.15),
+                0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .color-swatch:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .dropdown-item.active .color-swatch {
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3), 
+                0 2px 6px rgba(0, 0, 0, 0.2),
+                0 0 0 3px rgba(255, 255, 255, 0.8);
+        }
+
+        .paper-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            flex-shrink: 0;
+        }
+
+        .paper-swatch::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 8px;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: scale(0.8);
+        }
+
+        .paper-swatch:hover {
+            transform: scale(1.15);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 
+                0 4px 8px rgba(59, 130, 246, 0.2),
+                0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .paper-swatch:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .dropdown-item.active .paper-swatch {
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.2),
+                0 0 0 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .size-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.06) 0%, 
+                rgba(147, 197, 253, 0.08) 50%,
+                rgba(59, 130, 246, 0.04) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .size-control::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(59, 130, 246, 0.4), 
+                transparent);
+        }
+
+        .size-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .size-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.4s;
+        }
+
+        .size-button:hover::before {
+            left: 100%;
+        }
+
+        .size-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .size-display {
+            min-width: 70px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1e40af;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+        }
+
+        .size-display::before {
+            content: 'Current';
+            position: absolute;
+            top: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Mobile dropdown adjustments */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                min-width: 320px;
+                max-width: 95vw;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px) scale(0.95);
+            }
+            
+            .dropdown-menu.show {
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+            
+            .dropdown-trigger {
+                min-width: 85px;
+                padding: 0.5rem 0.7rem;
+                font-size: 0.8rem;
+            }
+            
+            .dropdown-content {
+                padding: 1.25rem;
+            }
+            
+            .dropdown-header {
+                padding: 1rem 1.25rem;
+            }
+        }
+
+        /* Enhanced chevron animation */
+        .dropdown-trigger.active i[id$="Chevron"] {
+            color: rgba(255, 255, 255, 0.9) !important;
+            transform: rotate(180deg);
+        }
+
+        /* Footer for dropdowns */
+        .dropdown-footer {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, 
+                rgba(248, 250, 252, 0.8) 0%, 
+                rgba(226, 232, 240, 0.6) 100%);
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+            text-align: center;
+        }
+
+        .dropdown-footer-text {
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        /* Header enhancements */
+        .navbar-brand-icon:hover {
+            transform: rotate(5deg) scale(1.05);
+            box-shadow: 0 12px 30px -5px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Action buttons in header */
+        .header-action-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .header-action-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Enhanced Clear Button Styling */
+        .header-action-btn[onclick="clearContent()"] {
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .header-action-btn[onclick="clearContent()"]:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            transform: scale(1.05) translateY(-2px);
+        }
+
         /* Hover effects for control buttons - removed unused .control-panel selector */
         
 
@@ -707,14 +1292,27 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Fixed Voice Button Styles - Enhanced */
+        /* Modern Voice Button with Professional Glassmorphism */
         #fixedVoiceButton {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 20px 40px rgba(59, 130, 246, 0.3));
         }
 
         #whatsappVoiceBtn {
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.9) 0%, 
+                rgba(99, 102, 241, 0.95) 50%,
+                rgba(139, 92, 246, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 20px 40px -10px rgba(59, 130, 246, 0.4),
+                0 10px 20px -5px rgba(99, 102, 241, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
         }
 
         #whatsappVoiceBtn::before {
@@ -724,59 +1322,188 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255, 255, 255, 0.4) 0%, 
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%);
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        #whatsappVoiceBtn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent, 
+                rgba(255, 255, 255, 0.05), 
+                transparent);
+            opacity: 0;
+            transition: all 0.6s ease;
+            animation: rotate-shimmer 4s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate-shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         #whatsappVoiceBtn:hover::before {
             opacity: 1;
         }
 
-        #whatsappVoiceBtn:active {
-            transform: scale(0.95);
+        #whatsappVoiceBtn:hover::after {
+            opacity: 1;
         }
 
+        #whatsappVoiceBtn:hover {
+            transform: translateY(-2px) scale(1.05);
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 1) 0%, 
+                rgba(99, 102, 241, 1) 50%,
+                rgba(139, 92, 246, 1) 100%);
+            box-shadow: 
+                0 25px 50px -12px rgba(59, 130, 246, 0.5),
+                0 15px 25px -8px rgba(99, 102, 241, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        #whatsappVoiceBtn:active {
+            transform: translateY(-1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Recording State with Advanced Animations */
         #whatsappVoiceBtn.recording {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            animation: recording-pulse 1.5s infinite;
+            background: linear-gradient(135deg, 
+                #ef4444 0%, 
+                #dc2626 40%,
+                #b91c1c 100%);
+            box-shadow: 
+                0 0 0 0 rgba(239, 68, 68, 0.8),
+                0 20px 40px -10px rgba(239, 68, 68, 0.6),
+                0 10px 20px -5px rgba(220, 38, 38, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: recording-pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
+        #whatsappVoiceBtn.recording::before {
+            opacity: 1;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                transparent 70%);
         }
 
         #whatsappVoiceBtn.recording #whatsappMicIcon {
-            animation: mic-bounce 0.5s infinite;
+            animation: mic-recording 1.5s infinite ease-in-out;
+            color: white;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
         }
 
         @keyframes recording-pulse {
             0%, 100% {
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8),
+                            0 20px 40px -10px rgba(239, 68, 68, 0.6),
+                            0 10px 20px -5px rgba(220, 38, 38, 0.5);
             }
             50% {
-                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0),
+                            0 20px 40px -10px rgba(239, 68, 68, 0.6),
+                            0 10px 20px -5px rgba(220, 38, 38, 0.5);
             }
         }
 
-        @keyframes mic-bounce {
+        @keyframes mic-recording {
             0%, 100% {
-                transform: scale(1);
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                transform: scale(1.1) rotate(-2deg);
+                opacity: 0.9;
             }
             50% {
-                transform: scale(1.2);
+                transform: scale(1.2) rotate(0deg);
+                opacity: 0.8;
+            }
+            75% {
+                transform: scale(1.1) rotate(2deg);
+                opacity: 0.9;
             }
         }
 
-        /* Recording indicator animations - Enhanced */
+        /* Microphone Icon Enhancements */
+        #whatsappMicIcon {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        #whatsappVoiceBtn:hover #whatsappMicIcon {
+            transform: scale(1.15);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+        }
+
+        /* Advanced Recording Indicators */
         #recordingIndicator {
-            animation: live-pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            animation: indicator-pulse 1.5s infinite ease-in-out;
+            box-shadow: 
+                0 0 0 0 rgba(239, 68, 68, 0.8),
+                0 4px 12px rgba(239, 68, 68, 0.4);
         }
         
         #recordingIndicator.show {
             opacity: 1;
+            transform: scale(1);
         }
 
+        #recordingIndicator .indicator-dot {
+            background: white;
+            animation: dot-pulse 1s infinite ease-in-out;
+        }
+
+        @keyframes indicator-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8),
+                            0 4px 12px rgba(239, 68, 68, 0.4);
+            }
+            50% {
+                transform: scale(1.15);
+                box-shadow: 0 0 0 8px rgba(239, 68, 68, 0),
+                            0 6px 16px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        @keyframes dot-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.8); }
+        }
+
+        /* Enhanced Recording Status */
         #recordingStatus {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(-5px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-8px);
             opacity: 0;
+            min-width: 200px;
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(30, 41, 59, 0.98) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 0 20px rgba(239, 68, 68, 0.2);
         }
         
         #recordingStatus.show {
@@ -784,18 +1511,804 @@
             transform: translateY(0);
         }
         
-        @keyframes live-pulse {
-            0%, 100% {
+        #recordingStatus::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, 
+                rgba(239, 68, 68, 0.3) 0%, 
+                rgba(220, 38, 38, 0.2) 100%);
+            border-radius: inherit;
+            z-index: -1;
+        }
+
+        #recordingStatus .status-icon {
+            background: #ef4444;
+            animation: status-blink 1.2s infinite ease-in-out;
+        }
+
+        @keyframes status-blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        /* Voice Level Indicator */
+        .voice-level-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 8px;
+        }
+
+        .voice-level-bar {
+            width: 3px;
+            background: linear-gradient(to top, #ef4444, #fca5a5);
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+
+        .voice-level-bar:nth-child(1) { height: 8px; animation: voice-wave 0.8s infinite ease-in-out 0s; }
+        .voice-level-bar:nth-child(2) { height: 12px; animation: voice-wave 0.8s infinite ease-in-out 0.1s; }
+        .voice-level-bar:nth-child(3) { height: 16px; animation: voice-wave 0.8s infinite ease-in-out 0.2s; }
+        .voice-level-bar:nth-child(4) { height: 12px; animation: voice-wave 0.8s infinite ease-in-out 0.3s; }
+        .voice-level-bar:nth-child(5) { height: 8px; animation: voice-wave 0.8s infinite ease-in-out 0.4s; }
+
+        @keyframes voice-wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.6; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Professional Sound Waves */
+        .sound-waves {
+            pointer-events: none;
+        }
+
+        .sound-wave {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: sound-ripple 2s infinite ease-out;
+        }
+
+        .sound-wave:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            right: 20%;
+            bottom: 20%;
+            animation-delay: 0s;
+        }
+
+        .sound-wave:nth-child(2) {
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            animation-delay: 0.4s;
+        }
+
+        .sound-wave:nth-child(3) {
+            top: 0%;
+            left: 0%;
+            right: 0%;
+            bottom: 0%;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes sound-ripple {
+            0% {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(0.8);
             }
-            50% {
-                opacity: 0.7;
-                transform: scale(1.1);
+            100% {
+                opacity: 0;
+                transform: scale(1.4);
             }
         }
 
-        /* Mobile adjustments for fixed button - Enhanced */
+        /* Show sound waves when recording */
+        #whatsappVoiceBtn.recording .sound-waves {
+            opacity: 1;
+        }
+
+        /* Professional Button Size Fix */
+        .w-18 { width: 4.5rem; }
+        .h-18 { height: 4.5rem; }
+
+        /* Recording Pulse Animation */
+        .recording-pulse {
+            color: #ef4444;
+            animation: pulse-red 1s infinite ease-in-out;
+            font-weight: bold;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Professional Accessibility Features */
+        #fixedVoiceButton:focus-within {
+            outline: 3px solid rgba(59, 130, 246, 0.6);
+            outline-offset: 4px;
+        }
+
+        /* Enhanced Mobile Experience */
+        @media (max-width: 768px) {
+            #fixedVoiceButton {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .w-18 { width: 4rem; }
+            .h-18 { height: 4rem; }
+            
+            #whatsappMicIcon {
+                font-size: 1.25rem;
+            }
+            
+            #recordingStatus {
+                right: -1rem;
+                min-width: 250px;
+                font-size: 0.75rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            .voice-level-bar {
+                width: 2px;
+            }
+        }
+
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            #whatsappVoiceBtn {
+                border: 3px solid white;
+            }
+            
+            #whatsappVoiceBtn.recording {
+                border: 3px solid yellow;
+            }
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            #whatsappVoiceBtn,
+            #recordingIndicator,
+            .sound-wave,
+            .voice-level-bar {
+                animation: none;
+            }
+            
+            #whatsappVoiceBtn.recording {
+                background: #ef4444;
+            }
+        }
+
+        /* Dark Mode Enhancements */
+        @media (prefers-color-scheme: dark) {
+            #recordingStatus {
+                background: linear-gradient(135deg, 
+                    rgba(0, 0, 0, 0.95) 0%, 
+                    rgba(15, 23, 42, 0.98) 100%);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* Professional Recording Session Styles */
+        .recording-session-header {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.08) 0%, 
+                rgba(147, 197, 253, 0.12) 100%);
+            border-left: 4px solid #3b82f6;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .session-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .session-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+        }
+
+        .session-datetime {
+            font-size: 0.875rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .session-divider {
+            margin-top: 1rem;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                #3b82f6 0%, 
+                #93c5fd 50%, 
+                #3b82f6 100%);
+            border-radius: 1px;
+        }
+
+        .session-instructions {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #64748b;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .session-instructions i {
+            color: #3b82f6;
+            margin-right: 0.5rem;
+        }
+
+        /* Transcription Block Styles */
+        .transcription-block {
+            margin: 1.5rem 0;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .transcription-block:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .transcription-block.selected-for-merge {
+            border: 2px solid #10b981;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.1) 0%, 
+                rgba(167, 243, 208, 0.15) 100%);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .arabic-transcription {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.05) 0%, 
+                rgba(167, 243, 208, 0.08) 100%);
+        }
+
+        .english-transcription {
+            border-left: 4px solid #8b5cf6;
+            background: linear-gradient(135deg, 
+                rgba(139, 92, 246, 0.05) 0%, 
+                rgba(196, 181, 253, 0.08) 100%);
+        }
+
+        .merged-transcription {
+            border-left: 4px solid #f59e0b;
+            background: linear-gradient(135deg, 
+                rgba(245, 158, 11, 0.08) 0%, 
+                rgba(253, 230, 138, 0.12) 100%);
+            border: 2px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .merged-content {
+            padding: 1rem 0;
+        }
+
+        .merge-separator {
+            margin: 1rem 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(245, 158, 11, 0.3) 20%, 
+                rgba(245, 158, 11, 0.5) 50%,
+                rgba(245, 158, 11, 0.3) 80%, 
+                transparent 100%);
+            position: relative;
+        }
+
+        .merge-separator::before {
+            content: '⬢';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #f59e0b;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .transcription-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .transcription-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+            color: #64748b;
+            flex: 1;
+        }
+
+        .transcription-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .transcription-actions button {
+            padding: 0.375rem 0.625rem;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #64748b;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .transcription-actions button:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .merge-btn.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: #10b981;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+        }
+
+        .merge-btn.selected:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+        }
+
+        .transcription-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 500;
+        }
+
+        .transcription-time {
+            color: #059669;
+        }
+
+        .transcription-date {
+            color: #7c3aed;
+        }
+
+        .transcription-language {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .transcription-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1e293b;
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+
+        .rtl-content {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Tajawal', 'Cairo', 'Amiri', sans-serif;
+        }
+
+        .ltr-content {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .transcription-divider {
+            margin-top: 1rem;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(148, 163, 184, 0.4) 20%, 
+                rgba(148, 163, 184, 0.6) 50%,
+                rgba(148, 163, 184, 0.4) 80%, 
+                transparent 100%);
+        }
+
+                 /* Mobile Responsive Transcription */
+         @media (max-width: 768px) {
+             .recording-session-header {
+                 padding: 1rem;
+                 margin-bottom: 1.5rem;
+             }
+
+             .session-header-content {
+                 flex-direction: column;
+                 align-items: flex-start;
+                 gap: 0.5rem;
+             }
+
+             .session-title {
+                 font-size: 1.1rem;
+             }
+
+             .session-datetime {
+                 font-size: 0.8rem;
+             }
+
+             .transcription-block {
+                 margin: 1rem 0;
+                 padding: 1rem;
+             }
+
+             .transcription-header {
+                 flex-direction: column;
+                 gap: 0.5rem;
+             }
+
+             .transcription-meta {
+                 gap: 0.5rem;
+                 font-size: 0.7rem;
+             }
+
+             .transcription-actions {
+                 width: 100%;
+                 justify-content: space-between;
+             }
+
+             .transcription-actions button {
+                 padding: 0.25rem 0.5rem;
+                 font-size: 0.7rem;
+             }
+
+             .transcription-content {
+                 font-size: 0.9rem;
+             }
+
+             /* Mobile Merge Control Bar */
+             #mergeControlBar {
+                 padding: 0.75rem 1rem;
+             }
+
+             .merge-control-content {
+                 flex-direction: column;
+                 gap: 0.75rem;
+             }
+
+             .merge-info {
+                 flex-direction: column;
+                 gap: 0.5rem;
+                 width: 100%;
+             }
+
+             .merge-counter {
+                 font-size: 0.8rem;
+             }
+
+             .merge-preview {
+                 font-size: 0.75rem;
+                 max-width: 100%;
+             }
+
+             .merge-actions {
+                 width: 100%;
+                 justify-content: space-between;
+             }
+
+             .merge-action-btn {
+                 padding: 0.375rem 0.75rem;
+                 font-size: 0.8rem;
+             }
+         }
+
+                 /* Blank Paper Mode for Recording */
+         .blank-paper-mode {
+             background: #ffffff !important;
+             box-shadow: none !important;
+             border: none !important;
+         }
+
+         .blank-paper-mode::before,
+         .blank-paper-mode::after {
+             display: none !important;
+         }
+
+                 /* Transcription Container */
+        .transcription-container {
+            margin-top: 1rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* Enhanced Recording Session Layout */
+        .blank-paper-mode #editor {
+            padding: 1rem 2rem !important;
+            margin: 0 !important;
+        }
+
+        .blank-paper-mode .recording-session-header {
+            margin-top: 0 !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        .blank-paper-mode .transcription-block {
+            margin: 0.75rem 0 !important;
+        }
+
+        .blank-paper-mode .transcription-block:first-child {
+            margin-top: 0 !important;
+        }
+
+        .blank-paper-mode .transcription-block:last-child {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Ensure proper spacing in transcription container */
+        .transcription-container > .transcription-block {
+            margin-bottom: 1rem;
+        }
+
+        .transcription-container > .transcription-block:last-child:not(.session-summary) {
+            margin-bottom: 1rem;
+        }
+
+        .transcription-container > .session-summary {
+            margin-top: 2rem;
+            margin-bottom: 0;
+        }
+
+         /* Session Summary Styles */
+         .session-summary {
+             margin: 2rem 0;
+             padding: 1.5rem;
+             background: linear-gradient(135deg, 
+                 rgba(34, 197, 94, 0.08) 0%, 
+                 rgba(134, 239, 172, 0.12) 100%);
+             border: 1px solid rgba(34, 197, 94, 0.2);
+             border-radius: 12px;
+             border-left: 4px solid #22c55e;
+             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+         }
+
+         .summary-content {
+             display: flex;
+             flex-direction: column;
+             gap: 1rem;
+         }
+
+         .summary-title {
+             font-size: 1.125rem;
+             font-weight: 700;
+             color: #15803d;
+             display: flex;
+             align-items: center;
+         }
+
+         .summary-stats {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 0.75rem;
+         }
+
+         .stat-item {
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+             font-size: 0.875rem;
+             color: #374151;
+             font-weight: 500;
+             padding: 0.5rem 0.75rem;
+             background: rgba(255, 255, 255, 0.6);
+             border-radius: 8px;
+             border: 1px solid rgba(34, 197, 94, 0.1);
+         }
+
+         .stat-item i {
+             color: #22c55e;
+             width: 16px;
+             text-align: center;
+         }
+
+         .summary-divider {
+             margin-top: 1rem;
+             height: 2px;
+             background: linear-gradient(90deg, 
+                 #22c55e 0%, 
+                 #86efac 50%, 
+                 #22c55e 100%);
+             border-radius: 1px;
+         }
+
+         /* Print Styles for Transcriptions */
+         @media print {
+             .recording-session-header,
+             .session-summary {
+                 background: none;
+                 border: 1px solid #ccc;
+                 box-shadow: none;
+             }
+
+             .transcription-block {
+                 break-inside: avoid;
+                 background: none;
+                 border: 1px solid #ddd;
+                 box-shadow: none;
+             }
+
+             .transcription-meta span,
+             .stat-item {
+                 color: #333;
+             }
+
+             .summary-stats {
+                 grid-template-columns: repeat(2, 1fr);
+             }
+         }
+
+         /* Mobile Responsive Summary */
+         @media (max-width: 768px) {
+             .session-summary {
+                 margin: 1.5rem 0;
+                 padding: 1rem;
+             }
+
+             .summary-title {
+                 font-size: 1rem;
+             }
+
+             .summary-stats {
+                 grid-template-columns: 1fr;
+                 gap: 0.5rem;
+             }
+
+                           .stat-item {
+                  font-size: 0.8rem;
+                  padding: 0.4rem 0.6rem;
+              }
+          }
+
+        /* Merge Control Bar */
+        #mergeControlBar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.95) 0%, 
+                rgba(5, 150, 105, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #mergeControlBar.show {
+            transform: translateY(0);
+        }
+
+        .merge-control-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .merge-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .merge-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .merge-preview {
+            font-size: 0.8rem;
+                opacity: 0.9;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .merge-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .merge-action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .merge-execute-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #059669;
+        }
+
+        .merge-execute-btn:hover {
+            background: white;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .merge-cancel-btn {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+        }
+
+        .merge-cancel-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .merge-clear-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .merge-clear-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile adjustments for fixed button */
         @media (max-width: 768px) {
             #fixedVoiceButton {
                 bottom: 5rem;
@@ -904,46 +2417,335 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-    <!-- Paper-Style Header -->
+    <!-- Professional Header with Integrated Toolbar -->
     <div class="sticky top-0 z-50 bg-gradient-to-b from-blue-50 via-white to-slate-50 border-b-2 border-blue-200/30 shadow-xl shadow-slate-900/5">
         <!-- Main Navigation -->
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-14">
+            <div class="flex justify-between items-center h-16 lg:h-20">
                 <!-- Brand Section -->
-                <div class="flex items-center justify-between w-full lg:w-auto">
                     <div class="flex items-center">
                         <!-- Elegant Quill Icon -->
-                        <div class="navbar-brand-icon w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30 cursor-pointer" role="img" aria-label="Script.ai logo">
-                            <i class="fas fa-feather-alt text-white text-base"></i>
+                    <div class="navbar-brand-icon w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 cursor-pointer" role="img" aria-label="Script.ai logo">
+                        <i class="fas fa-feather-alt text-white text-lg"></i>
                         </div>
                         <!-- Brand & Description -->
-                        <div class="ml-3">
+                    <div class="ml-4 hidden sm:block">
                             <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-800 to-blue-900 font-caveat tracking-wide">
                                 Script.ai
                             </h1>
-                            <p class="text-xs text-slate-600 font-patrick hidden sm:block">Distinguished voice-powered intelligent writing companion</p>
+                        <p class="text-xs text-slate-600 font-patrick">Distinguished voice-powered intelligent writing companion</p>
+                    </div>
+                    <!-- Mobile Brand Name -->
+                    <div class="ml-3 sm:hidden">
+                        <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-800 via-blue-800 to-blue-900 font-caveat tracking-wide">
+                            Script.ai
+                        </h1>
                         </div>
                     </div>
                     
-                    <!-- Mobile Controls -->
-                    <div class="lg:hidden flex items-center">
-                        <!-- Compact Tools Button -->
-                        <div class="relative">
-                            <button id="mobileToolsBtn" class="group w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/30 transition-all duration-300 transform hover:scale-105" aria-label="Open tools menu">
+                <!-- Professional Toolbar - Desktop -->
+                <div class="hidden lg:flex items-center space-x-2.5">
+                    <!-- Ink Colors Dropdown -->
+                    <div class="dropdown-container">
+                                                    <button class="dropdown-trigger" onclick="toggleDropdown('inkDropdown')" aria-label="Ink colors menu">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-pen text-blue-600 text-sm"></i>
+                                    <span>Ink</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200 text-slate-400" id="inkChevron"></i>
+                            </button>
+                        <div class="dropdown-menu" id="inkDropdown">
+                            <div class="dropdown-header">
+                                <h3><i class="fas fa-pen"></i> Writing Ink Selection</h3>
+                            </div>
+                            <div class="dropdown-content">
+                                <div class="dropdown-section-title">Choose Your Ink Color</div>
+                                <div class="dropdown-grid cols-1">
+                                    <div class="dropdown-item" onclick="changeColor('#1e40af'); selectInkColor('blue')">
+                                        <div class="color-swatch" style="background-color: #1e40af;"></div>
+                                        <div class="flex flex-col">
+                                            <span class="font-semibold">Professional Blue</span>
+                                            <span class="text-xs text-slate-500">Clean and modern for business writing</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changeColor('#1e293b'); selectInkColor('black')">
+                                        <div class="color-swatch" style="background-color: #1e293b;"></div>
+                                        <div class="flex flex-col">
+                                            <span class="font-semibold">Classic Black</span>
+                                            <span class="text-xs text-slate-500">Traditional and elegant for all purposes</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changeColor('#b91c1c'); selectInkColor('red')">
+                                        <div class="color-swatch" style="background-color: #b91c1c;"></div>
+                                        <div class="flex flex-col">
+                                            <span class="font-semibold">Executive Red</span>
+                                            <span class="text-xs text-slate-500">Bold and distinctive for important notes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-footer">
+                                <div class="dropdown-footer-text">✨ Premium ink selection • Auto-save enabled</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paper Format Dropdown -->
+                    <div class="dropdown-container">
+                                                    <button class="dropdown-trigger" onclick="toggleDropdown('formatDropdown')" aria-label="Paper format menu">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-grip-lines text-indigo-600 text-sm"></i>
+                                    <span>Format</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200 text-slate-400" id="formatChevron"></i>
+                            </button>
+                        <div class="dropdown-menu" id="formatDropdown">
+                            <div class="dropdown-header">
+                                <h3><i class="fas fa-file-alt"></i> Paper Format Selection</h3>
+                            </div>
+                            <div class="dropdown-content">
+                                <div class="dropdown-section-title">Choose Paper Style</div>
+                                <div class="dropdown-grid cols-2">
+                                    <div class="dropdown-item active" onclick="changeStyle('lined'); selectFormat('lined')" id="format-lined">
+                                        <i class="fas fa-grip-lines text-lg text-blue-600"></i>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Lined</span>
+                                            <span class="text-xs text-slate-500">Perfect for notes</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changeStyle('grid'); selectFormat('grid')" id="format-grid">
+                                        <i class="fas fa-th text-lg text-emerald-600"></i>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Grid</span>
+                                            <span class="text-xs text-slate-500">Great for diagrams</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changeStyle('dots'); selectFormat('dots')" id="format-dots">
+                                        <i class="fas fa-braille text-lg text-purple-600"></i>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Dots</span>
+                                            <span class="text-xs text-slate-500">Modern bullet style</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changeStyle('blank'); selectFormat('blank')" id="format-blank">
+                                        <i class="fas fa-square text-lg text-slate-600"></i>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Blank</span>
+                                            <span class="text-xs text-slate-500">Clean canvas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-footer">
+                                <div class="dropdown-footer-text">📋 Format styles • Perfect for any writing style</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paper Colors Dropdown -->
+                    <div class="dropdown-container">
+                                                    <button class="dropdown-trigger" onclick="toggleDropdown('paperDropdown')" aria-label="Paper colors menu">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-palette text-pink-600 text-sm"></i>
+                                    <span>Paper</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200 text-slate-400" id="paperChevron"></i>
+                            </button>
+                        <div class="dropdown-menu" id="paperDropdown">
+                            <div class="dropdown-header">
+                                <h3><i class="fas fa-palette"></i> Paper Color Collection</h3>
+                            </div>
+                            <div class="dropdown-content">
+                                <div class="dropdown-section-title">Premium Paper Colors</div>
+                                <div class="dropdown-grid cols-2">
+                                    <div class="dropdown-item" onclick="changePaperColor('white'); selectPaperColor('white')" title="Pure Snow White">
+                                        <div class="paper-swatch paper-color-white"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Pure White</span>
+                                            <span class="text-xs text-slate-500">Classic clean look</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('mint'); selectPaperColor('mint')" title="Soft Mint Breeze">
+                                        <div class="paper-swatch paper-color-mint"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Mint Fresh</span>
+                                            <span class="text-xs text-slate-500">Calm and refreshing</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('gray'); selectPaperColor('gray')" title="Light Cloud Gray">
+                                        <div class="paper-swatch paper-color-gray"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Cloud Gray</span>
+                                            <span class="text-xs text-slate-500">Modern and subtle</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('cream'); selectPaperColor('cream')" title="Gentle Cream Glow">
+                                        <div class="paper-swatch paper-color-cream"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Cream</span>
+                                            <span class="text-xs text-slate-500">Warm and gentle</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('peach'); selectPaperColor('peach')" title="Delicate Peach Bloom">
+                                        <div class="paper-swatch paper-color-peach"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Peach Bloom</span>
+                                            <span class="text-xs text-slate-500">Soft and inviting</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('rose'); selectPaperColor('rose')" title="Soft Rose Petal">
+                                        <div class="paper-swatch paper-color-rose"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Rose Petal</span>
+                                            <span class="text-xs text-slate-500">Elegant and delicate</span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" onclick="changePaperColor('beige'); selectPaperColor('beige')" title="Warm Ivory Harmony">
+                                        <div class="paper-swatch paper-color-beige"></div>
+                                        <div class="flex flex-col items-start">
+                                            <span class="font-semibold">Warm Beige</span>
+                                            <span class="text-xs text-slate-500">Natural harmony</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-footer">
+                                <div class="dropdown-footer-text">🎨 Premium paper collection • Eye-comfort guaranteed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Font Size Dropdown -->
+                    <div class="dropdown-container">
+                                                    <button class="dropdown-trigger" onclick="toggleDropdown('sizeDropdown')" aria-label="Font size menu">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-text-height text-purple-600 text-sm"></i>
+                                    <span>Size</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200 text-slate-400" id="sizeChevron"></i>
+                            </button>
+                        <div class="dropdown-menu" id="sizeDropdown">
+                            <div class="dropdown-header">
+                                <h3><i class="fas fa-text-height"></i> Font Size Control</h3>
+                            </div>
+                            <div class="dropdown-content">
+                                <div class="dropdown-section-title">Text Size Adjustment</div>
+                                <div class="size-control">
+                                    <button class="size-button bg-gradient-to-br from-red-500 to-red-600 text-white" onclick="decreaseFontSize()" title="Decrease (Ctrl + -)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <div class="size-display" id="fontSizeDisplayDropdown">1.4rem</div>
+                                    <button class="size-button bg-gradient-to-br from-blue-500 to-blue-600 text-white" onclick="increaseFontSize()" title="Increase (Ctrl + +)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="size-button bg-gradient-to-br from-green-500 to-green-600 text-white" onclick="resetFontSize()" title="Reset (Ctrl + 0)">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="mt-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200/50">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <i class="fas fa-keyboard text-blue-600 text-sm"></i>
+                                        <span class="font-semibold text-blue-800 text-sm">Keyboard Shortcuts</span>
+                                    </div>
+                                    <div class="space-y-1 text-xs text-blue-700">
+                                        <div class="flex justify-between">
+                                            <span>Increase size:</span>
+                                            <code class="bg-blue-100 px-2 py-1 rounded">Ctrl + Plus</code>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Decrease size:</span>
+                                            <code class="bg-blue-100 px-2 py-1 rounded">Ctrl + Minus</code>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>Reset to default:</span>
+                                            <code class="bg-blue-100 px-2 py-1 rounded">Ctrl + 0</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 text-center">
+                                    <div class="text-xs text-slate-500">Range: 0.8rem - 3.0rem</div>
+                                    <div class="text-xs text-slate-400">Default: 1.4rem</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-footer">
+                                <div class="dropdown-footer-text">🔤 Dynamic sizing • Responsive design optimized</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-3">
+                    <!-- Share, Save & Clear - Desktop -->
+                    <div class="hidden sm:flex items-center space-x-2">
+                        <button onclick="shareNote()" class="header-action-btn px-3.5 py-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:translate-y-[-1px] flex items-center space-x-1.5" aria-label="Share note">
+                            <i class="fas fa-share-alt text-xs"></i>
+                            <span class="text-sm">Share</span>
+                        </button>
+                        
+                        <button onclick="saveNote()" class="header-action-btn px-3.5 py-2 bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:translate-y-[-1px] flex items-center space-x-1.5" aria-label="Save note">
+                            <i class="fas fa-save text-xs"></i>
+                            <span class="text-sm">Save</span>
+                        </button>
+
+                        <button onclick="clearContent()" class="header-action-btn px-3.5 py-2 bg-gradient-to-br from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 hover:translate-y-[-1px] flex items-center space-x-1.5" aria-label="Clear content" title="Clear all content (recordings in blank mode, text in other modes)">
+                            <i class="fas fa-eraser text-xs"></i>
+                            <span class="text-sm">Clear</span>
+                        </button>
+                    </div>
+
+                    <!-- Mobile Tools Button -->
+                    <div class="lg:hidden">
+                        <button id="mobileToolsBtn" class="group w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 transition-all duration-300 transform hover:scale-105" aria-label="Open tools menu">
                                 <i class="fas fa-tools text-white text-sm group-hover:scale-110 transition-all duration-300"></i>
                             </button>
                             
-                            <!-- Compact Tools Dropdown -->
-                            <div id="mobileToolsDropdown" class="absolute top-12 right-0 bg-white/98 backdrop-blur-xl border border-slate-200/50 rounded-2xl shadow-xl hidden z-50 w-72 overflow-hidden">
+                        <!-- Mobile Tools Dropdown -->
+                        <div id="mobileToolsDropdown" class="absolute top-16 right-4 bg-white/98 -webkit-backdrop-filter backdrop-blur-xl border border-blue-200/30 rounded-2xl shadow-2xl hidden z-50 w-80 overflow-hidden">
                                 <!-- Compact Header -->
-                                <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 relative overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
                                     <div class="relative flex items-center justify-center space-x-2">
-                                        <i class="fas fa-tools text-blue-100 text-sm"></i>
-                                        <h2 class="text-sm font-bold text-white">Tools</h2>
+                                    <div class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-tools text-white text-sm"></i>
+                                    </div>
+                                    <h2 class="font-semibold text-white text-lg">Professional Tools</h2>
                                     </div>
                                 </div>
 
                                 <div class="p-4 space-y-4">
+                                <!-- Action Buttons Section -->
+                                <div class="group/section">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-bolt text-white text-xs"></i>
+                                        </div>
+                                        <h3 class="text-sm font-semibold text-slate-800">Actions</h3>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <button onclick="shareNote()" class="px-3 py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Share note">
+                                            <i class="fas fa-share-alt text-sm"></i>
+                                            <span class="text-xs font-medium">Share</span>
+                                        </button>
+                                        
+                                        <button onclick="saveNote()" class="px-3 py-3 bg-gradient-to-br from-emerald-600 to-emerald-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Save note">
+                                            <i class="fas fa-save text-sm"></i>
+                                            <span class="text-xs font-medium">Save</span>
+                                        </button>
+
+                                        <button onclick="clearContent()" class="px-3 py-3 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Clear content" title="Clear content">
+                                            <i class="fas fa-eraser text-sm"></i>
+                                            <span class="text-xs font-medium">Clear</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
                                     <!-- Ink Colors Section -->
                                     <div class="group/section">
                                         <div class="flex items-center space-x-2 mb-3">
@@ -1039,104 +2841,56 @@
                                             <button onclick="changePaperColor('beige')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-amber-400 paper-color-beige" aria-label="Beige paper"></button>
                                         </div>
                                     </div>
+
+                                <!-- Divider -->
+                                <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
+
+                                <!-- Font Size Section -->
+                                <div class="group/section">
+                                    <div class="flex items-center space-x-2 mb-3">
+                                        <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-text-height text-white text-xs"></i>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                                        <h3 class="text-sm font-semibold text-slate-800">Font Size</h3>
                 </div>
 
+                                    <div class="flex items-center justify-center space-x-3">
+                                        <button onclick="decreaseFontSize()" class="group w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center" aria-label="Decrease font size">
+                                            <i class="fas fa-minus text-sm"></i>
+                                        </button>
 
-
-
+                                        <div id="fontSizeDisplayMobile" class="px-3 py-2 bg-slate-100 text-slate-800 rounded-lg text-sm font-medium border border-slate-300 min-w-16 text-center">
+                                            1.4rem
             </div>
-        </nav>
         
-        <!-- Paper Edge Effect -->
-        <div class="h-1 bg-gradient-to-r from-transparent via-blue-100 to-transparent opacity-60"></div>
+                                        <button onclick="increaseFontSize()" class="group w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center" aria-label="Increase font size">
+                                            <i class="fas fa-plus text-sm"></i>
+                                        </button>
     </div>
 
-    <!-- Paper Workspace Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Mobile Action Buttons (Only for small screens) -->
-        <div class="lg:hidden bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/40 rounded-lg shadow-sm mb-4">
-            <div class="px-4 py-3">
-                <div class="flex items-center justify-center space-x-4">
-                    <!-- Share -->
-                    <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
-                        <i class="fas fa-share-alt text-sm"></i>
-                        <span class="text-sm font-medium">Share</span>
-                    </button>
-                    
-                    <!-- Save -->
-                    <button onclick="saveNote()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Save note">
-                        <i class="fas fa-save text-sm"></i>
-                        <span class="text-sm font-medium">Save</span>
+                                    <div class="flex justify-center mt-2">
+                                        <button onclick="resetFontSize()" class="group px-4 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center space-x-2" aria-label="Reset font size">
+                                            <i class="fas fa-undo text-xs"></i>
+                                            <span class="text-xs font-medium">Reset</span>
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Paper-Style Toolbar - Integrated with Header (Desktop Only) -->
-        <div class="hidden lg:block bg-gradient-to-b from-blue-50/80 to-white/90 border-x border-blue-200/40 shadow-lg shadow-slate-900/5 rounded-b-lg sticky top-14 z-20 transition-all duration-300">
-            <!-- Main Toolbar -->
-            <div class="px-6 py-4">
-                <!-- Desktop Layout -->
-                <div class="flex items-center justify-between">
-                    <!-- Left Section: Writing Tools -->
-                    <div class="flex items-center space-x-6">
-                        <!-- Ink Colors -->
-                        <div class="toolbar-section flex items-center space-x-3">
-                            <label class="control-label">Ink</label>
-                            <div class="flex space-x-2">
-                                <button onclick="changeColor('#1e40af')" title="Professional Blue" class="w-6 h-6 rounded-full bg-blue-700 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select blue ink"></button>
-                                <button onclick="changeColor('#1e293b')" title="Corporate Black" class="w-6 h-6 rounded-full bg-slate-800 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select black ink"></button>
-                                <button onclick="changeColor('#b91c1c')" title="Executive Red" class="w-6 h-6 rounded-full bg-red-700 border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm" aria-label="Select red ink"></button>
                             </div>
                         </div>
-                        
-                        <!-- Paper Styles -->
-                        <div class="toolbar-section flex items-center space-x-3">
-                            <label class="control-label">Format</label>
-                            <div class="btn-group">
-                                <button id="btn-lined" onclick="changeStyle('lined')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors active" aria-label="Select lined paper style">Lined</button>
-                                <button id="btn-grid" onclick="changeStyle('grid')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select grid paper style">Grid</button>
-                                <button id="btn-dots" onclick="changeStyle('dots')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select dotted paper style">Dots</button>
-                                <button id="btn-blank" onclick="changeStyle('blank')" class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors" aria-label="Select blank paper style">Blank</button>
                             </div>
                         </div>
-                        
-                        <!-- Paper Colors -->
-                        <div class="toolbar-section flex items-center space-x-3">
-                            <label class="control-label">Paper</label>
-                            <div class="flex space-x-2">
-                                <button onclick="changePaperColor('white')" title="Pure Snow White Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-white" aria-label="Select white paper"></button>
-                                <button onclick="changePaperColor('mint')" title="Soft Mint Breeze Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-mint" aria-label="Select mint paper"></button>
-                                <button onclick="changePaperColor('gray')" title="Light Cloud Gray Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-gray" aria-label="Select gray paper"></button>
-                                <button onclick="changePaperColor('cream')" title="Gentle Cream Glow Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-cream" aria-label="Select cream paper"></button>
-                                <button onclick="changePaperColor('peach')" title="Delicate Peach Bloom Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-peach" aria-label="Select peach paper"></button>
-                                <button onclick="changePaperColor('rose')" title="Soft Rose Petal Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-rose" aria-label="Select rose paper"></button>
-                                <button onclick="changePaperColor('beige')" title="Warm Ivory Harmony Paper" class="w-6 h-6 rounded-md border-2 border-slate-300 hover:scale-110 transition-transform shadow-sm paper-color-beige" aria-label="Select beige paper"></button>
-                            </div>
-                        </div>
+        </nav>
+        
+        <!-- Paper Edge Effect -->
+        <div class="h-1 bg-gradient-to-r from-transparent via-blue-100 to-transparent opacity-60"></div>
                     </div>
                     
-                    <!-- Right Section: Action Buttons -->
-                    <div class="toolbar-section flex items-center space-x-3">
-                        <!-- Share & Save -->
-                        <button onclick="shareNote()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Share note">
-                            <i class="fas fa-share-alt text-sm"></i>
-                            <span class="text-sm font-medium">Share</span>
-                        </button>
-                        
-                        <button onclick="saveNote()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2 shadow-sm" aria-label="Save note">
-                            <i class="fas fa-save text-sm"></i>
-                            <span class="text-sm font-medium">Save</span>
-                        </button>
-                    </div>
-                </div>
-                
-            </div>
-         </div>
+    <!-- Paper Workspace Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+
 
         <!-- The Notebook Paper -->
         <main id="notebook-paper" class="rounded-lg w-full">
@@ -1162,22 +2916,97 @@
         
     </div>
 
-    <!-- Fixed Voice Button (WhatsApp Style) -->
+    <!-- Modern Professional Voice Button -->
     <div id="fixedVoiceButton" class="fixed bottom-6 right-6 z-50">
         <button id="whatsappVoiceBtn" 
-                class="group w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center"
-                aria-label="Click to start/stop voice recording">
-            <i id="whatsappMicIcon" class="fas fa-microphone text-white text-xl group-hover:scale-110 transition-transform duration-200"></i>
+                class="group relative w-18 h-18 rounded-full flex items-center justify-center border-2 border-white/30 transition-all duration-400 transform hover:scale-105"
+                aria-label="Professional voice recording - Click to start/stop">
+            
+            <!-- Glassmorphism layers -->
+            <div class="absolute inset-0 bg-white/10 rounded-full blur-sm"></div>
+            <div class="absolute inset-1 bg-gradient-to-br from-white/20 to-transparent rounded-full"></div>
+            
+            <!-- Main microphone icon -->
+            <i id="whatsappMicIcon" class="fas fa-microphone text-white text-2xl relative z-10"></i>
+            
+            <!-- Professional sound waves (hidden by default, shown when recording) -->
+            <div class="sound-waves absolute inset-0 opacity-0 transition-opacity duration-300">
+                <div class="sound-wave absolute"></div>
+                <div class="sound-wave absolute"></div>
+                <div class="sound-wave absolute"></div>
+            </div>
         </button>
         
-        <!-- Recording indicator -->
-        <div id="recordingIndicator" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full opacity-0 transition-opacity duration-300 flex items-center justify-center">
-            <div class="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+        <!-- Advanced Recording indicator -->
+        <div id="recordingIndicator" class="absolute -top-2 -right-2 w-7 h-7 rounded-full opacity-0 transition-all duration-300 flex items-center justify-center">
+            <div class="indicator-dot w-3 h-3 rounded-full"></div>
         </div>
         
-        <!-- Recording status -->
-        <div id="recordingStatus" class="absolute bottom-full right-0 mb-3 bg-black bg-opacity-75 text-white text-sm px-3 py-2 rounded-lg opacity-0 transition-opacity duration-300 whitespace-nowrap">
-            <span id="recordingStatusText">Recording...</span>
+        <!-- Professional Recording status -->
+        <div id="recordingStatus" class="absolute bottom-full right-0 mb-4 text-white text-sm px-5 py-3 rounded-xl opacity-0 transition-all duration-400 whitespace-nowrap">
+            <!-- Tooltip arrow -->
+            <div class="absolute -bottom-2 right-6 w-4 h-4 bg-slate-900 transform rotate-45 border border-white/10"></div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Animated status icon -->
+                <span class="status-icon inline-block w-3 h-3 rounded-full"></span>
+                
+                <!-- Recording text and timer -->
+            <div class="flex items-center space-x-2">
+                    <span id="recordingStatusText" class="font-semibold">Recording...</span>
+                    
+                    <!-- Voice level indicator -->
+                    <div class="voice-level-container">
+                        <div class="voice-level-bar"></div>
+                        <div class="voice-level-bar"></div>
+                        <div class="voice-level-bar"></div>
+                        <div class="voice-level-bar"></div>
+                        <div class="voice-level-bar"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Language indicator -->
+            <div class="mt-1 text-xs text-white/70 flex items-center">
+                <i class="fas fa-globe-americas mr-1"></i>
+                <span id="languageIndicator">Arabic/English Auto-Detection</span>
+            </div>
+        </div>
+        
+        <!-- Accessibility hint -->
+        <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-xs text-slate-500 opacity-0 hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Professional Voice Recording
+        </div>
+    </div>
+
+    <!-- Merge Control Bar -->
+    <div id="mergeControlBar">
+        <div class="merge-control-content">
+            <div class="merge-info">
+                <div class="merge-counter">
+                    <i class="fas fa-layer-group"></i>
+                    <span id="mergeCount">0</span>
+                    <span>text(s) selected for merging</span>
+                </div>
+                <div class="merge-preview" id="mergePreview">
+                    Select text blocks to merge them together...
+                </div>
+            </div>
+            
+            <div class="merge-actions">
+                <button class="merge-action-btn merge-clear-btn" onclick="clearMergeSelection()">
+                    <i class="fas fa-times"></i>
+                    Clear
+                </button>
+                <button class="merge-action-btn merge-execute-btn" onclick="executeMerge()" id="mergeExecuteBtn" disabled>
+                    <i class="fas fa-magic"></i>
+                    Merge Texts
+                </button>
+                <button class="merge-action-btn merge-cancel-btn" onclick="hideMergeBar()">
+                    <i class="fas fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1233,6 +3062,18 @@
                                 <div class="icon"><i class="fas fa-clock text-xs"></i></div>
                                 <div>Recording timer shows duration while recording</div>
                             </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-text-height text-xs"></i></div>
+                                <div>Use Ctrl + Plus/Minus to adjust font size, or use the buttons in toolbar</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-keyboard text-xs"></i></div>
+                                <div>Keyboard shortcuts: Ctrl + (increase), Ctrl - (decrease), Ctrl 0 (reset)</div>
+                            </li>
+                            <li>
+                                <div class="icon"><i class="fas fa-eraser text-xs"></i></div>
+                                <div>Clear button: Removes recordings in blank mode, or text in other paper modes</div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1256,6 +3097,7 @@
         let recognition = null;
         let currentLanguage = 'ar-SA'; // Default to Arabic
         let isRecording = false;
+        let currentFontSize = 1.4; // Default font size in rem
         
         // WhatsApp style recording state
         let isWhatsAppRecording = false;
@@ -1278,11 +3120,29 @@
         const recordingStatus = document.getElementById('recordingStatus');
         const recordingStatusText = document.getElementById('recordingStatusText');
         
-        // Auto-detect language from voice input
+        // Enhanced Auto-detect language from voice input
         function detectLanguageFromVoice(transcript) {
+            // Enhanced Arabic character detection including all ranges
             const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-            const isArabic = arabicRegex.test(transcript);
-            return isArabic ? 'ar-SA' : 'en-US';
+            
+            // Additional checks for mixed content
+            const arabicCharCount = (transcript.match(arabicRegex) || []).length;
+            const totalChars = transcript.replace(/\s+/g, '').length;
+            const englishLetters = transcript.match(/[a-zA-Z]/g) || [];
+            
+            // Calculate Arabic content percentage
+            const arabicPercentage = totalChars > 0 ? (arabicCharCount / totalChars) * 100 : 0;
+            
+            // Determine language based on content analysis
+            if (arabicPercentage > 30) {
+                return 'ar-SA';
+            } else if (englishLetters.length > 3 && arabicPercentage < 10) {
+                return 'en-US';
+            } else if (arabicCharCount > 0) {
+                return 'ar-SA'; // Default to Arabic if any Arabic characters found
+            } else {
+                return 'en-US'; // Default to English for other cases
+            }
         }
 
         // Auto-switch language based on detected content
@@ -1307,12 +3167,48 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Update recording timer
+        // Enhanced Recording Timer with Visual Feedback
         function updateRecordingTimer() {
             if (isWhatsAppRecording && recordingStartTime) {
                 recordingDuration = Math.floor((Date.now() - recordingStartTime) / 1000);
-                if (recordingStatusText) {
-                    recordingStatusText.textContent = `Recording... ${formatDuration(recordingDuration)}`;
+                
+                // Enhanced status updates
+                let statusText = 'Recording';
+                if (recordingDuration < 1) {
+                    statusText = 'Initializing';
+                } else if (recordingDuration < 3) {
+                    statusText = 'Listening';
+                } else {
+                    statusText = 'Recording';
+                }
+                
+                updateRecordingStatusText(statusText, recordingDuration);
+                
+                // Visual feedback based on duration
+                updateRecordingVisualFeedback(recordingDuration);
+                
+                // Auto-stop after 10 minutes with warnings
+                if (recordingDuration >= 600) { // 10 minutes
+                    stopWhatsAppRecording();
+                    showStatus("⏰ Recording automatically stopped after 10 minutes for optimal performance");
+                } else if (recordingDuration >= 540) { // 9 minutes warning
+                    showStatus("⚠️ Recording will auto-stop in 1 minute");
+                } else if (recordingDuration >= 480) { // 8 minutes warning
+                    showStatus("⚠️ Recording will auto-stop in 2 minutes");
+                }
+            }
+        }
+
+        // Update Visual Feedback During Recording
+        function updateRecordingVisualFeedback(duration) {
+            // Change button intensity based on duration
+            const button = document.getElementById('whatsappVoiceBtn');
+            if (button && button.classList.contains('recording')) {
+                if (duration > 30) {
+                    button.style.filter = 'hue-rotate(10deg) brightness(1.1)';
+                }
+                if (duration > 60) {
+                    button.style.filter = 'hue-rotate(20deg) brightness(1.2)';
                 }
             }
         }
@@ -1330,41 +3226,229 @@
             }
         }
 
-        // Start WhatsApp style recording
+        // Start Professional Voice Recording with Smart Page Management
         function startWhatsAppRecording() {
             if (!recognition) {
                 recognition = setupRecognition();
-                if (!recognition) return;
+                if (!recognition) {
+                    showStatus("🚫 Voice recording not supported on this device");
+                    return;
+                }
             }
             
+            // Force switch to blank paper for recording (RECORDING IS ONLY ALLOWED IN BLANK MODE)
+            const currentPaper = document.getElementById('notebook-paper');
+            const currentPaperClass = currentPaper.className;
+            
+            // Check if we're not already in blank mode
+            if (!currentPaperClass.includes('blank-paper-mode')) {
+                // Show notification about switching to blank mode
+                showStatus("📄 Switching to blank mode - Recording is only available in blank paper", 'info');
+                
+                // Auto-save current content before switching
+                saveNote();
+                
+                // Switch to blank paper automatically
+                setTimeout(() => {
+                    changeStyle('blank');
+                    // Wait for transition, then start recording
+                    setTimeout(() => {
+                        continueRecordingSetup();
+                    }, 300);
+                }, 800);
+                return;
+            }
+            
+            // We're already in blank mode, proceed with recording
+            continueRecordingSetup();
+        }
+
+        // Continue with recording setup after ensuring blank mode
+        function continueRecordingSetup() {
             isWhatsAppRecording = true;
             recordingStartTime = Date.now();
             recordingDuration = 0;
             
-            // Update UI
+            // Smart page preparation for recording (only in blank mode)
+            preparePageForRecording();
+            
+            // Enhanced UI Updates
             whatsappVoiceBtn.classList.add('recording');
             recordingIndicator.classList.add('show');
             recordingStatus.classList.add('show');
-            recordingStatusText.textContent = 'Recording... 0:00';
             
-            // Start timer
-            recordingTimer = setInterval(updateRecordingTimer, 1000);
+            // Update recording text with professional styling
+            updateRecordingStatusText('Initializing...', 0);
             
-            // Start recognition with Arabic default
-            recognition.lang = 'ar-SA';
-            currentLanguage = 'ar-SA';
+            // Start timer with enhanced updates
+            recordingTimer = setInterval(updateRecordingTimer, 100); // More frequent updates
+            
+            // Auto-detect language or start with Arabic
+            const hasArabicText = /[\u0600-\u06FF]/.test(editor.textContent);
+            recognition.lang = hasArabicText ? 'ar-SA' : 'ar-SA'; // Default to Arabic
+            currentLanguage = recognition.lang;
+            
+            // Update language indicator
+            updateLanguageIndicator(currentLanguage);
+            
+            // Add visual feedback
+            addRecordingVisualEffects();
             
             try {
                 recognition.start();
-                showStatus("🎙️ Attentively listening to your refined Arabic expressions...");
+                // Enhanced status messages
+                setTimeout(() => {
+                    if (isWhatsAppRecording) {
+                        showStatus("🎙️ Recording session started - Speak clearly, transcriptions will appear below");
+                    }
+                }, 500);
             } catch (e) {
                 console.error("Voice recognition start error:", e);
-                showStatus(`🚫 Error starting voice recognition: ${e.message}`);
+                showStatus(`🚫 Recording error: ${e.message}`);
                 stopWhatsAppRecording();
             }
         }
 
-        // Stop WhatsApp style recording
+        // Prepare Page for Recording Session (BLANK MODE ONLY)
+        function preparePageForRecording() {
+            // Auto-save current content to appropriate storage (non-blank content)
+            saveNoteToRegularStorage();
+            
+            // Load existing blank content (previous recordings) or clear
+            loadBlankContent();
+            
+            // Ensure page is in blank mode
+            const paper = document.getElementById('notebook-paper');
+            paper.className = 'rounded-lg w-full blank-paper-mode';
+            
+            // Apply recording session styles
+            editor.style.padding = '2rem';
+            editor.style.lineHeight = '1.8';
+            editor.style.minHeight = '100vh';
+            editor.style.background = 'transparent';
+            
+            // Check if we need to add a new session header
+            const existingHeader = document.querySelector('.recording-session-header');
+            if (!existingHeader) {
+                // Add professional recording session header
+                const timestamp = new Date();
+                const sessionHeader = createRecordingSessionHeader(timestamp);
+                editor.appendChild(sessionHeader);
+            }
+            
+            // Check if transcription container exists, create if not
+            let transcriptionContainer = document.getElementById('transcriptionContainer');
+            if (!transcriptionContainer) {
+                transcriptionContainer = document.createElement('div');
+                transcriptionContainer.id = 'transcriptionContainer';
+                transcriptionContainer.className = 'transcription-container';
+                editor.appendChild(transcriptionContainer);
+            }
+            
+            // Set cursor position at the end of container
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(transcriptionContainer);
+            range.collapse(false); // Move to end
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        // Create Professional Recording Session Header
+        function createRecordingSessionHeader(timestamp) {
+            const header = document.createElement('div');
+            header.className = 'recording-session-header';
+            header.contentEditable = false;
+            
+            const dateStr = timestamp.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const timeStr = timestamp.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            header.innerHTML = `
+                <div class="session-header-content">
+                    <div class="session-title">
+                        <i class="fas fa-microphone-alt mr-2"></i>
+                        Voice Recording Session
+                    </div>
+                    <div class="session-datetime">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        ${dateStr}
+                        <span class="mx-2">•</span>
+                        <i class="fas fa-clock mr-1"></i>
+                        ${timeStr}
+                    </div>
+                </div>
+                <div class="session-divider"></div>
+                <div class="session-instructions">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>Your transcriptions will appear below in real-time...</span>
+                </div>
+            `;
+            
+            return header;
+        }
+
+        // Enhanced Recording Status Updates
+        function updateRecordingStatusText(baseText, duration) {
+            const formattedTime = formatDuration(duration);
+            const statusText = `${baseText} ${formattedTime}`;
+            
+            if (recordingStatusText) {
+                recordingStatusText.innerHTML = `
+                    <span class="recording-pulse">●</span> 
+                    ${statusText}
+                `;
+            }
+        }
+
+        // Update Language Indicator
+        function updateLanguageIndicator(langCode) {
+            const languageIndicator = document.getElementById('languageIndicator');
+            if (languageIndicator) {
+                const languages = {
+                    'ar-SA': 'Arabic - العربية',
+                    'en-US': 'English - EN',
+                    'auto': 'Auto-Detection'
+                };
+                languageIndicator.textContent = languages[langCode] || 'Multi-Language';
+            }
+        }
+
+        // Add Visual Effects During Recording
+        function addRecordingVisualEffects() {
+            // Add subtle screen dim effect
+            const overlay = document.createElement('div');
+            overlay.id = 'recordingOverlay';
+            overlay.className = 'fixed inset-0 bg-black/5 backdrop-blur-sm z-40 pointer-events-none opacity-0 transition-opacity duration-500';
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 100);
+        }
+
+        // Remove Visual Effects
+        function removeRecordingVisualEffects() {
+            const overlay = document.getElementById('recordingOverlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.remove();
+                }, 500);
+            }
+        }
+
+        // Stop Professional Voice Recording
         function stopWhatsAppRecording() {
             isWhatsAppRecording = false;
             
@@ -1374,23 +3458,374 @@
                 recordingTimer = null;
             }
             
-            // Update UI
-            whatsappVoiceBtn.classList.remove('recording');
-            recordingIndicator.classList.remove('show');
-            recordingStatus.classList.remove('show');
+            // Enhanced UI cleanup with smooth transitions
+            const button = document.getElementById('whatsappVoiceBtn');
+            if (button) {
+                button.classList.remove('recording');
+                button.style.filter = ''; // Reset any visual effects
+            }
             
-            // Stop recognition
+            // Smooth hiding of indicators
+            recordingIndicator.classList.remove('show');
+            setTimeout(() => {
+            recordingStatus.classList.remove('show');
+            }, 150);
+            
+            // Remove visual effects
+            removeRecordingVisualEffects();
+            
+            // Stop recognition with enhanced error handling
             if (recognition && isRecording) {
                 try {
                     recognition.stop();
+                    isRecording = false;
                 } catch (e) {
                     console.error("Error stopping recognition:", e);
+                    showStatus("⚠️ Recording stopped with minor technical issue");
                 }
             }
             
-            // Show final duration
+            // Create session completion summary
+            const sessionSummary = createSessionSummary();
+            if (sessionSummary) {
+                // Add summary to transcription container if it exists, otherwise to editor
+                const transcriptionContainer = document.getElementById('transcriptionContainer');
+                if (transcriptionContainer) {
+                    transcriptionContainer.appendChild(sessionSummary);
+                } else {
+                    editor.appendChild(sessionSummary);
+                }
+            }
+            
+            // Enhanced completion feedback with session statistics
             if (recordingDuration > 0) {
-                showStatus(`🔇 Recording stopped after ${formatDuration(recordingDuration)}`);
+                const minutes = Math.floor(recordingDuration / 60);
+                const seconds = recordingDuration % 60;
+                let durationText = '';
+                
+                if (minutes > 0) {
+                    durationText = `${minutes}m ${seconds}s`;
+                } else {
+                    durationText = `${seconds}s`;
+                }
+                
+                // Count transcription blocks for statistics
+                const transcriptionBlocks = editor.querySelectorAll('.transcription-block');
+                const blockCount = transcriptionBlocks.length;
+                
+                if (recordingDuration < 3) {
+                    showStatus("⚡ Quick recording session completed - Consider longer recordings for better accuracy");
+                } else if (recordingDuration > 120) {
+                    showStatus(`✅ Extended recording session completed (${durationText}) - ${blockCount} transcription${blockCount !== 1 ? 's' : ''} captured`);
+                } else {
+                    showStatus(`✅ Professional recording session completed (${durationText}) - ${blockCount} transcription${blockCount !== 1 ? 's' : ''} processed successfully`);
+                }
+            } else {
+                showStatus("ℹ️ Recording session ended - No speech detected during this session");
+            }
+            
+            // Reset recording duration
+            recordingDuration = 0;
+            recordingStartTime = null;
+            
+            // Auto-save the session
+            saveNote();
+        }
+
+        // Create Session Completion Summary
+        function createSessionSummary() {
+            const transcriptionBlocks = editor.querySelectorAll('.transcription-block');
+            if (transcriptionBlocks.length === 0) return null;
+            
+            // Count languages used
+            const arabicBlocks = editor.querySelectorAll('.arabic-transcription').length;
+            const englishBlocks = editor.querySelectorAll('.english-transcription').length;
+            
+            const summary = document.createElement('div');
+            summary.className = 'session-summary';
+            summary.contentEditable = false;
+            
+            const endTime = new Date();
+            const endTimeStr = endTime.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            summary.innerHTML = `
+                <div class="summary-content">
+                    <div class="summary-title">
+                        <i class="fas fa-flag-checkered mr-2"></i>
+                        Recording Session Completed
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Ended: ${endTimeStr}</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>${transcriptionBlocks.length} Transcription${transcriptionBlocks.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-globe"></i>
+                            <span>${arabicBlocks} Arabic • ${englishBlocks} English</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-stopwatch"></i>
+                            <span>Duration: ${formatDuration(recordingDuration)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-divider"></div>
+            `;
+            
+            return summary;
+        }
+
+        // =================== MERGE FUNCTIONALITY ===================
+        
+        let selectedBlocksForMerge = [];
+        
+        // Toggle Block Selection for Merge
+        function toggleBlockSelection(button) {
+            const block = button.closest('.transcription-block');
+            const blockId = block.getAttribute('data-block-id');
+            
+            if (selectedBlocksForMerge.includes(blockId)) {
+                // Deselect
+                selectedBlocksForMerge = selectedBlocksForMerge.filter(id => id !== blockId);
+                block.classList.remove('selected-for-merge');
+                button.classList.remove('selected');
+                button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Select</span>';
+            } else {
+                // Select
+                selectedBlocksForMerge.push(blockId);
+                block.classList.add('selected-for-merge');
+                button.classList.add('selected');
+                button.innerHTML = '<i class="fas fa-check-circle"></i><span>Selected</span>';
+            }
+            
+            updateMergeInterface();
+        }
+
+        // Update Merge Interface
+        function updateMergeInterface() {
+            const mergeBar = document.getElementById('mergeControlBar');
+            const mergeCount = document.getElementById('mergeCount');
+            const mergePreview = document.getElementById('mergePreview');
+            const executeBtn = document.getElementById('mergeExecuteBtn');
+            
+            const count = selectedBlocksForMerge.length;
+            mergeCount.textContent = count;
+            
+            if (count > 0) {
+                mergeBar.classList.add('show');
+                executeBtn.disabled = count < 2;
+                
+                // Generate preview text
+                const previewTexts = selectedBlocksForMerge.map(blockId => {
+                    const block = document.querySelector(`[data-block-id="${blockId}"]`);
+                    const content = block.querySelector('.transcription-content').textContent;
+                    return content.substring(0, 50) + (content.length > 50 ? '...' : '');
+                });
+                
+                mergePreview.textContent = previewTexts.join(' | ');
+            } else {
+                mergeBar.classList.remove('show');
+            }
+        }
+
+        // Clear Merge Selection
+        function clearMergeSelection() {
+            selectedBlocksForMerge.forEach(blockId => {
+                const block = document.querySelector(`[data-block-id="${blockId}"]`);
+                if (block) {
+                    block.classList.remove('selected-for-merge');
+                    const button = block.querySelector('.merge-btn');
+                    button.classList.remove('selected');
+                    button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Select</span>';
+                }
+            });
+            
+            selectedBlocksForMerge = [];
+            updateMergeInterface();
+        }
+
+        // Hide Merge Bar
+        function hideMergeBar() {
+            clearMergeSelection();
+        }
+
+        // Execute Merge Operation
+        function executeMerge() {
+            if (selectedBlocksForMerge.length < 2) {
+                showStatus("⚠️ Please select at least 2 text blocks to merge");
+                return;
+            }
+            
+            // Get selected blocks data
+            const blocksData = selectedBlocksForMerge.map(blockId => {
+                const block = document.querySelector(`[data-block-id="${blockId}"]`);
+                return {
+                    id: blockId,
+                    content: block.querySelector('.transcription-content').textContent,
+                    language: block.getAttribute('data-language'),
+                    timestamp: new Date(block.getAttribute('data-timestamp')),
+                    element: block
+                };
+            }).sort((a, b) => a.timestamp - b.timestamp); // Sort by timestamp
+            
+            // Create merged block
+            const mergedBlock = createMergedBlock(blocksData);
+            
+            // Insert merged block in the appropriate location
+            const transcriptionContainer = document.getElementById('transcriptionContainer');
+            const lastBlock = blocksData[blocksData.length - 1].element;
+            
+            if (transcriptionContainer && transcriptionContainer.contains(lastBlock)) {
+                // If we're in a recording session, add to container
+                lastBlock.after(mergedBlock);
+            } else {
+                // Otherwise, add after the last block normally
+                lastBlock.after(mergedBlock);
+            }
+            
+            // Remove original blocks or mark them as merged
+            blocksData.forEach(blockData => {
+                blockData.element.style.opacity = '0.3';
+                blockData.element.style.pointerEvents = 'none';
+                const header = blockData.element.querySelector('.transcription-header');
+                header.innerHTML = `
+                    <div class="transcription-meta">
+                        <span style="color: #dc2626; font-weight: 600;">
+                            <i class="fas fa-archive"></i>
+                            Merged into combined text below
+                        </span>
+                    </div>
+                `;
+            });
+            
+            // Clear selection and hide merge bar
+            selectedBlocksForMerge = [];
+            updateMergeInterface();
+            
+            // Scroll to merged block
+            mergedBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Show success message
+            showStatus(`✅ Successfully merged ${blocksData.length} text blocks into one combined text`);
+        }
+
+        // Create Merged Block
+        function createMergedBlock(blocksData) {
+            const block = document.createElement('div');
+            block.className = 'transcription-block merged-transcription';
+            block.setAttribute('data-block-id', `merged-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+            
+            const languages = [...new Set(blocksData.map(b => b.language))];
+            const isMultiLang = languages.length > 1;
+            const primaryLang = blocksData[0].language;
+            
+            block.setAttribute('data-language', isMultiLang ? 'mixed' : primaryLang);
+            block.setAttribute('data-timestamp', new Date().toISOString());
+            
+            const timestamp = new Date();
+            const timeStr = timestamp.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            const dateStr = timestamp.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            // Combine content with proper spacing and direction
+            const combinedContent = blocksData.map(blockData => {
+                const lang = blockData.language;
+                return `<div class="${lang === 'ar' ? 'rtl-content' : 'ltr-content'}">${blockData.content}</div>`;
+            }).join('<div class="merge-separator"></div>');
+            
+            block.innerHTML = `
+                <div class="transcription-header">
+                    <div class="transcription-meta">
+                        <span class="transcription-time">
+                            <i class="fas fa-clock"></i>
+                            ${timeStr}
+                        </span>
+                        <span class="transcription-date">
+                            <i class="fas fa-calendar"></i>
+                            ${dateStr}
+                        </span>
+                        <span class="transcription-language">
+                            <i class="fas fa-layer-group"></i>
+                            Merged (${blocksData.length} texts)
+                        </span>
+                        <span class="transcription-languages">
+                            <i class="fas fa-globe"></i>
+                            ${isMultiLang ? 'Arabic + English' : (primaryLang === 'ar' ? 'العربية' : 'English')}
+                        </span>
+                    </div>
+                    <div class="transcription-actions">
+                        <button class="copy-btn" onclick="copyBlockText(this)" title="Copy merged text">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="edit-btn" onclick="editBlockText(this)" title="Edit merged text">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="split-btn" onclick="splitMergedBlock(this)" title="Split back to original texts">
+                            <i class="fas fa-scissors"></i>
+                            <span>Split</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="transcription-content merged-content" contenteditable="false">
+                    ${combinedContent}
+                </div>
+                <div class="transcription-divider"></div>
+            `;
+            
+            return block;
+        }
+
+        // Copy Block Text
+        function copyBlockText(button) {
+            const block = button.closest('.transcription-block');
+            const content = block.querySelector('.transcription-content').textContent;
+            
+            navigator.clipboard.writeText(content).then(() => {
+                showStatus("📋 Text copied to clipboard successfully");
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            }).catch(() => {
+                showStatus("❌ Failed to copy text to clipboard");
+            });
+        }
+
+        // Edit Block Text
+        function editBlockText(button) {
+            const block = button.closest('.transcription-block');
+            const contentDiv = block.querySelector('.transcription-content');
+            
+            if (contentDiv.contentEditable === 'true') {
+                // Save changes
+                contentDiv.contentEditable = 'false';
+                button.innerHTML = '<i class="fas fa-edit"></i>';
+                button.title = 'Edit text';
+                showStatus("💾 Text changes saved");
+            } else {
+                // Enable editing
+                contentDiv.contentEditable = 'true';
+                contentDiv.focus();
+                button.innerHTML = '<i class="fas fa-save"></i>';
+                button.title = 'Save changes';
+                showStatus("✏️ Editing mode enabled - Click save when done");
             }
         }
 
@@ -1398,7 +3833,7 @@
         function init() {
             // Set default content
             if (!editor.innerHTML.trim()) {
-                editor.innerHTML = '<p>ابدأ بكتابة أفكارك المتميزة هنا...</p>';
+                editor.innerHTML = '<p>Begin writing your distinguished thoughts here...</p>';
             }
             
             // Set default paper style and color
@@ -1415,11 +3850,22 @@
             // Setup event listeners
             setupEventListeners();
             
+            // Setup mobile tools dropdown
+            setupMobileToolsDropdown();
+            
             // Setup voice recognition - Fixed initialization
             recognition = setupRecognition();
             
+            // Initialize font size
+            updateFontSize();
+            
+            // Initialize dropdown states
+            setTimeout(() => {
+                updateDropdownStates();
+            }, 100);
+            
             // Show welcome message
-            showStatus("✨ مساحة العمل الرقمية جاهزة - مع دعم التعرف التلقائي على العربية والإنجليزية");
+            showStatus("✨ Distinguished Digital Workspace Ready - With Elegant Arabic & English Recognition");
         }
         
         // Set up event listeners
@@ -1443,6 +3889,27 @@
                     e.preventDefault();
                 });
             }
+            
+            // Keyboard shortcuts for font size control
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case '+':
+                        case '=':
+                            e.preventDefault();
+                            increaseFontSize();
+                            break;
+                        case '-':
+                            e.preventDefault();
+                            decreaseFontSize();
+                            break;
+                        case '0':
+                            e.preventDefault();
+                            resetFontSize();
+                            break;
+                    }
+                }
+            });
         }
         
         // Detect Arabic text (for styling purposes only)
@@ -1520,27 +3987,74 @@
                 '#1e293b': 'Distinguished Obsidian Black',
                 '#b91c1c': 'Executive Crimson Red'
             };
-            showStatus(`✍️ Ink elegantly transformed to ${colorNames[color] || 'bespoke hue'}`);
+            showStatus(`✍️ Ink elegantly transformed to ${colorNames[color] || 'bespoke hue'} shade`);
         }
         
-        // Change page style
+        // Change page style with separate storage handling
         function changeStyle(style) {
             const paper = document.getElementById('notebook-paper');
+            const currentIsBlank = paper.className.includes('blank-paper-mode');
+            const switchingToBlank = (style === 'blank');
+            
+            // Save current content to appropriate storage before switching
+            if (currentIsBlank && !switchingToBlank) {
+                // Switching FROM blank TO another style - save recordings
+                saveBlankContent();
+                showStatus("🎙️ Recording session saved", 1500);
+            } else if (!currentIsBlank && switchingToBlank) {
+                // Switching FROM another style TO blank - save regular content
+                saveNoteToRegularStorage();
+                showStatus("💾 Content saved", 1500);
+            } else if (!currentIsBlank && !switchingToBlank) {
+                // Switching between non-blank styles - save regular content
+                saveNoteToRegularStorage();
+            }
+            // No need to save when staying in blank mode
+            
+            // Update paper style
             paper.className = 'rounded-lg';
+            if (switchingToBlank) {
+                paper.classList.add('blank-paper-mode');
+            } else {
             paper.classList.add(style);
+            }
             paper.classList.add(`paper-${currentPaperColor}`);
             
-            // Update active button (desktop)
-            document.querySelectorAll('[id^="btn-"]').forEach(btn => {
-                if (btn.id.includes('lined') || btn.id.includes('grid') || 
-                    btn.id.includes('dots') || btn.id.includes('blank')) {
-                    btn.classList.remove('active');
+            // Load appropriate content after style change
+            setTimeout(() => {
+                if (switchingToBlank) {
+                    // Load recording content
+                    loadBlankContent();
+                    showStatus("🎙️ Switched to recording mode - Use microphone to record", 2000);
+                } else if (currentIsBlank && !switchingToBlank) {
+                    // Load regular content
+                    const saved = localStorage.getItem('digitalNotebook');
+                    if (saved) {
+                        try {
+                            const content = JSON.parse(saved);
+                            if (content.note) {
+                                const sanitizedContent = content.note.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+                                editor.textContent = sanitizedContent;
+                            }
+                            applyFontBasedOnContent(editor);
+                            showStatus("📝 Regular content restored", 1500);
+                        } catch (error) {
+                            editor.textContent = '';
+                        }
+                    } else {
+                        editor.textContent = '';
+                    }
                 }
-            });
+            }, 100);
             
-            // Set active state for desktop button
-            const desktopBtn = document.getElementById(`btn-${style}`);
-            if (desktopBtn) desktopBtn.classList.add('active');
+            // Update active button (desktop dropdown)
+            document.querySelectorAll('#formatDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeFormatItem = document.getElementById(`format-${style}`);
+            if (activeFormatItem) {
+                activeFormatItem.classList.add('active');
+            }
             
             // Update mobile dropdown buttons
             const toolsDropdown = document.getElementById('mobileToolsDropdown');
@@ -1575,7 +4089,7 @@
                 'dots': 'Sophisticated Dotted Matrix',
                 'blank': 'Pure Minimalist Canvas'
             };
-            showStatus(`📝 Paper artfully configured to ${styleNames[style] || 'distinctive format'}`);
+            showStatus(`📝 Paper artfully configured to ${styleNames[style] || 'distinctive format'} style`);
         }
 
         // Change paper color
@@ -1601,7 +4115,262 @@
                 'rose': 'Soft Rose Petal',
                 'beige': 'Warm Ivory Harmony'
             };
-            showStatus(`🎨 Paper canvas transformed to ${colorNames[color] || 'exclusive palette'}`);
+            showStatus(`🎨 Paper canvas transformed to ${colorNames[color] || 'exclusive palette'} tone`);
+        }
+
+        // Dropdown Management Functions
+        let activeDropdown = null;
+
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const trigger = dropdown.previousElementSibling;
+            const chevron = trigger.querySelector('i[id$="Chevron"]');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                if (menu.id !== dropdownId) {
+                    menu.classList.remove('show');
+                    const otherTrigger = menu.previousElementSibling;
+                    const otherChevron = otherTrigger.querySelector('i[id$="Chevron"]');
+                    otherTrigger.classList.remove('active');
+                    if (otherChevron) {
+                        otherChevron.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+            
+            // Toggle current dropdown
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                trigger.classList.remove('active');
+                chevron.style.transform = 'rotate(0deg)';
+                activeDropdown = null;
+            } else {
+                dropdown.classList.add('show');
+                trigger.classList.add('active');
+                chevron.style.transform = 'rotate(180deg)';
+                activeDropdown = dropdownId;
+            }
+        }
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                const trigger = menu.previousElementSibling;
+                const chevron = trigger.querySelector('i[id$="Chevron"]');
+                trigger.classList.remove('active');
+                if (chevron) {
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+            activeDropdown = null;
+        }
+
+        function selectInkColor(color) {
+            // Update active state in dropdown
+            document.querySelectorAll('#inkDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.dropdown-item').classList.add('active');
+            
+            // Close dropdown after selection
+            setTimeout(() => {
+                closeAllDropdowns();
+            }, 300);
+        }
+
+        function selectFormat(format) {
+            // Update active state in dropdown
+            document.querySelectorAll('#formatDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(`format-${format}`).classList.add('active');
+            
+            // Close dropdown after selection
+            setTimeout(() => {
+                closeAllDropdowns();
+            }, 300);
+        }
+
+        function selectPaperColor(color) {
+            // Update active state in dropdown
+            document.querySelectorAll('#paperDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.dropdown-item').classList.add('active');
+            
+            // Close dropdown after selection
+            setTimeout(() => {
+                closeAllDropdowns();
+            }, 300);
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-container')) {
+                closeAllDropdowns();
+            }
+        });
+
+        // Close dropdowns on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllDropdowns();
+                closeMobileDropdown();
+            }
+        });
+
+        // Mobile tools dropdown management
+        function setupMobileToolsDropdown() {
+            const mobileToolsBtn = document.getElementById('mobileToolsBtn');
+            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
+            
+            if (mobileToolsBtn && mobileToolsDropdown) {
+                mobileToolsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleMobileDropdown();
+                });
+                
+                // Close mobile dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!mobileToolsDropdown.contains(event.target) && !mobileToolsBtn.contains(event.target)) {
+                        closeMobileDropdown();
+                    }
+                });
+            }
+        }
+
+        function toggleMobileDropdown() {
+            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
+            if (mobileToolsDropdown) {
+                if (mobileToolsDropdown.classList.contains('hidden')) {
+                    // Close any open regular dropdowns first
+                    closeAllDropdowns();
+                    mobileToolsDropdown.classList.remove('hidden');
+                } else {
+                    mobileToolsDropdown.classList.add('hidden');
+                }
+            }
+        }
+
+        function closeMobileDropdown() {
+            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
+            if (mobileToolsDropdown) {
+                mobileToolsDropdown.classList.add('hidden');
+            }
+        }
+
+        // Update dropdown states to reflect current settings
+        function updateDropdownStates() {
+            // Update ink color dropdown
+            document.querySelectorAll('#inkDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+                const colorSwatch = item.querySelector('.color-swatch');
+                if (colorSwatch) {
+                    const bgColor = colorSwatch.style.backgroundColor;
+                    if ((bgColor === 'rgb(30, 64, 175)' || bgColor.includes('30, 64, 175')) && currentColor === '#1e40af') {
+                        item.classList.add('active');
+                    } else if ((bgColor === 'rgb(30, 41, 59)' || bgColor.includes('30, 41, 59')) && currentColor === '#1e293b') {
+                        item.classList.add('active');
+                    } else if ((bgColor === 'rgb(185, 28, 28)' || bgColor.includes('185, 28, 28')) && currentColor === '#b91c1c') {
+                        item.classList.add('active');
+                    }
+                }
+            });
+
+            // Update paper color dropdown
+            document.querySelectorAll('#paperDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+                const paperSwatch = item.querySelector('.paper-swatch');
+                if (paperSwatch) {
+                    const itemText = item.querySelector('span').textContent.toLowerCase();
+                    if (itemText === currentPaperColor) {
+                        item.classList.add('active');
+                    }
+                }
+            });
+
+            // Update format dropdown - ensure lined is active by default
+            document.querySelectorAll('#formatDropdown .dropdown-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const currentFormat = document.getElementById('notebook-paper').classList.contains('lined') ? 'lined' :
+                                 document.getElementById('notebook-paper').classList.contains('grid') ? 'grid' :
+                                 document.getElementById('notebook-paper').classList.contains('dots') ? 'dots' : 'blank';
+            const activeFormatItem = document.getElementById(`format-${currentFormat}`);
+            if (activeFormatItem) {
+                activeFormatItem.classList.add('active');
+            }
+
+            // Set default ink color active state (black)
+            if (currentColor === '#1e293b') {
+                const blackInkItem = document.querySelector('#inkDropdown .dropdown-item').parentElement.children[1];
+                if (blackInkItem) {
+                    blackInkItem.classList.add('active');
+                }
+            }
+        }
+
+        // Font Size Control Functions
+        function increaseFontSize() {
+            if (currentFontSize < 3.0) { // Maximum 3rem
+                currentFontSize += 0.1;
+                updateFontSize();
+                showStatus(`📈 Font size increased to ${currentFontSize.toFixed(1)}rem`);
+            } else {
+                showStatus(`⚠️ Maximum font size reached (3.0rem)`);
+            }
+        }
+
+        function decreaseFontSize() {
+            if (currentFontSize > 0.8) { // Minimum 0.8rem
+                currentFontSize -= 0.1;
+                updateFontSize();
+                showStatus(`📉 Font size decreased to ${currentFontSize.toFixed(1)}rem`);
+            } else {
+                showStatus(`⚠️ Minimum font size reached (0.8rem)`);
+            }
+        }
+
+        function resetFontSize() {
+            currentFontSize = 1.4; // Default size
+            updateFontSize();
+            showStatus(`🔄 Font size reset to default (1.4rem)`);
+        }
+
+        function updateFontSize() {
+            // Set CSS custom property for dynamic sizing
+            document.documentElement.style.setProperty('--current-font-size', `${currentFontSize}rem`);
+            
+            // Update editor font size
+            editor.style.fontSize = `${currentFontSize}rem`;
+            
+            // Update Arabic text if present (handled by CSS now)
+            if (editor.classList.contains('arabic-content')) {
+                editor.style.fontSize = `${currentFontSize + 0.2}rem`; // Arabic text is slightly larger
+            }
+            
+            // Update display indicators
+            const fontSizeText = `${currentFontSize.toFixed(1)}rem`;
+            const fontSizeDisplayMobile = document.getElementById('fontSizeDisplayMobile');
+            const fontSizeDisplayDropdown = document.getElementById('fontSizeDisplayDropdown');
+            
+            if (fontSizeDisplayMobile) {
+                fontSizeDisplayMobile.textContent = fontSizeText;
+            }
+            if (fontSizeDisplayDropdown) {
+                fontSizeDisplayDropdown.textContent = fontSizeText;
+            }
+            
+            // Save font size to localStorage
+            try {
+                const saved = localStorage.getItem('digitalNotebook');
+                const content = saved ? JSON.parse(saved) : {};
+                content.fontSize = currentFontSize;
+                localStorage.setItem('digitalNotebook', JSON.stringify(content));
+            } catch (error) {
+                console.error("Error saving font size:", error);
+            }
         }
 
         // Detect the language of the current content to set appropriate voice recognition
@@ -1926,16 +4695,16 @@
 
 
         
-        // Removed isSecureContext check - GitHub Pages provides HTTPS by default
+                    // Removed isSecureContext check - GitHub Pages provides HTTPS by default
 
 
 
-        function setupRecognition() {
-            // Improved browser support detection
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus("🚫 التعرف الصوتي غير مدعوم في هذا المتصفح");
-                return null;
-            }
+            function setupRecognition() {
+                // Improved browser support detection
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    showStatus("🚫 Voice recognition not supported in this browser");
+                    return null;
+                }
             
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognitionInstance = new SpeechRecognition();
@@ -1948,8 +4717,8 @@
                 isRecording = true;
                 if (!isWhatsAppRecording) {
                     const langMessage = currentLanguage === 'ar-SA' ?
-                        '🎙️ جاري الاستماع إلى حديثك باللغة العربية...' :
-                        '🎙️ جاري التقاط حديثك باللغة الإنجليزية...';
+                        '🎙️ Attentively listening to your Arabic expressions...' :
+                        '🎙️ Capturing your English speech elegantly...';
                     showStatus(langMessage);
                 }
             };
@@ -1968,25 +4737,17 @@
                     if (detectedLanguage !== currentLanguage) {
                         currentLanguage = detectedLanguage;
                         recognitionInstance.lang = currentLanguage;
-                        const langName = currentLanguage === 'ar-SA' ? 'العربية' : 'الإنجليزية';
-                        showStatus(`🌐 تم التبديل تلقائيًا إلى التعرف على ${langName}`);
+                        const langName = currentLanguage === 'ar-SA' ? 'Arabic' : 'English';
+                        showStatus(`🌐 Automatically switched to ${langName} recognition`);
+                        // Update language indicator in recording status
+                        updateLanguageIndicator(currentLanguage);
                     }
                     
                     // Apply spell correction
                     const correctedText = applySpellCorrection(finalTranscript, currentLanguage);
                     
-                    // Insert text at cursor position
-                    const selection = window.getSelection();
-                    if (!selection.rangeCount) return;
-                    const range = selection.getRangeAt(0);
-                    const textNode = document.createTextNode(correctedText);
-                    range.deleteContents();
-                    range.insertNode(textNode);
-                    
-                    range.setStartAfter(textNode);
-                    range.collapse(true);
-                    selection.removeAllRanges();
-                    selection.addRange(range);
+                    // Insert organized transcription with timestamp and alignment
+                    insertTranscriptionWithTimestamp(correctedText, detectedLanguage);
                     
                     // Apply font styling based on content
                     applyFontBasedOnContent(editor);
@@ -2001,31 +4762,138 @@
                         '<span class="language-indicator language-english">EN</span>';
                     
                     if (correctedText !== finalTranscript) {
-                        showStatus(`✨ تم التصحيح التلقائي والنقل في ${langIndicator}: "${correctedText.trim()}" 📝`);
+                        showStatus(`✨ Auto-corrected and transcribed ${langIndicator}: "${correctedText.trim()}" 📝`);
                     } else {
-                        showStatus(`✨ تم النقل بنجاح ${langIndicator}: "${finalTranscript.trim()}" ✅`);
+                        showStatus(`✨ Successfully transcribed ${langIndicator}: "${finalTranscript.trim()}" ✅`);
                     }
                 }
             };
+
+        // Insert Transcription with Professional Formatting
+        function insertTranscriptionWithTimestamp(text, language) {
+            const timestamp = new Date();
+            const isArabic = language === 'ar-SA';
+            
+            // Create transcription block
+            const transcriptionBlock = createTranscriptionBlock(text, timestamp, isArabic);
+            
+            // Find the transcription container (for recording sessions)
+            let transcriptionContainer = document.getElementById('transcriptionContainer');
+            
+            if (transcriptionContainer) {
+                // We're in a recording session, add to the container
+                transcriptionContainer.appendChild(transcriptionBlock);
+            } else {
+                // Fallback: insert at current cursor position or at the end
+                const selection = window.getSelection();
+                let insertionPoint;
+                
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    insertionPoint = range.startContainer;
+                    
+                    // If we're in a text node, get the parent element
+                    if (insertionPoint.nodeType === Node.TEXT_NODE) {
+                        insertionPoint = insertionPoint.parentElement;
+                    }
+                }
+                
+                // Insert the transcription block
+                if (insertionPoint && editor.contains(insertionPoint)) {
+                    insertionPoint.after(transcriptionBlock);
+                } else {
+                    editor.appendChild(transcriptionBlock);
+                }
+            }
+            
+            // Set cursor position after the inserted block
+            const range = document.createRange();
+            const newSelection = window.getSelection();
+            range.setStartAfter(transcriptionBlock);
+            range.collapse(true);
+            newSelection.removeAllRanges();
+            newSelection.addRange(range);
+            
+            // Scroll to show the new content smoothly
+            transcriptionBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Create Professional Transcription Block with Merge Controls
+        function createTranscriptionBlock(text, timestamp, isArabic) {
+            const block = document.createElement('div');
+            block.className = `transcription-block ${isArabic ? 'arabic-transcription' : 'english-transcription'}`;
+            block.setAttribute('data-block-id', `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+            block.setAttribute('data-language', isArabic ? 'ar' : 'en');
+            block.setAttribute('data-timestamp', timestamp.toISOString());
+            
+            const timeStr = timestamp.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            
+            const dateStr = timestamp.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            block.innerHTML = `
+                <div class="transcription-header">
+                    <div class="transcription-meta">
+                        <span class="transcription-time">
+                            <i class="fas fa-clock"></i>
+                            ${timeStr}
+                        </span>
+                        <span class="transcription-date">
+                            <i class="fas fa-calendar"></i>
+                            ${dateStr}
+                        </span>
+                        <span class="transcription-language">
+                            <i class="fas fa-language"></i>
+                            ${isArabic ? 'العربية' : 'English'}
+                        </span>
+                    </div>
+                    <div class="transcription-actions">
+                        <button class="merge-btn" onclick="toggleBlockSelection(this)" title="Select for merging">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Select</span>
+                        </button>
+                        <button class="copy-btn" onclick="copyBlockText(this)" title="Copy text">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="edit-btn" onclick="editBlockText(this)" title="Edit text">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="transcription-content ${isArabic ? 'rtl-content' : 'ltr-content'}" contenteditable="false">
+                    ${text.trim()}
+                </div>
+                <div class="transcription-divider"></div>
+            `;
+            
+            return block;
+        }
             
             recognitionInstance.onerror = (event) => {
-                let errorMessage = "🚨 حدث خطأ في التعرف الصوتي: ";
+                let errorMessage = "🚨 Voice Recognition Error: ";
                 switch (event.error) {
                     case 'no-speech':
-                        errorMessage += 'لم يتم الكشف عن كلام واضح';
+                        errorMessage += 'No clear speech detected';
                         break;
                     case 'audio-capture':
-                        errorMessage += 'لا يمكن الوصول إلى الميكروفون';
+                        errorMessage += 'Cannot access microphone';
                         break;
                     case 'not-allowed':
-                        errorMessage += 'تم رفض إذن الوصول إلى الميكروفون';
+                        errorMessage += 'Microphone access permission denied';
                         setTimeout(showPermissionHelp, 2000);
                         break;
                     case 'network':
-                        errorMessage += 'مشكلة في الاتصال بالشبكة';
+                        errorMessage += 'Network connection issue';
                         break;
                     default:
-                        errorMessage += `خطأ غير متوقع: ${event.error}`;
+                        errorMessage += `Unexpected error: ${event.error}`;
                 }
                 showStatus(errorMessage);
                 
@@ -2047,21 +4915,32 @@
                         }
                     }, 1000);
                 } else if (!isWhatsAppRecording) {
-                    showStatus("🔇 تم إيقاف التعرف الصوتي");
+                    showStatus("🔇 Voice recognition stopped");
                 }
             };
             
             return recognitionInstance;
         }
         
-        // Save note - Enhanced security and performance
+        // Save note - Enhanced security and performance with separate storage for recordings
         function saveNote() {
+            // Determine if we're in blank mode (recording mode)
+            const paper = document.getElementById('notebook-paper');
+            const isBlankMode = paper.className.includes('blank-paper-mode');
+            
+            if (isBlankMode) {
+                // Save to blank mode storage (recordings only)
+                saveBlankContent();
+                showStatus("🎙️ Recording session saved securely", 2000);
+            } else {
+                // Save to regular storage (normal notes only)
             const content = {
                 note: editor.textContent || editor.innerText || '', // Use textContent for security
                 color: currentColor,
                 paperColor: currentPaperColor,
                 style: document.getElementById('notebook-paper').className.replace('rounded-lg', '').trim(),
-                language: currentLanguage
+                    language: currentLanguage,
+                    fontSize: currentFontSize
             };
             
             try {
@@ -2070,15 +4949,97 @@
             } catch (error) {
                 console.error("Error saving content:", error);
                 showStatus("⚠️ Error saving content. Please try again.", 3000);
+                }
+            }
+        }
+
+        // Save to regular storage (non-blank content)
+        function saveNoteToRegularStorage() {
+            try {
+                const paper = document.getElementById('notebook-paper');
+                const isBlankMode = paper.className.includes('blank-paper-mode');
+                
+                // Only save if we have non-blank content
+                if (!isBlankMode && editor.textContent.trim()) {
+                    const content = {
+                        note: editor.textContent || editor.innerText || '',
+                        color: currentColor,
+                        paperColor: currentPaperColor,
+                        style: document.getElementById('notebook-paper').className.replace('rounded-lg', '').trim(),
+                        language: currentLanguage,
+                        fontSize: currentFontSize
+                    };
+                    localStorage.setItem('digitalNotebook', JSON.stringify(content));
+                }
+            } catch (error) {
+                console.error('Regular save error:', error);
+            }
+        }
+
+        // Save blank content (recordings only)
+        function saveBlankContent() {
+            try {
+                const blankData = {
+                    content: editor.innerHTML, // Keep innerHTML for transcription blocks
+                    timestamp: new Date().toISOString(),
+                    fontSize: currentFontSize,
+                    inkColor: currentColor
+                };
+                localStorage.setItem('blankRecordings', JSON.stringify(blankData));
+            } catch (error) {
+                console.error('Blank save error:', error);
+            }
+        }
+
+        // Load blank content (recordings)
+        function loadBlankContent() {
+            try {
+                const blankData = localStorage.getItem('blankRecordings');
+                if (blankData) {
+                    const data = JSON.parse(blankData);
+                    editor.innerHTML = data.content || '';
+                    
+                    // Restore blank-specific settings
+                    if (data.fontSize) {
+                        currentFontSize = data.fontSize;
+                        updateFontSize();
+                    }
+                    if (data.inkColor) {
+                        currentColor = data.inkColor;
+                        editor.style.color = currentColor;
+                    }
+                } else {
+                    // No previous recordings, start fresh
+                    editor.innerHTML = '';
+                }
+            } catch (error) {
+                console.error('Blank load error:', error);
+                editor.innerHTML = '';
             }
         }
         
-        // Load saved content - Enhanced security and performance
+        // Load saved content - Enhanced security and performance with separate storage handling
         function loadSavedContent() {
+            // Check current paper mode to determine which content to load
+            const paper = document.getElementById('notebook-paper');
+            const isBlankMode = paper.className.includes('blank-paper-mode');
+            
+            if (isBlankMode) {
+                // Load blank content (recordings)
+                loadBlankContent();
+                showStatus("🎙️ Recording session restored");
+            } else {
+                // Load regular content (normal notes)
             const saved = localStorage.getItem('digitalNotebook');
             if (saved) {
                 try {
                     const content = JSON.parse(saved);
+                        
+                        // Load font size
+                        if (content.fontSize && typeof content.fontSize === 'number') {
+                            currentFontSize = Math.max(0.8, Math.min(3.0, content.fontSize)); // Ensure within bounds
+                            updateFontSize();
+                        }
                     
                     // Secure content loading - use textContent instead of innerHTML for security
                     if (content.note && typeof content.note === 'string') {
@@ -2103,12 +5064,87 @@
                         ['lined', 'grid', 'dots', 'blank'].includes(cls)) || 'lined';
                     changePaperColor(currentPaperColor);
                     changeStyle(styleClass);
+                        
+                        // Update dropdown states after loading
+                        setTimeout(() => {
+                            updateDropdownStates();
+                        }, 100);
                     
                     showStatus("📂 Your previous masterpiece elegantly restored");
                 } catch (error) {
                     console.error("Error loading saved content:", error);
                     showStatus("⚠️ Error loading saved content. Starting fresh.");
                 }
+                } else {
+                    // No saved content, start fresh
+                    editor.textContent = '';
+                }
+            }
+        }
+        
+        // ==================== نظام المسح الذكي ====================
+        
+        // Smart Clear Function - Works differently for blank mode vs regular papers
+        function clearContent() {
+            const paper = document.getElementById('notebook-paper');
+            const isBlankMode = paper.className.includes('blank-paper-mode');
+            
+            if (isBlankMode) {
+                // In blank mode - clear recordings with confirmation
+                clearRecordingContent();
+            } else {
+                // In regular mode - clear regular content with confirmation
+                clearRegularContent();
+            }
+        }
+
+        // Clear recordings in blank mode
+        function clearRecordingContent() {
+            // Show confirmation dialog
+            const confirmed = confirm("🎙️ Are you sure you want to clear all recordings?\n\nThis will permanently delete all voice transcriptions in blank mode.");
+            
+            if (confirmed) {
+                // Clear the editor
+                editor.innerHTML = '';
+                
+                // Remove from storage
+                localStorage.removeItem('blankRecordings');
+                
+                // Show success message
+                showStatus("🗑️ All recordings cleared successfully", 2500);
+                
+                // If currently recording, stop it
+                if (isWhatsAppRecording) {
+                    stopWhatsAppRecording();
+                    showStatus("🛑 Recording stopped and content cleared", 2500);
+                }
+                
+                // Reset editor focus
+                editor.focus();
+            }
+        }
+
+        // Clear regular content in other paper modes
+        function clearRegularContent() {
+            // Show confirmation dialog
+            const confirmed = confirm("📝 Are you sure you want to clear all content?\n\nThis will permanently delete all text in the current paper.");
+            
+            if (confirmed) {
+                // Clear the editor
+                editor.innerHTML = '';
+                editor.textContent = '';
+                
+                // Remove from storage
+                localStorage.removeItem('digitalNotebook');
+                
+                // Show success message
+                showStatus("🗑️ Content cleared successfully", 2500);
+                
+                // Reset word count
+                updateWordCount();
+                
+                // Reset editor focus
+                editor.focus();
             }
         }
         
