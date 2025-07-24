@@ -422,6 +422,77 @@
                 direction: rtl;
             }
             
+            /* Enhanced Mobile Text Alignment for Voice Recordings */
+            /* Arabic Transcription Blocks - Right Alignment on Mobile */
+            .transcription-block.arabic-transcription .transcription-content,
+            .transcription-content.rtl-content {
+                direction: rtl !important;
+                text-align: right !important;
+                font-family: 'Amiri', serif !important;
+                font-size: 1.1rem !important;
+                line-height: 1.8 !important;
+                padding: 1rem !important;
+            }
+            
+            /* English Transcription Blocks - Left Alignment on Mobile */
+            .transcription-block.english-transcription .transcription-content,
+            .transcription-content.ltr-content {
+                direction: ltr !important;
+                text-align: left !important;
+                font-family: 'Patrick Hand', cursive !important;
+                font-size: 1rem !important;
+                line-height: 1.6 !important;
+                padding: 1rem !important;
+            }
+            
+            /* Mixed Content Mobile Handling */
+            .merged-content .rtl-content {
+                direction: rtl !important;
+                text-align: right !important;
+                margin: 0.5rem 0 !important;
+                font-family: 'Amiri', serif !important;
+            }
+            
+            .merged-content .ltr-content {
+                direction: ltr !important;
+                text-align: left !important;
+                margin: 0.5rem 0 !important;
+                font-family: 'Patrick Hand', cursive !important;
+            }
+            
+            /* Recording Session Mobile Enhancements */
+            .recording-session-header {
+                text-align: center !important;
+                direction: ltr !important;
+                padding: 1rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            /* Transcription Headers Mobile */
+            .transcription-header {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+                text-align: center !important;
+            }
+            
+            .transcription-meta {
+                justify-content: center !important;
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+                font-size: 0.7rem !important;
+            }
+            
+            /* Mobile Arabic Text Enhancement */
+            .arabic-transcription {
+                border-right: 4px solid #10b981 !important;
+                border-left: none !important;
+            }
+            
+            .english-transcription {
+                border-left: 4px solid #8b5cf6 !important;
+                border-right: none !important;
+            }
+            
             /* النص العربي مع الخطوط على الموبايل */
             #notebook-paper.lined #editor {
                 padding-top: calc(0.5em + 1.1em) !important;
@@ -1685,6 +1756,179 @@
             }
         }
 
+        /* Professional Mobile Toolbar Styles */
+        #mobileProfessionalToolbar {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #mobileProfessionalToolbar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        #mobileProfessionalToolbar:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        /* Professional Panel Animations */
+        #professionalMobilePanel {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        #mobileToolbarContent {
+            will-change: transform;
+        }
+
+        /* Enhanced Button Hover Effects */
+        .mobile-tool-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-tool-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .mobile-tool-button:hover::before {
+            left: 100%;
+        }
+
+        /* Professional Touch Feedback */
+        .mobile-tool-button:active {
+            transform: scale(0.95) !important;
+            transition: transform 0.1s ease;
+        }
+
+        /* Smooth Section Animations */
+        .mobile-toolbar-section {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .mobile-toolbar-section:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-toolbar-section:nth-child(2) { animation-delay: 0.2s; }
+        .mobile-toolbar-section:nth-child(3) { animation-delay: 0.3s; }
+        .mobile-toolbar-section:nth-child(4) { animation-delay: 0.4s; }
+        .mobile-toolbar-section:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 480px) {
+            #mobileToolbarContent {
+                border-radius: 1.5rem 1.5rem 0 0;
+            }
+            
+            .mobile-toolbar-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Haptic Feedback Simulation */
+        .haptic-feedback {
+            animation: hapticPulse 0.15s ease-in-out;
+        }
+
+        @keyframes hapticPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .mobile-tool-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .mobile-tool-button:hover::before {
+            left: 100%;
+        }
+
+        /* Professional Touch Feedback */
+        .mobile-tool-button:active {
+            transform: scale(0.95) !important;
+            transition: transform 0.1s ease;
+        }
+
+        /* Smooth Section Animations */
+        .mobile-toolbar-section {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .mobile-toolbar-section:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-toolbar-section:nth-child(2) { animation-delay: 0.2s; }
+        .mobile-toolbar-section:nth-child(3) { animation-delay: 0.3s; }
+        .mobile-toolbar-section:nth-child(4) { animation-delay: 0.4s; }
+        .mobile-toolbar-section:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 480px) {
+            #mobileToolbarContent {
+                border-radius: 1.5rem 1.5rem 0 0;
+            }
+            
+            .mobile-toolbar-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Haptic Feedback Simulation */
+        .haptic-feedback {
+            animation: hapticPulse 0.15s ease-in-out;
+        }
+
+        @keyframes hapticPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* Dark Mode Enhancements */
         @media (prefers-color-scheme: dark) {
             #recordingStatus {
@@ -2696,189 +2940,221 @@
                         </button>
                     </div>
 
-                    <!-- Mobile Tools Button -->
+                    <!-- Professional Mobile Toolbar -->
                     <div class="lg:hidden">
-                        <button id="mobileToolsBtn" class="group w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 transition-all duration-300 transform hover:scale-105" aria-label="Open tools menu">
-                                <i class="fas fa-tools text-white text-sm group-hover:scale-110 transition-all duration-300"></i>
-                            </button>
+                        <!-- Main Toolbar Button -->
+                        <button id="mobileProfessionalToolbar" class="group relative w-12 h-12 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/30 transition-all duration-300 transform hover:scale-105 hover:rotate-1" aria-label="Professional Mobile Toolbar">
+                            <!-- Glassmorphism Effect -->
+                            <div class="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-sm"></div>
                             
-                        <!-- Mobile Tools Dropdown -->
-                        <div id="mobileToolsDropdown" class="absolute top-16 right-4 bg-white/98 -webkit-backdrop-filter backdrop-blur-xl border border-blue-200/30 rounded-2xl shadow-2xl hidden z-50 w-80 overflow-hidden">
-                                <!-- Compact Header -->
-                            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-                                    <div class="relative flex items-center justify-center space-x-2">
-                                    <div class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-tools text-white text-sm"></i>
-                                    </div>
-                                    <h2 class="font-semibold text-white text-lg">Professional Tools</h2>
-                                    </div>
-                                </div>
-
-                                <div class="p-4 space-y-4">
-                                <!-- Action Buttons Section -->
-                                <div class="group/section">
-                                    <div class="flex items-center space-x-2 mb-3">
-                                        <div class="w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-bolt text-white text-xs"></i>
+                            <!-- Main Icon with Animation -->
+                            <div class="relative z-10 flex items-center justify-center">
+                                <i id="toolbarMainIcon" class="fas fa-magic text-white text-lg group-hover:scale-110 transition-all duration-300"></i>
+                            </div>
+                            
+                            <!-- Animated Ring -->
+                            <div class="absolute inset-0 border-2 border-white/20 rounded-2xl animate-pulse"></div>
+                            
+                            <!-- Notification Badge -->
+                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+                                <span class="text-[10px] text-white font-bold">!</span>
+                            </div>
+                        </button>
+                        
+                        <!-- Advanced Professional Toolbar Panel -->
+                        <div id="professionalMobilePanel" class="fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-all duration-500">
+                            <!-- Main Panel Container -->
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-blue-50 to-indigo-100 rounded-t-3xl shadow-2xl transform translate-y-full transition-all duration-500" id="mobileToolbarContent">
+                                
+                                <!-- Header with Close Button -->
+                                <div class="flex items-center justify-between p-6 border-b border-blue-200/50">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                                            <i class="fas fa-magic text-white text-lg"></i>
                                         </div>
-                                        <h3 class="text-sm font-semibold text-slate-800">Actions</h3>
+                                        <div>
+                                            <h2 class="text-xl font-bold text-slate-800">Professional Tools</h2>
+                                            <p class="text-sm text-slate-600">Complete writing toolkit</p>
+                                        </div>
+                                    </div>
+                                    <button id="closeMobileToolbar" class="w-10 h-10 bg-slate-200 hover:bg-slate-300 rounded-xl flex items-center justify-center transition-all duration-200" title="إغلاق شريط الأدوات" aria-label="Close mobile toolbar">
+                                        <i class="fas fa-times text-slate-600"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Scrollable Content -->
+                                <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                                    
+                                    <!-- Quick Actions Row -->
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <!-- Share Button -->
+                                        <button onclick="shareNote()" class="group relative bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                                            <div class="flex flex-col items-center space-y-2">
+                                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-200">
+                                                    <i class="fas fa-share-alt text-xl"></i>
+                                                </div>
+                                                <span class="text-sm font-medium">Share</span>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- Save Button -->
+                                        <button onclick="saveNote()" class="group relative bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                                            <div class="flex flex-col items-center space-y-2">
+                                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-200">
+                                                    <i class="fas fa-save text-xl"></i>
+                                                </div>
+                                                <span class="text-sm font-medium">Save</span>
+                                            </div>
+                                        </button>
+                                        
+                                        <!-- Clear Button -->
+                                        <button onclick="clearContent()" class="group relative bg-gradient-to-br from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                                            <div class="flex flex-col items-center space-y-2">
+                                                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-200">
+                                                    <i class="fas fa-eraser text-xl"></i>
+                                                </div>
+                                                <span class="text-sm font-medium">Clear</span>
+                                            </div>
+                                        </button>
                                     </div>
                                     
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <button onclick="shareNote()" class="px-3 py-3 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Share note">
-                                            <i class="fas fa-share-alt text-sm"></i>
-                                            <span class="text-xs font-medium">Share</span>
-                                        </button>
-                                        
-                                        <button onclick="saveNote()" class="px-3 py-3 bg-gradient-to-br from-emerald-600 to-emerald-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Save note">
-                                            <i class="fas fa-save text-sm"></i>
-                                            <span class="text-xs font-medium">Save</span>
-                                        </button>
-
-                                        <button onclick="clearContent()" class="px-3 py-3 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-1" aria-label="Clear content" title="Clear content">
-                                            <i class="fas fa-eraser text-sm"></i>
-                                            <span class="text-xs font-medium">Clear</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Divider -->
-                                <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-
                                     <!-- Ink Colors Section -->
-                                    <div class="group/section">
-                                        <div class="flex items-center space-x-2 mb-3">
-                                            <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                                                <i class="fas fa-pen text-white text-xs"></i>
+                                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-blue-200/30">
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-pen text-white text-sm"></i>
                                             </div>
-                                            <h3 class="text-sm font-semibold text-slate-800">Ink Colors</h3>
+                                            <h3 class="text-lg font-semibold text-slate-800">Ink Colors</h3>
                                         </div>
-                                        
-                                        <div class="flex justify-center space-x-3">
-                                            <button onclick="changeColor('#1e40af')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Blue Ink">
-                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                        <div class="flex justify-center space-x-4">
+                                            <button onclick="changeColor('#1e40af')" class="group w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-white" aria-label="Professional Blue Ink">
+                                                <i class="fas fa-droplet text-white text-lg group-hover:scale-110 transition-transform duration-200"></i>
                                             </button>
-                                            
-                                            <button onclick="changeColor('#1e293b')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Black Ink">
-                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                            <button onclick="changeColor('#1e293b')" class="group w-14 h-14 bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-white" aria-label="Classic Black Ink">
+                                                <i class="fas fa-droplet text-white text-lg group-hover:scale-110 transition-transform duration-200"></i>
                                             </button>
-                                            
-                                            <button onclick="changeColor('#b91c1c')" class="group w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-red-800 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-white" aria-label="Red Ink">
-                                                <i class="fas fa-droplet text-white text-xs"></i>
+                                            <button onclick="changeColor('#b91c1c')" class="group w-14 h-14 bg-gradient-to-br from-red-600 to-red-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-white" aria-label="Executive Red Ink">
+                                                <i class="fas fa-droplet text-white text-lg group-hover:scale-110 transition-transform duration-200"></i>
                                             </button>
                                         </div>
                                     </div>
-
-                                    <!-- Divider -->
-                                    <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-
+                                    
                                     <!-- Paper Format Section -->
-                                    <div class="group/section">
-                                        <div class="flex items-center space-x-2 mb-3">
-                                            <div class="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-                                                <i class="fas fa-file text-white text-xs"></i>
+                                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-blue-200/30">
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-file text-white text-sm"></i>
                                             </div>
-                                            <h3 class="text-sm font-semibold text-slate-800">Paper Format</h3>
+                                            <h3 class="text-lg font-semibold text-slate-800">Paper Format</h3>
                                         </div>
-                                        
-                                        <div class="grid grid-cols-2 gap-2">
-                                            <button onclick="changeStyle('lined')" class="group px-3 py-2 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Lined paper">
-                                                <div class="flex flex-col items-center space-y-1">
-                                                    <i class="fas fa-grip-lines text-sm"></i>
-                                                    <span class="text-xs font-medium">LINED</span>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <button onclick="changeStyle('lined')" class="group bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105" aria-label="Lined Paper">
+                                                <div class="flex flex-col items-center space-y-2">
+                                                    <i class="fas fa-grip-lines text-2xl group-hover:scale-110 transition-transform duration-200"></i>
+                                                    <span class="text-sm font-medium">LINED</span>
                                                 </div>
                                             </button>
                                             
-                                            <button onclick="changeStyle('grid')" class="group px-3 py-2 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Grid paper">
-                                                <div class="flex flex-col items-center space-y-1">
-                                                    <i class="fas fa-th text-sm"></i>
-                                                    <span class="text-xs font-medium">GRID</span>
+                                            <button onclick="changeStyle('grid')" class="group bg-gradient-to-br from-slate-500 to-slate-600 hover:from-slate-400 hover:to-slate-500 text-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105" aria-label="Grid Paper">
+                                                <div class="flex flex-col items-center space-y-2">
+                                                    <i class="fas fa-th text-2xl group-hover:scale-110 transition-transform duration-200"></i>
+                                                    <span class="text-sm font-medium">GRID</span>
                                                 </div>
                                             </button>
                                             
-                                            <button onclick="changeStyle('dots')" class="group px-3 py-2 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Dotted paper">
-                                                <div class="flex flex-col items-center space-y-1">
-                                                    <i class="fas fa-braille text-sm"></i>
-                                                    <span class="text-xs font-medium">DOTS</span>
+                                            <button onclick="changeStyle('dots')" class="group bg-gradient-to-br from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105" aria-label="Dotted Paper">
+                                                <div class="flex flex-col items-center space-y-2">
+                                                    <i class="fas fa-braille text-2xl group-hover:scale-110 transition-transform duration-200"></i>
+                                                    <span class="text-sm font-medium">DOTS</span>
                                                 </div>
                                             </button>
                                             
-                                            <button onclick="changeStyle('blank')" class="group px-3 py-2 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105" aria-label="Blank paper">
-                                                <div class="flex flex-col items-center space-y-1">
-                                                    <i class="fas fa-square text-sm"></i>
-                                                    <span class="text-xs font-medium">BLANK</span>
+                                            <button onclick="changeStyle('blank')" class="group bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105" aria-label="Blank Paper">
+                                                <div class="flex flex-col items-center space-y-2">
+                                                    <i class="fas fa-square text-2xl group-hover:scale-110 transition-transform duration-200"></i>
+                                                    <span class="text-sm font-medium">BLANK</span>
                                                 </div>
                                             </button>
                                         </div>
                                     </div>
-
-                                    <!-- Divider -->
-                                    <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-
+                                    
                                     <!-- Paper Colors Section -->
-                                    <div class="group/section">
-                                        <div class="flex items-center space-x-2 mb-3">
-                                            <div class="w-6 h-6 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
-                                                <i class="fas fa-palette text-white text-xs"></i>
+                                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-blue-200/30">
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-palette text-white text-sm"></i>
                                             </div>
-                                            <h3 class="text-sm font-semibold text-slate-800">Paper Colors</h3>
+                                            <h3 class="text-lg font-semibold text-slate-800">Paper Colors</h3>
                                         </div>
                                         
-                                        <div class="grid grid-cols-4 gap-2">
-                                            <button onclick="changePaperColor('white')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-slate-300 paper-color-white" aria-label="White paper"></button>
+                                        <div class="grid grid-cols-4 gap-3">
+                                            <button onclick="changePaperColor('white')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-slate-300 paper-color-white relative overflow-hidden" aria-label="Pure White Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('mint')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-emerald-300 paper-color-mint" aria-label="Mint paper"></button>
+                                            <button onclick="changePaperColor('mint')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-emerald-300 paper-color-mint relative overflow-hidden" aria-label="Mint Fresh Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-emerald-200/30"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('gray')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-slate-400 paper-color-gray" aria-label="Gray paper"></button>
+                                            <button onclick="changePaperColor('gray')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-slate-400 paper-color-gray relative overflow-hidden" aria-label="Cloud Gray Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-slate-200/50"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('cream')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-yellow-400 paper-color-cream" aria-label="Cream paper"></button>
+                                            <button onclick="changePaperColor('cream')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-yellow-400 paper-color-cream relative overflow-hidden" aria-label="Gentle Cream Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-yellow-100/30"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('peach')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-orange-400 paper-color-peach" aria-label="Peach paper"></button>
+                                            <button onclick="changePaperColor('peach')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-orange-400 paper-color-peach relative overflow-hidden" aria-label="Peach Bloom Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-orange-100/40"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('rose')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-pink-400 paper-color-rose" aria-label="Rose paper"></button>
+                                            <button onclick="changePaperColor('rose')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-pink-400 paper-color-rose relative overflow-hidden" aria-label="Rose Petal Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-pink-100/40"></div>
+                                            </button>
                                             
-                                            <button onclick="changePaperColor('beige')" class="group w-8 h-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-110 border border-amber-400 paper-color-beige" aria-label="Beige paper"></button>
+                                            <button onclick="changePaperColor('beige')" class="group w-12 h-12 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-6 border-2 border-amber-400 paper-color-beige relative overflow-hidden" aria-label="Warm Beige Paper">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-transparent to-amber-100/30"></div>
+                                            </button>
                                         </div>
                                     </div>
-
-                                <!-- Divider -->
-                                <div class="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-
-                                <!-- Font Size Section -->
-                                <div class="group/section">
-                                    <div class="flex items-center space-x-2 mb-3">
-                                        <div class="w-6 h-6 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-text-height text-white text-xs"></i>
+                                    
+                                    <!-- Font Size Control Section -->
+                                    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-blue-200/30">
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-text-height text-white text-sm"></i>
+                                            </div>
+                                            <h3 class="text-lg font-semibold text-slate-800">Font Size</h3>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-center space-x-4 mb-4">
+                                            <button onclick="decreaseFontSize()" class="group w-12 h-12 bg-gradient-to-br from-slate-500 to-slate-600 hover:from-slate-400 hover:to-slate-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center" aria-label="Decrease Font Size">
+                                                <i class="fas fa-minus text-lg group-hover:scale-110 transition-transform duration-200"></i>
+                                            </button>
+                                            
+                                            <div id="fontSizeDisplayMobile" class="px-4 py-3 bg-gradient-to-br from-slate-100 to-slate-200 text-slate-800 rounded-xl text-lg font-bold border-2 border-slate-300 min-w-20 text-center shadow-inner">
+                                                1.4rem
+                                            </div>
+                                            
+                                            <button onclick="increaseFontSize()" class="group w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center" aria-label="Increase Font Size">
+                                                <i class="fas fa-plus text-lg group-hover:scale-110 transition-transform duration-200"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="flex justify-center">
+                                            <button onclick="resetFontSize()" class="group px-6 py-3 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2" aria-label="Reset Font Size">
+                                                <i class="fas fa-undo text-sm group-hover:scale-110 transition-transform duration-200"></i>
+                                                <span class="font-medium">Reset Size</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bottom Padding for Gesture Area -->
+                                    <div class="h-8"></div>
                                 </div>
-                                        <h3 class="text-sm font-semibold text-slate-800">Font Size</h3>
-                </div>
-
-                                    <div class="flex items-center justify-center space-x-3">
-                                        <button onclick="decreaseFontSize()" class="group w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center" aria-label="Decrease font size">
-                                            <i class="fas fa-minus text-sm"></i>
-                                        </button>
-
-                                        <div id="fontSizeDisplayMobile" class="px-3 py-2 bg-slate-100 text-slate-800 rounded-lg text-sm font-medium border border-slate-300 min-w-16 text-center">
-                                            1.4rem
-            </div>
-        
-                                        <button onclick="increaseFontSize()" class="group w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center" aria-label="Increase font size">
-                                            <i class="fas fa-plus text-sm"></i>
-                                        </button>
-    </div>
-
-                                    <div class="flex justify-center mt-2">
-                                        <button onclick="resetFontSize()" class="group px-4 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105 flex items-center space-x-2" aria-label="Reset font size">
-                                            <i class="fas fa-undo text-xs"></i>
-                                            <span class="text-xs font-medium">Reset</span>
-                    </button>
-                </div>
-            </div>
-        </div>
                             </div>
                         </div>
-                            </div>
+                    </div>
                         </div>
         </nav>
         
@@ -3432,7 +3708,7 @@
             overlay.className = 'fixed inset-0 bg-black/5 backdrop-blur-sm z-40 pointer-events-none opacity-0 transition-opacity duration-500';
             document.body.appendChild(overlay);
             
-            setTimeout(() => {
+                setTimeout(() => {
                 overlay.style.opacity = '1';
             }, 100);
         }
@@ -3467,7 +3743,7 @@
             
             // Smooth hiding of indicators
             recordingIndicator.classList.remove('show');
-            setTimeout(() => {
+                setTimeout(() => {
             recordingStatus.classList.remove('show');
             }, 150);
             
@@ -3492,7 +3768,7 @@
                 const transcriptionContainer = document.getElementById('transcriptionContainer');
                 if (transcriptionContainer) {
                     transcriptionContainer.appendChild(sessionSummary);
-                } else {
+            } else {
                     editor.appendChild(sessionSummary);
                 }
             }
@@ -3517,10 +3793,10 @@
                     showStatus("⚡ Quick recording session completed - Consider longer recordings for better accuracy");
                 } else if (recordingDuration > 120) {
                     showStatus(`✅ Extended recording session completed (${durationText}) - ${blockCount} transcription${blockCount !== 1 ? 's' : ''} captured`);
-                } else {
+                    } else {
                     showStatus(`✅ Professional recording session completed (${durationText}) - ${blockCount} transcription${blockCount !== 1 ? 's' : ''} processed successfully`);
-                }
-            } else {
+                    }
+                    } else {
                 showStatus("ℹ️ Recording session ended - No speech detected during this session");
             }
             
@@ -4220,44 +4496,125 @@
             }
         });
 
-        // Mobile tools dropdown management
+        // Professional Mobile Toolbar Management
         function setupMobileToolsDropdown() {
-            const mobileToolsBtn = document.getElementById('mobileToolsBtn');
-            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
+            const mobileToolbarBtn = document.getElementById('mobileProfessionalToolbar');
+            const mobilePanel = document.getElementById('professionalMobilePanel');
+            const mobileContent = document.getElementById('mobileToolbarContent');
+            const closeBtn = document.getElementById('closeMobileToolbar');
             
-            if (mobileToolsBtn && mobileToolsDropdown) {
-                mobileToolsBtn.addEventListener('click', function(e) {
+            if (mobileToolbarBtn && mobilePanel && mobileContent && closeBtn) {
+                // Open toolbar
+                mobileToolbarBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    toggleMobileDropdown();
+                    openProfessionalToolbar();
                 });
                 
-                // Close mobile dropdown when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!mobileToolsDropdown.contains(event.target) && !mobileToolsBtn.contains(event.target)) {
-                        closeMobileDropdown();
+                // Close button
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeProfessionalToolbar();
+                });
+                
+                // Close when clicking outside content area
+                mobilePanel.addEventListener('click', function(event) {
+                    if (event.target === mobilePanel) {
+                        closeProfessionalToolbar();
                     }
                 });
+                
+                // Handle swipe down to close (mobile gesture)
+                let startY = 0;
+                let currentY = 0;
+                let isSwipeDown = false;
+                
+                mobileContent.addEventListener('touchstart', function(e) {
+                    startY = e.touches[0].clientY;
+                    isSwipeDown = false;
+                }, { passive: true });
+                
+                mobileContent.addEventListener('touchmove', function(e) {
+                    currentY = e.touches[0].clientY;
+                    const deltaY = currentY - startY;
+                    
+                    if (deltaY > 50 && !isSwipeDown) {
+                        isSwipeDown = true;
+                    }
+                }, { passive: true });
+                
+                mobileContent.addEventListener('touchend', function(e) {
+                    if (isSwipeDown) {
+                        closeProfessionalToolbar();
+                    }
+                    isSwipeDown = false;
+                }, { passive: true });
+            }
+        }
+
+        function openProfessionalToolbar() {
+            const mobilePanel = document.getElementById('professionalMobilePanel');
+            const mobileContent = document.getElementById('mobileToolbarContent');
+            const toolbarIcon = document.getElementById('toolbarMainIcon');
+            
+            if (mobilePanel && mobileContent) {
+                // Close any open regular dropdowns first
+                closeAllDropdowns();
+                
+                // Show panel
+                mobilePanel.classList.remove('opacity-0', 'pointer-events-none');
+                mobilePanel.classList.add('opacity-100');
+                
+                // Animate content
+                setTimeout(() => {
+                    mobileContent.classList.remove('translate-y-full');
+                }, 50);
+                
+                // Animate toolbar button
+                if (toolbarIcon) {
+                    toolbarIcon.className = 'fas fa-times text-white text-lg group-hover:scale-110 transition-all duration-300';
+                }
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeProfessionalToolbar() {
+            const mobilePanel = document.getElementById('professionalMobilePanel');
+            const mobileContent = document.getElementById('mobileToolbarContent');
+            const toolbarIcon = document.getElementById('toolbarMainIcon');
+            
+            if (mobilePanel && mobileContent) {
+                // Animate content out
+                mobileContent.classList.add('translate-y-full');
+                
+                // Animate toolbar button back
+                if (toolbarIcon) {
+                    toolbarIcon.className = 'fas fa-magic text-white text-lg group-hover:scale-110 transition-all duration-300';
+                }
+                
+                // Hide panel after animation
+                setTimeout(() => {
+                    mobilePanel.classList.add('opacity-0', 'pointer-events-none');
+                    mobilePanel.classList.remove('opacity-100');
+                }, 300);
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
             }
         }
 
         function toggleMobileDropdown() {
-            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
-            if (mobileToolsDropdown) {
-                if (mobileToolsDropdown.classList.contains('hidden')) {
-                    // Close any open regular dropdowns first
-                    closeAllDropdowns();
-                    mobileToolsDropdown.classList.remove('hidden');
-                } else {
-                    mobileToolsDropdown.classList.add('hidden');
-                }
+            const mobilePanel = document.getElementById('professionalMobilePanel');
+            if (mobilePanel && mobilePanel.classList.contains('opacity-0')) {
+                openProfessionalToolbar();
+            } else {
+                closeProfessionalToolbar();
             }
         }
 
         function closeMobileDropdown() {
-            const mobileToolsDropdown = document.getElementById('mobileToolsDropdown');
-            if (mobileToolsDropdown) {
-                mobileToolsDropdown.classList.add('hidden');
-            }
+            closeProfessionalToolbar();
         }
 
         // Update dropdown states to reflect current settings
